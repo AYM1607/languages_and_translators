@@ -3,7 +3,6 @@ import ply.yacc as yacc
 
 tokens = [
     'program',
-    'id',
     'end',
     'doubleColon',
     'coma',
@@ -41,20 +40,11 @@ tokens = [
     'more',
     'lessEquals',
     'moreEquals',
+    'id',
 ]
 
 t_program = r'program'
 t_end = r'end'
-t_doubleColon = r'::'
-t_coma = r','
-t_integer = r'integer'
-t_real = r'real'
-t_openBra = r'\['
-t_closedBra = r'\]'
-t_subroutine = r'subroutine'
-t_parens = r'\(\)'
-t_openParen = r'\('
-t_closedParen = r'\)'
 t_read = r'read'
 t_print = r'print'
 t_if = r'if'
@@ -64,13 +54,23 @@ t_elif = r'elif'
 t_do = r'do'
 t_swap = r'swap'
 t_exit = r'exit'
+t_integer = r'integer'
+t_real = r'real'
+t_subroutine = r'subroutine'
+t_doubleColon = r'::'
+t_coma = r','
+t_openBra = r'\['
+t_closedBra = r'\]'
+t_parens = r'\(\)'
+t_openParen = r'\('
+t_closedParen = r'\)'
 t_plus = r'\+'
 t_minus = r'-'
 t_mul = r'\*'
 t_string = r'".*"'
-t_or = r'\.or\.'
-t_and = r'\.and\.'
-t_not = r'\.not\.'
+t_or = r'or'
+t_and = r'and'
+t_not = r'not'
 t_doubleEquals = r'=='
 t_equals = r'='
 t_notEquals = r'/='
@@ -79,7 +79,7 @@ t_lessEquals = r'<='
 t_less = r'<'
 t_moreEquals = r'>='
 t_more = r'>'
-t_ignore = r'\s|\n|!.*\n'
+t_ignore = ' \n'
 
 def t_int(t):
     r'\d+'
@@ -94,7 +94,7 @@ def t_rea(t):
 
 
 def t_id(t):
-    r'[a-zA-Z_]\w*'
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = 'id'
     return t
 
@@ -108,6 +108,7 @@ def p_programa(p):
     '''
     programa : program id V F B end program
     ''' 
+    print('✓✓✓ Valid program')
 
 def p_V(p):
     '''
@@ -179,7 +180,7 @@ def p_ComaEAOrEmpty(p):
 def p_RDimensional(p):
     '''
     RDimensional : Dimensional
-                 | RDimensional , Dimensional
+                 | RDimensional coma Dimensional
     '''
 
 def p_RDimOrString(p):
@@ -223,4 +224,80 @@ def p_SumOrSub(p):
     SumOrSub : plus
              | minus
     '''
-    
+
+def p_MultDiv(p):
+    '''
+    MultDiv : EAParens
+            | MultDiv MDSymbols EAParens
+    '''
+
+def p_MDSymbols(p):
+    '''
+    MDSymbols : mul
+              | div
+    '''
+
+def p_EAParens(p):
+    '''
+    EAParens : EItem
+             | openParen EA closedParen
+    '''
+
+def p_EL(p):
+    '''
+    EL : AND
+       | EL or AND
+    '''
+
+def p_AND(p):
+    '''
+    AND : Equality
+        | AND and Equality
+    '''
+
+def p_Equality(p):
+    '''
+    Equality : EItem EQSymbols EItem
+             | openParen EL closedParen
+             | not EL
+    '''
+
+def p_EItem(p):
+    '''
+    EItem : Dimensional
+          | int
+          | rea
+    '''
+
+def p_EQSymbols(p):
+    '''
+    EQSymbols : less
+              | more
+              | doubleEquals
+              | notEquals
+              | lessEquals
+              | moreEquals
+    '''
+
+def p_error(p):
+    print('xxx Invalid program')
+
+
+parser = yacc.yacc()
+
+fort_program = '''
+program _matrix 
+end program
+'''
+
+
+#parser.parse(fort_program)
+
+lexer.input(fort_program)
+while True:
+    tok = lexer.token()
+    if not tok:
+        break
+    print(tok)
+
+
