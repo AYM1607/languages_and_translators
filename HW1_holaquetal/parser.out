@@ -6,6 +6,7 @@ Rule 0     S' -> phrase
 Rule 1     phrase -> a QUE TAL
 Rule 2     a -> HOLA COMA a
 Rule 3     a -> HOLA
+Rule 4     a -> <empty>
 
 Terminals, with rules where they appear
 
@@ -28,8 +29,10 @@ state 0
     (1) phrase -> . a QUE TAL
     (2) a -> . HOLA COMA a
     (3) a -> . HOLA
+    (4) a -> .
 
     HOLA            shift and go to state 3
+    QUE             reduce using rule 4 (a -> .)
 
     phrase                         shift and go to state 1
     a                              shift and go to state 2
@@ -68,8 +71,10 @@ state 5
     (2) a -> HOLA COMA . a
     (2) a -> . HOLA COMA a
     (3) a -> . HOLA
+    (4) a -> .
 
     HOLA            shift and go to state 3
+    QUE             reduce using rule 4 (a -> .)
 
     a                              shift and go to state 7
 
