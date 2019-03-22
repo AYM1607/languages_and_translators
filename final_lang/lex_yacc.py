@@ -156,12 +156,12 @@ def p_B(p):
 def p_S(p):
     '''
     S : Dimensional equals EA
-      | parens id
+      | id parens
       | read RDimensional
       | print RDimOrString
       | if Relif ElseOrEmpty end if
-      | do id equals EA coma EA IntOrEmpty B end do
-      | do B end do
+      | do id equals EA coma EA IntOrEmpty then B end do
+      | do then B end do
       | swap Dimensional coma Dimensional
       | exit
     '''
@@ -296,32 +296,32 @@ program matrix
 integer [100][100] :: matrix1, matrix2, resultMatrix
 integer :: m1Rows, m1Columns, m2Rows, m2Columns, temp, temp2
 subroutine sumMatrices
-    do temp = 1, m1Rows
-        do temp2 = 1, m1Columns
+    do temp = 1, m1Rows then
+        do temp2 = 1, m1Columns then
             resultMatrix(temp,temp2) = matrix(temp,temp2) + matrix(temp,temp2)
             resultMatrix(1,1) = 2
         end do
     end do
 end subroutine
 subroutine printResultMatrix
-    do temp = 1, m1Rows
-        do temp2 = 1, m1Columns
+    do temp = 1, m1Rows then
+        do temp2 = 1, m1Columns then
             print resultMatrix(temp,temp2) , ' '
         end do
         print '\n'
     end do
 end subroutine
 subroutine readMatrix1
-    do temp = 1, m1Rows
-        do temp2 = 1, m1Columns
+    do temp = 1, m1Rows then
+        do temp2 = 1, m1Columns then
             print 'Enter value (', temp, ',', temp2, ') For matrix1\n'
             read matrix1(temp,temp2)
         end do
     end do
 end subroutine
 subroutine readMatrix2
-    do temp = 1, m1Rows
-        do temp2 = 1, m1Columns
+    do temp = 1, m1Rows then
+        do temp2 = 1, m1Columns then
             print 'Enter value (', temp, ',', temp2, ') For matrix2\n'
             read matrix2(temp,temp2)
         end do
@@ -339,17 +339,17 @@ subroutine readM2Dimensions
     print 'Enter the columns for the second matrix'
     read m2Columns
 end subroutine
-do
-    ()readM1Dimensions
-    ()readM2Dimensions
+do then
+    readM1Dimensions()
+    readM2Dimensions()
     if (m1Rows == m2Rows) then
         exit
     end if
 end do
-()readMatrix1
-()readMatrix2
-()sumMatrices
-()printResultMatrix
+readMatrix1()
+readMatrix2()
+sumMatrices()
+printResultMatrix()
 end program
 '''
 
