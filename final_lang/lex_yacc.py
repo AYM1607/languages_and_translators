@@ -69,7 +69,7 @@ t_closedParen = r'\)'
 t_plus = r'\+'
 t_minus = r'-'
 t_mul = r'\*'
-t_string = r'\"(.|\s)*\"'
+t_string = r'\'[a-zA-Z0-9 \t\r\n\f()\[\]\&\!\@\#\$\%\^\-\=\+\/\,]*\''
 t_or = r'\.or\.'
 t_and = r'\.and\.'
 t_not = r'\.not\.'
@@ -105,6 +105,7 @@ def t_id(t):
 
 def t_error(t):
     print("Illegal character!")
+    print(t)
     t.lexer.skip(1)
 
 lexer = lex.lex()
@@ -155,7 +156,7 @@ def p_B(p):
 def p_S(p):
     '''
     S : Dimensional equals EA
-      | id parens
+      | parens id
       | read RDimensional
       | print RDimOrString
       | if Relif ElseOrEmpty end if
@@ -286,7 +287,7 @@ def p_EQSymbols(p):
 
 def p_error(p):
     print('xxx Invalid program')
-
+    print(p)
 
 parser = yacc.yacc()
 
@@ -298,17 +299,57 @@ subroutine sumMatrices
     do temp = 1, m1Rows
         do temp2 = 1, m1Columns
             resultMatrix(temp,temp2) = matrix(temp,temp2) + matrix(temp,temp2)
+            resultMatrix(1,1) = 2
         end do
     end do
 end subroutine
 subroutine printResultMatrix
     do temp = 1, m1Rows
         do temp2 = 1, m1Columns
-            print resultMatrix(temp,temp2), " "
+            print resultMatrix(temp,temp2) , ' '
         end do
-        print "\n"
+        print '\n'
     end do
 end subroutine
+subroutine readMatrix1
+    do temp = 1, m1Rows
+        do temp2 = 1, m1Columns
+            print 'Enter value (', temp, ',', temp2, ') For matrix1\n'
+            read matrix1(temp,temp2)
+        end do
+    end do
+end subroutine
+subroutine readMatrix2
+    do temp = 1, m1Rows
+        do temp2 = 1, m1Columns
+            print 'Enter value (', temp, ',', temp2, ') For matrix2\n'
+            read matrix2(temp,temp2)
+        end do
+    end do
+end subroutine
+subroutine readM1Dimensions
+    print 'Enter the rows of the first matrix'
+    read m1Rows
+    print 'Enter the columns for the first matrix'
+    read m1Columns
+end subroutine
+subroutine readM2Dimensions
+    print 'Enter the rows of the second matrix'
+    read m2Rows
+    print 'Enter the columns for the second matrix'
+    read m2Columns
+end subroutine
+do
+    ()readM1Dimensions
+    ()readM2Dimensions
+    if (m1Rows == m2Rows) then
+        exit
+    end if
+end do
+()readMatrix1
+()readMatrix2
+()sumMatrices
+()printResultMatrix
 end program
 '''
 
