@@ -2,6 +2,15 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
+# Operations related to the table of symbols
+symbolsNames = []
+symbolsTypes = []
+
+def addSymbol(name, symbolType):
+    symbolsNames.append(name)
+    symbolsTypes.append(symbolType)
+    
+
 tokens = [
     'doubleColon',
     'coma',
@@ -121,18 +130,32 @@ def p_V(p):
     V : V Tipo Dim doubleColon Rid
       |
     '''
+    # Adds all the variables for this production into the
+    # symbols table.
+    if (len(p) > 1):
+        for name in p[5]:
+            addSymbol(name, p[2])
+
 
 def p_Rid(p):
     '''
     Rid : id
        | Rid coma id
     '''
+    # p[0] will contain an list with all the variable
+    # names for this production in string format.
+    if (len(p) == 2):
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_Tipo(p):
     '''
     Tipo : integer
          | real
     '''
+    # p[0] will contain the type in string format
+    p[0] = p[1]
 
 def p_Dim(p):
     '''
@@ -295,7 +318,7 @@ if (len(sys.argv) > 1):
     programName = sys.argv[1]
     programFile = open(programName, "r")
     # This is neccessary because the read method parses literal ends
-    #  of line as \\n instead of \n.
+    # of lines as \\n instead of \n.
     program = programFile.read().replace('\\n', '\n')
     parser.parse(program)
     programFile.close()
