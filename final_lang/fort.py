@@ -1,5 +1,6 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import sys
 
 tokens = [
     'doubleColon',
@@ -83,15 +84,14 @@ t_moreEquals = r'\>\='
 t_more = r'\>'
 t_ignore = ' \t\r\n\f\v'
 
-def t_int(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-
 def t_rea(t):
     r'\d+\.\d+'
     t.value = float(t.value)
+    return t
+
+def t_int(t):
+    r'\d+'
+    t.value = int(t.value)
     return t
 
 
@@ -291,76 +291,20 @@ def p_error(p):
 
 parser = yacc.yacc()
 
-fort_program = '''
-program matrix
-integer [100][100] :: matrix1, matrix2, resultMatrix
-integer :: m1Rows, m1Columns, m2Rows, m2Columns, temp, temp2
-subroutine sumMatrices
-    do temp = 1, m1Rows then
-        do temp2 = 1, m1Columns then
-            resultMatrix(temp,temp2) = matrix(temp,temp2) + matrix(temp,temp2)
-            resultMatrix(1,1) = 2
-        end do
-    end do
-end subroutine
-subroutine printResultMatrix
-    do temp = 1, m1Rows then
-        do temp2 = 1, m1Columns then
-            print resultMatrix(temp,temp2) , ' '
-        end do
-        print '\n'
-    end do
-end subroutine
-subroutine readMatrix1
-    do temp = 1, m1Rows then
-        do temp2 = 1, m1Columns then
-            print 'Enter value (', temp, ',', temp2, ') For matrix1\n'
-            read matrix1(temp,temp2)
-        end do
-    end do
-end subroutine
-subroutine readMatrix2
-    do temp = 1, m1Rows then
-        do temp2 = 1, m1Columns then
-            print 'Enter value (', temp, ',', temp2, ') For matrix2\n'
-            read matrix2(temp,temp2)
-        end do
-    end do
-end subroutine
-subroutine readM1Dimensions
-    print 'Enter the rows of the first matrix'
-    read m1Rows
-    print 'Enter the columns for the first matrix'
-    read m1Columns
-end subroutine
-subroutine readM2Dimensions
-    print 'Enter the rows of the second matrix'
-    read m2Rows
-    print 'Enter the columns for the second matrix'
-    read m2Columns
-end subroutine
-do then
-    readM1Dimensions()
-    readM2Dimensions()
-    if (m1Rows == m2Rows) then
-        exit
-    end if
-end do
-readMatrix1()
-readMatrix2()
-sumMatrices()
-printResultMatrix()
-end program
-'''
+if (len(sys.argv) > 1):
+    programName = sys.argv[1]
+    programFile = open(programName, "r")
+    # This is neccessary because the read method parses literal ends
+    #  of line as \\n instead of \n.
+    program = programFile.read().replace('\\n', '\n')
+    parser.parse(program)
+    programFile.close()
+else:
+    raise Exception('''
+    No file name was provided.
+    Please add the file name as a command line argument
 
-
-parser.parse(fort_program)
-
-#lexer.input(fort_program)
-#while True:
-#    tok = lexer.token()
-#    if not tok:
-#        break
-#    print(tok)
+    Example: fort.py test.fort
+    ''')
 
 
