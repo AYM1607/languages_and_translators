@@ -114,7 +114,7 @@ def p_programa(p):
     '''
     programa : program id V F B end program
     ''' 
-    print('✓✓✓ Valid program')
+    print('+++ Valid program')
 
 def p_V(p):
     '''
@@ -286,7 +286,7 @@ def p_EQSymbols(p):
     '''
 
 def p_error(p):
-    print('xxx Invalid program')
+    print('XXX Invalid program')
     print(p)
 
 parser = yacc.yacc()
