@@ -26,9 +26,9 @@ symbols = {}
 #     symbolsTypes.append(symbolType)
 
 # Implementation using a dictionary
-def addSymbol(name, symbolsTypes):
-    initialValue = 0 if symbolsTypes == 'integer' else 0.0
-    symbols[name] = [name, initialValue]
+def addSymbol(name, symbolType):
+    initialValue = 0 if symbolType == 'integer' else 0.0
+    symbols[name] = [symbolType, initialValue]
     
 def peek(list):
     if (len(list) == 0):
@@ -202,7 +202,7 @@ def p_B(p):
 
 def p_S(p):
     '''
-    S : Dimensional equals EA
+    S : Dimensional action_7 equals EA action_8
       | id parens
       | read RDimensional
       | print RDimOrString
@@ -383,6 +383,17 @@ def p_action_6(p):
         quadrupletIndex += 1
 
 
+
+def p_action_7(p):
+    "action_7 :"
+    operandsStack.append(p[-1])
+
+
+def p_action_8(p):
+    "action_8 :"
+    operand2 = operandsStack.pop()
+    operand1 = operandsStack.pop()
+    resultQuadruplets.append('= ' + str(operand2) + '    ' + str(operand1) + '\n')
 def p_error(p):
     print('XXX Invalid program')
     print(p)
@@ -399,6 +410,7 @@ if (len(sys.argv) > 1):
     parser.parse(program)
 
     print(resultQuadruplets)
+    print(symbols)
     resultFile.writelines(resultQuadruplets)
 
     # Close the files.
