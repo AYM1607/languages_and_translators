@@ -1,5 +1,5 @@
 program test
 integer :: a, b
-a = 1 + 2
+a = (2 + 1) * 2
 b = a
 end program
