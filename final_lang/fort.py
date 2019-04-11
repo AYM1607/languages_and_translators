@@ -9,8 +9,9 @@ quadrupletIndex = 1
 # Auxiliary stacks.
 operandsStack = []
 operatorsStack = []
+typesStack = []
 jumpsStack = []
-auxStack = []
+exitsStack = []
 avail = []
 for i in range(50):
     avail.append('T' + str(i))
@@ -24,7 +25,7 @@ def addSymbol(name, symbolType):
     global currentIndex
     initialValue = 0 if symbolType == 'integer' else 0.0
     symbols[name] = {
-        'symbolType': symbolType,
+        'type': symbolType,
         'value': initialValue,
         'direction': currentIndex
     }

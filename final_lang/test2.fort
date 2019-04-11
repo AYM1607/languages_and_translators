@@ -1,5 +1,6 @@
 program test
 integer :: a, b
+real :: c
 a = (2 + 1) + 4 * 2 / 3 * b
 b = a
 end program
