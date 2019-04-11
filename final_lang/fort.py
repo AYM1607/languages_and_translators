@@ -16,19 +16,19 @@ for i in range(50):
     avail.append('T' + str(i))
 
 # Operations related to the table of symbols
-symbolsNames = []
-symbolsTypes = []
 symbols = {}
-
-# # Implementation using lists.
-# def addSymbol(name, symbolType):
-#     symbolsNames.append(name)
-#     symbolsTypes.append(symbolType)
+currentIndex = 0
 
 # Implementation using a dictionary
 def addSymbol(name, symbolType):
+    global currentIndex
     initialValue = 0 if symbolType == 'integer' else 0.0
-    symbols[name] = [symbolType, initialValue]
+    symbols[name] = {
+        'symbolType': symbolType,
+        'value': initialValue,
+        'direction': currentIndex
+    }
+    currentIndex += 1
     
 def peek(list):
     if (len(list) == 0):
