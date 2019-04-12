@@ -10,6 +10,8 @@ from typeValidation import resultingType
 kEqualityOperators = ['>', '<', '>=', '<=', '==', '/=',]
 
 resultQuadruplets = []
+# The first quadruplet will be line 1, that way it will match the lines in
+# the editor and will be easier to analyze.
 quadrupletIndex = 1
 
 # Auxiliary stacks.
@@ -59,7 +61,8 @@ def isTemp(operand):
 
 def fillGoto(position, fillValue):
     global resultQuadruplets
-    resultQuadruplets[position] = resultQuadruplets[position].replace('_', str(fillValue))
+    # Using position - 1  because the quadruplets start at 1 and not 0.
+    resultQuadruplets[position-1] = resultQuadruplets[position-1].replace('_', str(fillValue))
     return
 
 #----------------------------------------------------------------------------
@@ -245,7 +248,7 @@ def p_S(p):
       | id parens
       | read RDimensional
       | print RDimOrString
-      | if Relif ElseOrEmpty end if
+      | if action_16 Relif ElseOrEmpty end if action_20
       | do id equals EA coma EA IntOrEmpty then B end do
       | do then B end do
       | swap Dimensional coma Dimensional
@@ -292,13 +295,13 @@ def p_DimOrString(p):
 
 def p_Relif(p):
     '''
-    Relif : openParen EL closedParen then B
-          | Relif elif openParen EL closedParen then B
+    Relif : openParen EL closedParen action_17 then B
+          | Relif elif action_18 openParen EL closedParen action_17 then B
     '''
 
 def p_ElseOrEmpty(p):
     '''
-    ElseOrEmpty : else B
+    ElseOrEmpty : else action_19 B
                 |
     '''
 
@@ -572,6 +575,52 @@ def p_action_15(p):
     operand1 = peek(operandsStack)
     resultQuadruplets.append('.not. ' + str(operand1) + '    ' + str(operand1) + '\n')
 
+
+def p_action_16(p):
+    "action_16 :"
+    jumpsStack.append('$')
+
+def p_action_17(p):
+    "action_17 :"
+    global quadrupletIndex
+    global avail
+    operand1 = operandsStack.pop()
+    type1 = typesStack.pop()
+    if (type1 is not 'bool'):
+        raise Exception('Can\'t use non logical expression as conditional for if')
+    jumpsStack.append(quadrupletIndex)
+    resultQuadruplets.append('gotoF ' + str(operand1) + '   _\n')
+    quadrupletIndex += 1
+    if (isTemp(operand1)):
+        avail = [operand1] + avail
+
+
+def p_action_18(p):
+    "action_18 :"
+    global quadrupletIndex
+    resultQuadruplets.append('goto  _\n')
+    quadrupletIndex += 1
+    Dir = jumpsStack.pop()
+    fillGoto(Dir, quadrupletIndex)
+    jumpsStack.append(quadrupletIndex - 1)
+
+
+def p_action_19(p):
+    "action_19 :"
+    global quadrupletIndex
+    resultQuadruplets.append('goto  _\n')
+    quadrupletIndex += 1
+    Dir = jumpsStack.pop()
+    fillGoto(Dir, quadrupletIndex)
+    jumpsStack.append(quadrupletIndex - 1)
+
+
+def p_action_20(p):
+    "action_20 :"
+    while(peek(jumpsStack) is not '$'):
+        Dir = jumpsStack.pop()
+        fillGoto(Dir, quadrupletIndex)
+    jumpsStack.pop()
 
 def p_error(p):
     print('XXX Invalid program')
