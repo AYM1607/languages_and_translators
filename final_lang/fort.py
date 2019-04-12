@@ -3,6 +3,8 @@ import ply.yacc as yacc
 import sys
 from typeValidation import resultingType
 
+kEqualityOperators = ['>', '<', '>=', '<=', '==', '/=',]
+
 resultQuadruplets = []
 quadrupletIndex = 1
 
@@ -39,8 +41,13 @@ def peek(list):
     return list[len(list) - 1]
 
 # Checks whether or not a an operand is a temp variable.
-def isTemp(operan):
-    return
+def isTemp(operand):
+    if type(operand) is not str:
+        return False
+    operand = int(operand[1:])
+    if (operand < 50):
+        return True
+    return False
 
 
 tokens = [
@@ -314,20 +321,20 @@ def p_EAParens(p):
 def p_EL(p):
     '''
     EL : AND
-       | EL or AND
+       | EL or action_10 AND action_9
     '''
 
 def p_AND(p):
     '''
     AND : Equality
-        | AND and Equality
+        | AND and action_12 Equality action_11
     '''
 
 def p_Equality(p):
     '''
-    Equality : EItem EQSymbols EItem
+    Equality : EItem EQSymbols action_13 EItem action_14
              | openParen EL closedParen
-             | not EL
+             | not EL action_15
     '''
 
 def p_EItem(p):
@@ -346,6 +353,7 @@ def p_EQSymbols(p):
               | lessEquals
               | moreEquals
     '''
+    p[0] = p[1]
 
 
 def p_action_1(p):
@@ -376,6 +384,7 @@ def p_action_4(p):
     "action_4 :"
     if (peek(operatorsStack) == '+' or peek(operatorsStack) == '-'):
         global quadrupletIndex
+        global avail
         operator = operatorsStack.pop()
         operand2 = operandsStack.pop()
         operand1 = operandsStack.pop()
@@ -387,6 +396,10 @@ def p_action_4(p):
         typesStack.append(resultType)
         resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
+        if (isTemp(operand2)):
+            avail = [operand2] + avail
+        if (isTemp(operand1)):
+            avail = [operand1] + avail
 
 
 def p_action_5(p):
@@ -398,6 +411,7 @@ def p_action_6(p):
     "action_6 :"
     if (peek(operatorsStack) == '*' or peek(operatorsStack) == '/'):
         global quadrupletIndex
+        global avail
         operator = operatorsStack.pop()
         operand2 = operandsStack.pop()
         operand1 = operandsStack.pop()
@@ -409,6 +423,10 @@ def p_action_6(p):
         typesStack.append(resultType)
         resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
+        if (isTemp(operand2)):
+            avail = [operand2] + avail
+        if (isTemp(operand1)):
+            avail = [operand1] + avail
 
 
 
@@ -424,6 +442,8 @@ def p_action_7(p):
 
 def p_action_8(p):
     "action_8 :"
+    global quadrupletIndex
+    global avail
     operand2 = operandsStack.pop()
     operand1 = operandsStack.pop()
     type2 = typesStack.pop()
@@ -431,6 +451,100 @@ def p_action_8(p):
     # Result type only gets called to make sure the types are compatible.
     resultingType('=', type1, type2)
     resultQuadruplets.append('= ' + str(operand2) + '    ' + str(operand1) + '\n')
+    quadrupletIndex += 1
+    # Return the operand to the availbale if it is a temporal.
+    if (isTemp(operand2)):
+        avail = [operand2] + avail
+
+def p_action_9(p):
+    "action_9 :"
+    if (peek(operatorsStack) == '.or.'):
+        global quadrupletIndex
+        global avail
+        operator = operatorsStack.pop()
+        operand2 = operandsStack.pop()
+        operand1 = operandsStack.pop()
+        type2 = typesStack.pop()
+        type1 = typesStack.pop()
+        resultType = resultingType(operator, type1, type2)
+        temp = avail.pop(0)
+        operandsStack.append(temp)
+        typesStack.append(resultType)
+        resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
+        quadrupletIndex += 1
+        if (isTemp(operand2)):
+            avail = [operand2] + avail
+        if (isTemp(operand1)):
+            avail = [operand1] + avail
+
+
+
+def p_action_10(p):
+    "action_10 :"
+    operatorsStack.append(p[-1])
+
+
+def p_action_11(p):
+    "action_11 :"
+    if (peek(operatorsStack) == '.and.'):
+        global quadrupletIndex
+        global avail
+        operator = operatorsStack.pop()
+        operand2 = operandsStack.pop()
+        operand1 = operandsStack.pop()
+        type2 = typesStack.pop()
+        type1 = typesStack.pop()
+        resultType = resultingType(operator, type1, type2)
+        temp = avail.pop(0)
+        operandsStack.append(temp)
+        typesStack.append(resultType)
+        resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
+        quadrupletIndex += 1
+        if (isTemp(operand2)):
+            avail = [operand2] + avail
+        if (isTemp(operand1)):
+            avail = [operand1] + avail
+
+
+def p_action_12(p):
+    "action_12 :"
+    operatorsStack.append(p[-1])
+
+
+def p_action_13(p):
+    "action_13 :"
+    operatorsStack.append(p[-1])
+
+
+def p_action_14(p):
+    "action_14 :"
+    if (peek(operatorsStack) in kEqualityOperators):
+        global quadrupletIndex
+        global avail
+        operator = operatorsStack.pop()
+        operand2 = operandsStack.pop()
+        operand1 = operandsStack.pop()
+        type2 = typesStack.pop()
+        type1 = typesStack.pop()
+        resultType = resultingType(operator, type1, type2)
+        temp = avail.pop(0)
+        operandsStack.append(temp)
+        typesStack.append(resultType)
+        resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
+        quadrupletIndex += 1
+        if (isTemp(operand2)):
+            avail = [operand2] + avail
+        if (isTemp(operand1)):
+            avail = [operand1] + avail
+
+
+def p_action_15(p):
+    "action_15 :"
+    if (peek(typesStack) is not 'bool'):
+        raise Exception("Cannot use .not. with non boolean")
+    global quadrupletIndex
+    operand1 = peek(operandsStack)
+    resultQuadruplets.append('.not. ' + str(operand1) + '    ' + str(operand1) + '\n')
 
 
 def p_error(p):

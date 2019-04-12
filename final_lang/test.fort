@@ -4,7 +4,7 @@ integer :: m1Rows, m1Columns, m2Rows, m2Columns, temp, temp2
 subroutine sumMatrices
     do temp = 1, m1Rows then
         do temp2 = 1, m1Columns then
-            resultMatrix(temp,temp2) = matrix(temp,temp2) + matrix(temp,temp2)
+            resultMatrix(temp,temp2) = matrix1(temp,temp2) + matrix2(temp,temp2)
             resultMatrix(1,1) = 2
         end do
     end do

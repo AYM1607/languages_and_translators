@@ -111,6 +111,16 @@ typeValidationMap = {
             'bool': 'bool',
         }
     },
+    '.and.': {
+        'bool': {
+            'bool': 'bool',
+        }
+    },
+    '.or.': {
+        'bool': {
+            'bool': 'bool',
+        }
+    },
 }
 
 def resultingType(operator, type1, type2):
@@ -120,6 +130,14 @@ def resultingType(operator, type1, type2):
         if type2 in type1Map:
             return type1Map[type2]
         else:
-            raise Exception('Operation not suppoerted')
+            raise Exception(f'''
+            Operation not suppoerted:
+            
+            operator {operator} can't be used with types: {type1} and {type2}
+            ''')
     else:
-        raise Exception('Operation not supported')
+        raise Exception(f'''
+        Operation not supported:
+
+        operator {operator} can't be used with types: {type1} and {type2}
+        ''')
