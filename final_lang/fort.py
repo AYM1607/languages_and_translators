@@ -3,6 +3,10 @@ import ply.yacc as yacc
 import sys
 from typeValidation import resultingType
 
+#----------------------------------------------------------------------------
+#--------------------------------Globals-------------------------------------
+#----------------------------------------------------------------------------
+
 kEqualityOperators = ['>', '<', '>=', '<=', '==', '/=',]
 
 resultQuadruplets = []
@@ -23,7 +27,11 @@ symbols = {}
 # Our variables start at direction 50, the temps take the first 50 directions.
 currentIndex = 50
 
-# Implementation using a dictionary
+#----------------------------------------------------------------------------
+#------------------------------Util methods----------------------------------
+#----------------------------------------------------------------------------
+
+# Adds a symbol to the symbols table.
 def addSymbol(name, symbolType):
     global currentIndex
     initialValue = 0 if symbolType == 'integer' else 0.0
@@ -48,6 +56,15 @@ def isTemp(operand):
     if (operand < 50):
         return True
     return False
+
+def fillGoto(position, fillValue):
+    global resultQuadruplets
+    resultQuadruplets[position] = resultQuadruplets[position].replace('_', str(fillValue))
+    return
+
+#----------------------------------------------------------------------------
+#---------------------------------LEXER--------------------------------------
+#----------------------------------------------------------------------------
 
 
 tokens = [
@@ -158,6 +175,12 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
+
+
+#----------------------------------------------------------------------------
+#---------------------------------PARSER-------------------------------------
+#----------------------------------------------------------------------------
+
 
 def p_programa(p):
     '''
@@ -355,6 +378,9 @@ def p_EQSymbols(p):
     '''
     p[0] = p[1]
 
+#----------------------------------------------------------------------------
+#-----------------------------PARSER ACTIONS---------------------------------
+#----------------------------------------------------------------------------
 
 def p_action_1(p):
     "action_1 :"
@@ -552,6 +578,11 @@ def p_error(p):
     print(p)
 
 parser = yacc.yacc()
+
+
+#----------------------------------------------------------------------------
+#--------------------INTERMEDIATE CODE FILE GENERATION-----------------------
+#----------------------------------------------------------------------------
 
 if (len(sys.argv) > 1):
     programName = sys.argv[1]
