@@ -250,9 +250,9 @@ def p_S(p):
       | print RDimOrString
       | if action_16 Relif ElseOrEmpty end if action_20
       | do id equals EA coma EA IntOrEmpty then B end do
-      | do then B end do
+      | do then action_21 B action_22 end do
       | swap Dimensional coma Dimensional
-      | exit
+      | exit action_23
     '''
 
 # Adjust the action to support matrices
@@ -622,6 +622,36 @@ def p_action_20(p):
         fillGoto(Dir, quadrupletIndex)
     jumpsStack.pop()
 
+
+def p_action_21(p):
+    "action_21 :"
+    jumpsStack.append(quadrupletIndex)
+    exitsStack.append('$')
+
+
+def p_action_22(p):
+    "action_22 :"
+    global resultQuadruplets
+    global quadrupletIndex
+    Dir = jumpsStack.pop()
+    resultQuadruplets.append(f'goto   {Dir}\n')
+    quadrupletIndex += 1
+    while(peek(exitsStack) != '$'):
+        Dir = exitsStack.pop()
+        fillGoto(Dir, quadrupletIndex)
+    exitsStack.pop()
+
+
+def p_action_23(p):
+    "action_23 :"
+    global quadrupletIndex
+    global quadrupletIndex
+    exitsStack.append(quadrupletIndex)
+    resultQuadruplets.append('goto   _\n')
+    quadrupletIndex += 1
+
+
+
 def p_error(p):
     print('XXX Invalid program')
     print(p)
@@ -642,8 +672,6 @@ if (len(sys.argv) > 1):
     program = programFile.read().replace('\\n', '\n')
     parser.parse(program)
 
-    print(resultQuadruplets)
-    print(symbols)
     resultFile.writelines(resultQuadruplets)
 
     # Close the files.
