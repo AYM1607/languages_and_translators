@@ -1,7 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
-from stack import Stack
+from typeValidation import resultingType
 
 resultQuadruplets = []
 quadrupletIndex = 1
@@ -14,11 +14,12 @@ jumpsStack = []
 exitsStack = []
 avail = []
 for i in range(50):
-    avail.append('T' + str(i))
+    avail.append('$' + str(i))
 
 # Operations related to the table of symbols
 symbols = {}
-currentIndex = 0
+# Our variables start at direction 50, the temps take the first 50 directions.
+currentIndex = 50
 
 # Implementation using a dictionary
 def addSymbol(name, symbolType):
@@ -30,11 +31,17 @@ def addSymbol(name, symbolType):
         'direction': currentIndex
     }
     currentIndex += 1
-    
+
+# Returns the last item of a list without deleting it.
 def peek(list):
     if (len(list) == 0):
         return None
     return list[len(list) - 1]
+
+# Checks whether or not a an operand is a temp variable.
+def isTemp(operan):
+    return
+
 
 tokens = [
     'doubleColon',
@@ -77,6 +84,7 @@ tokens = [
     'real',
     'subroutine',
 ]
+
 reserved = {
     'program' : 'program',
     'end' : 'end',
@@ -326,7 +334,7 @@ def p_EItem(p):
     '''
     EItem : Dimensional action_1
           | int action_2
-          | rea action_2
+          | rea action_2_rea
     '''
 
 def p_EQSymbols(p):
@@ -342,12 +350,23 @@ def p_EQSymbols(p):
 
 def p_action_1(p):
     "action_1 :"
-    operandsStack.append(p[-1])
+    if p[-1] not in symbols:
+        raise Exception(f'The variable {p[-1]} was not declared')
+    direction = symbols[p[-1]]['direction']
+    sType = symbols[p[-1]]['type']
+    operandsStack.append(f'${direction}')
+    typesStack.append(sType)
 
 
 def p_action_2(p):
     "action_2 :"
     operandsStack.append(p[-1])
+    typesStack.append('integer')
+
+def p_action_2_rea(p):
+    "action_2_rea :"
+    operandsStack.append(p[-1])
+    typesStack.append('real')
 
 def p_action_3(p):
     "action_3 :"
@@ -360,8 +379,12 @@ def p_action_4(p):
         operator = operatorsStack.pop()
         operand2 = operandsStack.pop()
         operand1 = operandsStack.pop()
+        type2 = typesStack.pop()
+        type1 = typesStack.pop()
+        resultType = resultingType(operator, type1, type2)
         temp = avail.pop(0)
         operandsStack.append(temp)
+        typesStack.append(resultType)
         resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
 
@@ -378,8 +401,12 @@ def p_action_6(p):
         operator = operatorsStack.pop()
         operand2 = operandsStack.pop()
         operand1 = operandsStack.pop()
+        type2 = typesStack.pop()
+        type1 = typesStack.pop()
+        resultType = resultingType(operator, type1, type2)
         temp = avail.pop(0)
         operandsStack.append(temp)
+        typesStack.append(resultType)
         resultQuadruplets.append(str(operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
 
@@ -387,14 +414,25 @@ def p_action_6(p):
 
 def p_action_7(p):
     "action_7 :"
-    operandsStack.append(p[-1])
+    if p[-1] not in symbols:
+        raise Exception(f'The variable {p[-1]} was not declared')
+    direction = symbols[p[-1]]['direction']
+    sType = symbols[p[-1]]['type']
+    operandsStack.append(f'${direction}')
+    typesStack.append(sType)
 
 
 def p_action_8(p):
     "action_8 :"
     operand2 = operandsStack.pop()
     operand1 = operandsStack.pop()
+    type2 = typesStack.pop()
+    type1 = typesStack.pop()
+    # Result type only gets called to make sure the types are compatible.
+    resultingType('=', type1, type2)
     resultQuadruplets.append('= ' + str(operand2) + '    ' + str(operand1) + '\n')
+
+
 def p_error(p):
     print('XXX Invalid program')
     print(p)

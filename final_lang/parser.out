@@ -62,7 +62,7 @@ Rule 56    Equality -> openParen EL closedParen
 Rule 57    Equality -> not EL
 Rule 58    EItem -> Dimensional action_1
 Rule 59    EItem -> int action_2
-Rule 60    EItem -> rea action_2
+Rule 60    EItem -> rea action_2_rea
 Rule 61    EQSymbols -> less
 Rule 62    EQSymbols -> more
 Rule 63    EQSymbols -> doubleEquals
@@ -71,12 +71,13 @@ Rule 65    EQSymbols -> lessEquals
 Rule 66    EQSymbols -> moreEquals
 Rule 67    action_1 -> <empty>
 Rule 68    action_2 -> <empty>
-Rule 69    action_3 -> <empty>
-Rule 70    action_4 -> <empty>
-Rule 71    action_5 -> <empty>
-Rule 72    action_6 -> <empty>
-Rule 73    action_7 -> <empty>
-Rule 74    action_8 -> <empty>
+Rule 69    action_2_rea -> <empty>
+Rule 70    action_3 -> <empty>
+Rule 71    action_4 -> <empty>
+Rule 72    action_5 -> <empty>
+Rule 73    action_6 -> <empty>
+Rule 74    action_7 -> <empty>
+Rule 75    action_8 -> <empty>
 
 Terminals, with rules where they appear
 
@@ -150,7 +151,8 @@ SumOrSub             : 42
 Tipo                 : 2
 V                    : 1 2
 action_1             : 58
-action_2             : 59 60
+action_2             : 59
+action_2_rea         : 60
 action_3             : 42
 action_4             : 42
 action_5             : 46
@@ -362,9 +364,9 @@ state 15
 state 16
 
     (15) S -> Dimensional . action_7 equals EA action_8
-    (73) action_7 -> .
+    (74) action_7 -> .
 
-    equals          reduce using rule 73 (action_7 -> .)
+    equals          reduce using rule 74 (action_7 -> .)
 
     action_7                       shift and go to state 30
 
@@ -534,7 +536,7 @@ state 28
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -726,7 +728,7 @@ state 39
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -856,7 +858,7 @@ state 47
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -1028,36 +1030,36 @@ state 53
 
 state 54
 
-    (60) EItem -> rea . action_2
-    (68) action_2 -> .
+    (60) EItem -> rea . action_2_rea
+    (69) action_2_rea -> .
 
-    mul             reduce using rule 68 (action_2 -> .)
-    div             reduce using rule 68 (action_2 -> .)
-    coma            reduce using rule 68 (action_2 -> .)
-    plus            reduce using rule 68 (action_2 -> .)
-    minus           reduce using rule 68 (action_2 -> .)
-    closedParen     reduce using rule 68 (action_2 -> .)
-    less            reduce using rule 68 (action_2 -> .)
-    more            reduce using rule 68 (action_2 -> .)
-    doubleEquals    reduce using rule 68 (action_2 -> .)
-    notEquals       reduce using rule 68 (action_2 -> .)
-    lessEquals      reduce using rule 68 (action_2 -> .)
-    moreEquals      reduce using rule 68 (action_2 -> .)
-    end             reduce using rule 68 (action_2 -> .)
-    id              reduce using rule 68 (action_2 -> .)
-    read            reduce using rule 68 (action_2 -> .)
-    print           reduce using rule 68 (action_2 -> .)
-    if              reduce using rule 68 (action_2 -> .)
-    do              reduce using rule 68 (action_2 -> .)
-    swap            reduce using rule 68 (action_2 -> .)
-    exit            reduce using rule 68 (action_2 -> .)
-    elif            reduce using rule 68 (action_2 -> .)
-    else            reduce using rule 68 (action_2 -> .)
-    and             reduce using rule 68 (action_2 -> .)
-    or              reduce using rule 68 (action_2 -> .)
-    then            reduce using rule 68 (action_2 -> .)
+    mul             reduce using rule 69 (action_2_rea -> .)
+    div             reduce using rule 69 (action_2_rea -> .)
+    coma            reduce using rule 69 (action_2_rea -> .)
+    plus            reduce using rule 69 (action_2_rea -> .)
+    minus           reduce using rule 69 (action_2_rea -> .)
+    closedParen     reduce using rule 69 (action_2_rea -> .)
+    less            reduce using rule 69 (action_2_rea -> .)
+    more            reduce using rule 69 (action_2_rea -> .)
+    doubleEquals    reduce using rule 69 (action_2_rea -> .)
+    notEquals       reduce using rule 69 (action_2_rea -> .)
+    lessEquals      reduce using rule 69 (action_2_rea -> .)
+    moreEquals      reduce using rule 69 (action_2_rea -> .)
+    end             reduce using rule 69 (action_2_rea -> .)
+    id              reduce using rule 69 (action_2_rea -> .)
+    read            reduce using rule 69 (action_2_rea -> .)
+    print           reduce using rule 69 (action_2_rea -> .)
+    if              reduce using rule 69 (action_2_rea -> .)
+    do              reduce using rule 69 (action_2_rea -> .)
+    swap            reduce using rule 69 (action_2_rea -> .)
+    exit            reduce using rule 69 (action_2_rea -> .)
+    elif            reduce using rule 69 (action_2_rea -> .)
+    else            reduce using rule 69 (action_2_rea -> .)
+    and             reduce using rule 69 (action_2_rea -> .)
+    or              reduce using rule 69 (action_2_rea -> .)
+    then            reduce using rule 69 (action_2_rea -> .)
 
-    action_2                       shift and go to state 84
+    action_2_rea                   shift and go to state 84
 
 state 55
 
@@ -1070,7 +1072,7 @@ state 55
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -1149,7 +1151,7 @@ state 61
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -1226,7 +1228,7 @@ state 66
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -1252,7 +1254,7 @@ state 67
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -1346,12 +1348,12 @@ state 74
 state 75
 
     (42) EA -> EA SumOrSub . action_3 MultDiv action_4
-    (69) action_3 -> .
+    (70) action_3 -> .
 
-    openParen       reduce using rule 69 (action_3 -> .)
-    int             reduce using rule 69 (action_3 -> .)
-    rea             reduce using rule 69 (action_3 -> .)
-    id              reduce using rule 69 (action_3 -> .)
+    openParen       reduce using rule 70 (action_3 -> .)
+    int             reduce using rule 70 (action_3 -> .)
+    rea             reduce using rule 70 (action_3 -> .)
+    id              reduce using rule 70 (action_3 -> .)
 
     action_3                       shift and go to state 111
 
@@ -1366,7 +1368,7 @@ state 76
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -1403,12 +1405,12 @@ state 78
 state 79
 
     (46) MultDiv -> MultDiv MDSymbols . action_5 EAParens action_6
-    (71) action_5 -> .
+    (72) action_5 -> .
 
-    openParen       reduce using rule 71 (action_5 -> .)
-    int             reduce using rule 71 (action_5 -> .)
-    rea             reduce using rule 71 (action_5 -> .)
-    id              reduce using rule 71 (action_5 -> .)
+    openParen       reduce using rule 72 (action_5 -> .)
+    int             reduce using rule 72 (action_5 -> .)
+    rea             reduce using rule 72 (action_5 -> .)
+    id              reduce using rule 72 (action_5 -> .)
 
     action_5                       shift and go to state 113
 
@@ -1496,53 +1498,53 @@ state 83
 
 state 84
 
-    (60) EItem -> rea action_2 .
+    (60) EItem -> rea action_2_rea .
 
-    mul             reduce using rule 60 (EItem -> rea action_2 .)
-    div             reduce using rule 60 (EItem -> rea action_2 .)
-    coma            reduce using rule 60 (EItem -> rea action_2 .)
-    plus            reduce using rule 60 (EItem -> rea action_2 .)
-    minus           reduce using rule 60 (EItem -> rea action_2 .)
-    closedParen     reduce using rule 60 (EItem -> rea action_2 .)
-    less            reduce using rule 60 (EItem -> rea action_2 .)
-    more            reduce using rule 60 (EItem -> rea action_2 .)
-    doubleEquals    reduce using rule 60 (EItem -> rea action_2 .)
-    notEquals       reduce using rule 60 (EItem -> rea action_2 .)
-    lessEquals      reduce using rule 60 (EItem -> rea action_2 .)
-    moreEquals      reduce using rule 60 (EItem -> rea action_2 .)
-    end             reduce using rule 60 (EItem -> rea action_2 .)
-    id              reduce using rule 60 (EItem -> rea action_2 .)
-    read            reduce using rule 60 (EItem -> rea action_2 .)
-    print           reduce using rule 60 (EItem -> rea action_2 .)
-    if              reduce using rule 60 (EItem -> rea action_2 .)
-    do              reduce using rule 60 (EItem -> rea action_2 .)
-    swap            reduce using rule 60 (EItem -> rea action_2 .)
-    exit            reduce using rule 60 (EItem -> rea action_2 .)
-    elif            reduce using rule 60 (EItem -> rea action_2 .)
-    else            reduce using rule 60 (EItem -> rea action_2 .)
-    and             reduce using rule 60 (EItem -> rea action_2 .)
-    or              reduce using rule 60 (EItem -> rea action_2 .)
-    then            reduce using rule 60 (EItem -> rea action_2 .)
+    mul             reduce using rule 60 (EItem -> rea action_2_rea .)
+    div             reduce using rule 60 (EItem -> rea action_2_rea .)
+    coma            reduce using rule 60 (EItem -> rea action_2_rea .)
+    plus            reduce using rule 60 (EItem -> rea action_2_rea .)
+    minus           reduce using rule 60 (EItem -> rea action_2_rea .)
+    closedParen     reduce using rule 60 (EItem -> rea action_2_rea .)
+    less            reduce using rule 60 (EItem -> rea action_2_rea .)
+    more            reduce using rule 60 (EItem -> rea action_2_rea .)
+    doubleEquals    reduce using rule 60 (EItem -> rea action_2_rea .)
+    notEquals       reduce using rule 60 (EItem -> rea action_2_rea .)
+    lessEquals      reduce using rule 60 (EItem -> rea action_2_rea .)
+    moreEquals      reduce using rule 60 (EItem -> rea action_2_rea .)
+    end             reduce using rule 60 (EItem -> rea action_2_rea .)
+    id              reduce using rule 60 (EItem -> rea action_2_rea .)
+    read            reduce using rule 60 (EItem -> rea action_2_rea .)
+    print           reduce using rule 60 (EItem -> rea action_2_rea .)
+    if              reduce using rule 60 (EItem -> rea action_2_rea .)
+    do              reduce using rule 60 (EItem -> rea action_2_rea .)
+    swap            reduce using rule 60 (EItem -> rea action_2_rea .)
+    exit            reduce using rule 60 (EItem -> rea action_2_rea .)
+    elif            reduce using rule 60 (EItem -> rea action_2_rea .)
+    else            reduce using rule 60 (EItem -> rea action_2_rea .)
+    and             reduce using rule 60 (EItem -> rea action_2_rea .)
+    or              reduce using rule 60 (EItem -> rea action_2_rea .)
+    then            reduce using rule 60 (EItem -> rea action_2_rea .)
 
 
 state 85
 
     (15) S -> Dimensional action_7 equals EA . action_8
     (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (74) action_8 -> .
+    (75) action_8 -> .
     (43) SumOrSub -> . plus
     (44) SumOrSub -> . minus
 
-    end             reduce using rule 74 (action_8 -> .)
-    id              reduce using rule 74 (action_8 -> .)
-    read            reduce using rule 74 (action_8 -> .)
-    print           reduce using rule 74 (action_8 -> .)
-    if              reduce using rule 74 (action_8 -> .)
-    do              reduce using rule 74 (action_8 -> .)
-    swap            reduce using rule 74 (action_8 -> .)
-    exit            reduce using rule 74 (action_8 -> .)
-    elif            reduce using rule 74 (action_8 -> .)
-    else            reduce using rule 74 (action_8 -> .)
+    end             reduce using rule 75 (action_8 -> .)
+    id              reduce using rule 75 (action_8 -> .)
+    read            reduce using rule 75 (action_8 -> .)
+    print           reduce using rule 75 (action_8 -> .)
+    if              reduce using rule 75 (action_8 -> .)
+    do              reduce using rule 75 (action_8 -> .)
+    swap            reduce using rule 75 (action_8 -> .)
+    exit            reduce using rule 75 (action_8 -> .)
+    elif            reduce using rule 75 (action_8 -> .)
+    else            reduce using rule 75 (action_8 -> .)
     plus            shift and go to state 77
     minus           shift and go to state 78
 
@@ -1602,7 +1604,7 @@ state 89
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -1670,7 +1672,7 @@ state 93
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -1692,7 +1694,7 @@ state 94
     (57) Equality -> . not EL
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 61
@@ -1710,7 +1712,7 @@ state 95
     (55) Equality -> EItem EQSymbols . EItem
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     int             shift and go to state 53
@@ -1927,7 +1929,7 @@ state 111
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -1960,7 +1962,7 @@ state 113
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -2083,7 +2085,7 @@ state 122
     (50) EAParens -> . openParen EA closedParen
     (58) EItem -> . Dimensional action_1
     (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2
+    (60) EItem -> . rea action_2_rea
     (24) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
@@ -2124,25 +2126,25 @@ state 125
 
     (42) EA -> EA SumOrSub action_3 MultDiv . action_4
     (46) MultDiv -> MultDiv . MDSymbols action_5 EAParens action_6
-    (70) action_4 -> .
+    (71) action_4 -> .
     (47) MDSymbols -> . mul
     (48) MDSymbols -> . div
 
-    coma            reduce using rule 70 (action_4 -> .)
-    plus            reduce using rule 70 (action_4 -> .)
-    minus           reduce using rule 70 (action_4 -> .)
-    closedParen     reduce using rule 70 (action_4 -> .)
-    end             reduce using rule 70 (action_4 -> .)
-    id              reduce using rule 70 (action_4 -> .)
-    read            reduce using rule 70 (action_4 -> .)
-    print           reduce using rule 70 (action_4 -> .)
-    if              reduce using rule 70 (action_4 -> .)
-    do              reduce using rule 70 (action_4 -> .)
-    swap            reduce using rule 70 (action_4 -> .)
-    exit            reduce using rule 70 (action_4 -> .)
-    elif            reduce using rule 70 (action_4 -> .)
-    else            reduce using rule 70 (action_4 -> .)
-    then            reduce using rule 70 (action_4 -> .)
+    coma            reduce using rule 71 (action_4 -> .)
+    plus            reduce using rule 71 (action_4 -> .)
+    minus           reduce using rule 71 (action_4 -> .)
+    closedParen     reduce using rule 71 (action_4 -> .)
+    end             reduce using rule 71 (action_4 -> .)
+    id              reduce using rule 71 (action_4 -> .)
+    read            reduce using rule 71 (action_4 -> .)
+    print           reduce using rule 71 (action_4 -> .)
+    if              reduce using rule 71 (action_4 -> .)
+    do              reduce using rule 71 (action_4 -> .)
+    swap            reduce using rule 71 (action_4 -> .)
+    exit            reduce using rule 71 (action_4 -> .)
+    elif            reduce using rule 71 (action_4 -> .)
+    else            reduce using rule 71 (action_4 -> .)
+    then            reduce using rule 71 (action_4 -> .)
     mul             shift and go to state 80
     div             shift and go to state 81
 
@@ -2152,25 +2154,25 @@ state 125
 state 126
 
     (46) MultDiv -> MultDiv MDSymbols action_5 EAParens . action_6
-    (72) action_6 -> .
+    (73) action_6 -> .
 
-    mul             reduce using rule 72 (action_6 -> .)
-    div             reduce using rule 72 (action_6 -> .)
-    coma            reduce using rule 72 (action_6 -> .)
-    plus            reduce using rule 72 (action_6 -> .)
-    minus           reduce using rule 72 (action_6 -> .)
-    closedParen     reduce using rule 72 (action_6 -> .)
-    end             reduce using rule 72 (action_6 -> .)
-    id              reduce using rule 72 (action_6 -> .)
-    read            reduce using rule 72 (action_6 -> .)
-    print           reduce using rule 72 (action_6 -> .)
-    if              reduce using rule 72 (action_6 -> .)
-    do              reduce using rule 72 (action_6 -> .)
-    swap            reduce using rule 72 (action_6 -> .)
-    exit            reduce using rule 72 (action_6 -> .)
-    elif            reduce using rule 72 (action_6 -> .)
-    else            reduce using rule 72 (action_6 -> .)
-    then            reduce using rule 72 (action_6 -> .)
+    mul             reduce using rule 73 (action_6 -> .)
+    div             reduce using rule 73 (action_6 -> .)
+    coma            reduce using rule 73 (action_6 -> .)
+    plus            reduce using rule 73 (action_6 -> .)
+    minus           reduce using rule 73 (action_6 -> .)
+    closedParen     reduce using rule 73 (action_6 -> .)
+    end             reduce using rule 73 (action_6 -> .)
+    id              reduce using rule 73 (action_6 -> .)
+    read            reduce using rule 73 (action_6 -> .)
+    print           reduce using rule 73 (action_6 -> .)
+    if              reduce using rule 73 (action_6 -> .)
+    do              reduce using rule 73 (action_6 -> .)
+    swap            reduce using rule 73 (action_6 -> .)
+    exit            reduce using rule 73 (action_6 -> .)
+    elif            reduce using rule 73 (action_6 -> .)
+    else            reduce using rule 73 (action_6 -> .)
+    then            reduce using rule 73 (action_6 -> .)
 
     action_6                       shift and go to state 131
 
