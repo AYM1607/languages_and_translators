@@ -113,13 +113,13 @@ typeValidationMap = {
     },
 }
 
-def resultingType(operator, operand1, operand2):
+def resultingType(operator, type1, type2):
     operatorMap = typeValidationMap[operator]
-    if operand1 in operatorMap:
-        operand1Map = operatorMap[operand1]
-        if operand2 in operand1Map:
-            return operand1Map[operand2]
+    if type1 in operatorMap:
+        type1Map = operatorMap[type1]
+        if type2 in type1Map:
+            return type1Map[type2]
         else:
-            raise Exception('Operation not suppoerte')
+            raise Exception('Operation not suppoerted')
     else:
         raise Exception('Operation not supported')
