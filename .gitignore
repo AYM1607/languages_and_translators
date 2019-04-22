@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# zip files
+*.zip
+
+# vscode configuration
+.vscode/
+
+*.DS_Store
