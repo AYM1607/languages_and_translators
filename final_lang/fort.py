@@ -268,7 +268,7 @@ def p_S(p):
       | read RDimensional
       | print RDimOrString
       | if action_16 Relif ElseOrEmpty end if action_20
-      | do id equals EA coma EA IntOrEmpty then B end do
+      | do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
       | do then action_21 B action_22 end do
       | swap Dimensional coma Dimensional
       | exit action_23
@@ -335,8 +335,8 @@ def p_ElseOrEmpty(p):
 
 def p_IntOrEmpty(p):
     '''
-    IntOrEmpty : coma int
-               |
+    IntOrEmpty : coma int action_28
+               | action_27
     '''
 
 
@@ -698,6 +698,100 @@ def p_action_23(p):
     exitsStack.append(quadrupletIndex)
     resultQuadruplets.append('goto   _\n')
     quadrupletIndex += 1
+
+
+def p_action_24(p):
+    "action_24 :"
+    if p[-1] not in symbols:
+        raise Exception(f'The variable {p[-1]} was not declared')
+    direction = symbols[p[-1]]['direction']
+    sType = symbols[p[-1]]['type']
+    operandsStack.append(f'${direction}')
+    operandsStack.append(f'${direction}')
+    operandsStack.append(f'${direction}')
+    typesStack.append(sType)
+    typesStack.append(sType)
+    typesStack.append(sType)
+
+
+def p_action_25(p):
+    "action_25 :"
+    global quadrupletIndex
+    global avail
+    operand2 = operandsStack.pop()
+    operand1 = operandsStack.pop()
+    type2 = typesStack.pop()
+    type1 = typesStack.pop()
+    # Result type only gets called to make sure the types are compatible.
+    resultingType('=', type1, type2)
+    resultQuadruplets.append('= ' + str(operand2) +
+                             '    ' + str(operand1) + '\n')
+    quadrupletIndex += 1
+    # Return the operand to the availbale if it is a temporal.
+    if (isTemp(operand2)):
+        avail = [operand2] + avail
+
+
+def p_action_26(p):
+    "action_26 :"
+    global quadrupletIndex
+    global avail
+    operand2 = operandsStack.pop()
+    operand1 = operandsStack.pop()
+    type2 = typesStack.pop()
+    type1 = typesStack.pop()
+    # call function just to make sure types are compatible
+    resultingType('<=', type1, type2)
+    temp = avail.pop(0)
+    # push to the jumps stack so the program can return to this quadruplet after each cycle.
+    jumpsStack.append(quadrupletIndex)
+    resultQuadruplets.append(
+        '<=' + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
+    quadrupletIndex += 1
+    # push to the jumps stack so this gotoF can be filled later.
+    jumpsStack.append(quadrupletIndex)
+    resultQuadruplets.append(f'gotoF {str(temp)} _\n')
+    quadrupletIndex += 1
+    if (isTemp(operand2)):
+        avail = [operand2] + avail
+    if (isTemp(operand1)):
+        avail = [operand1] + avail
+
+
+def p_action_27(p):
+    "action_27 :"
+    operandsStack.append("1")
+    typesStack.append("integer")
+
+
+def p_action_28(p):
+    "action_28 :"
+    operandsStack.append(p[-1])
+    typesStack.append("integer")
+
+
+def p_action_29(p):
+    "action_29 :"
+    global quadrupletIndex
+    global avail
+    incrementOperand = operandsStack.pop()
+    counterOperand = operandsStack.pop()
+    incrementType = typesStack.pop()
+    counterType = typesStack.pop()
+    temp = avail.pop(0)
+    # function call just to make sure that the types are compatible
+    resultingType('+', counterType, incrementType)
+    resultQuadruplets.append(f'+ {counterOperand} {incrementOperand} {temp}\n')
+    quadrupletIndex += 1
+    resultQuadruplets.append(f'= {temp}    {counterOperand}\n')
+    quadrupletIndex += 1
+    # return the temp used to the avail vector
+    avail = [temp] + avail
+    gotoFPosition = jumpsStack.pop()
+    conditionPosition = jumpsStack.pop()
+    resultQuadruplets.append(f'goto {conditionPosition}\n')
+    quadrupletIndex += 1
+    fillGoto(gotoFPosition, quadrupletIndex)
 
 
 def p_error(p):
