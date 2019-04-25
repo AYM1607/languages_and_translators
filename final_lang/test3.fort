@@ -1,6 +1,8 @@
 program test
 integer :: b
-integer [10][10] :: a
-a(2,2) = 1
-b = a(2,4)
+integer [10] :: a
+real :: c
+do b = 0, 9 then
+    a(b) = b
+end do
 end program

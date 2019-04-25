@@ -22,12 +22,14 @@ typesStack = []
 jumpsStack = []
 exitsStack = []
 avail = []
-for i in range(50):
+for i in range(49):
     avail.append('$' + str(i))
+
+indirectPointer = '$49'
 
 # Operations related to the table of symbols
 symbols = {}
-# Our variables start at direction 50, the temps take the first 50 directions.
+# Our variables start at direction 50, the temps take the first 49 directions.
 currentIndex = 50
 
 # Multi dimensional variables dimensions just for declaration.
@@ -74,6 +76,14 @@ def isTemp(operand):
         return False
     operand = int(operand[1:])
     if (operand < 50):
+        return True
+    return False
+
+
+def isDirection(operand):
+    if type(operand) is not str:
+        return False
+    if "$" in operand:
         return True
     return False
 
@@ -434,22 +444,48 @@ def p_action_addSymbols(p):
     for name in p[-1]:
         addSymbol(name, p[-4])
 
+###############################################################################
+###############################################################################
+#WARNING DON'T USE MULTIDIM VARIABLES ELEMENTS ON AE TO CALCULATE ANOTHER INDEX
+###############################################################################
+###############################################################################
 
 def p_action_1(p):
     "action_1 :"
     global globalIndex1
     global globalIndex2
+    global quadrupletIndex
+    global resultQuadruplets
+    global avail
     if p[-1] not in symbols:
         raise Exception(f'The variable {p[-1]} was not declared')
     direction = symbols[p[-1]]['direction']
     dimension1 = symbols[p[-1]]['dimension1']
     dimension2 = symbols[p[-1]]['dimension2']
     if dimension2 is not 0:
-        direction += globalIndex2 + (globalIndex1 * dimension1)
+        if isDirection(globalIndex1) or isDirection(globalIndex2):
+            resultQuadruplets.append(f'* {globalIndex1} {dimension1} {indirectPointer}\n')
+            quadrupletIndex += 1
+            resultQuadruplets.append(f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
+            quadrupletIndex += 1
+            resultQuadruplets.append(f'+ {direction} {indirectPointer} {indirectPointer}\n')
+            quadrupletIndex += 1
+            operandsStack.append(indirectPointer.replace('$', '*'))
+        else:
+            direction += globalIndex2 + (globalIndex1 * dimension1)
+            operandsStack.append(f'${direction}')
     elif dimension1 is not 0:
-        direction += globalIndex1
+        if isDirection(globalIndex1):
+            resultQuadruplets.append(f'+ {direction} {globalIndex1} {indirectPointer}\n')
+            quadrupletIndex += 1
+            operandsStack.append(indirectPointer.replace('$', '*'))
+        else:
+            direction += globalIndex1
+            operandsStack.append(f'${direction}')
+    else:
+        operandsStack.append(f'${direction}')
     sType = symbols[p[-1]]['type']
-    operandsStack.append(f'${direction}')
+    #operandsStack.append(f'${direction}')
     typesStack.append(sType)
     globalIndex1 = 0
     globalIndex2 = 0
@@ -527,17 +563,38 @@ def p_action_7(p):
     "action_7 :"
     global globalIndex1
     global globalIndex2
+    global quadrupletIndex
+    global resultQuadruplets
+    global avail
     if p[-1] not in symbols:
         raise Exception(f'The variable {p[-1]} was not declared')
     direction = symbols[p[-1]]['direction']
     dimension1 = symbols[p[-1]]['dimension1']
     dimension2 = symbols[p[-1]]['dimension2']
     if dimension2 is not 0:
-        direction += globalIndex2 + (globalIndex1 * dimension2)
+        if isDirection(globalIndex1) or isDirection(globalIndex2):
+            resultQuadruplets.append(f'* {globalIndex1} {dimension1} {indirectPointer}\n')
+            quadrupletIndex += 1
+            resultQuadruplets.append(f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
+            quadrupletIndex += 1
+            resultQuadruplets.append(f'+ {direction} {indirectPointer} {indirectPointer}\n')
+            quadrupletIndex += 1
+            operandsStack.append(indirectPointer.replace('$', '*'))
+        else:
+            direction += globalIndex2 + (globalIndex1 * dimension1)
+            operandsStack.append(f'${direction}')
     elif dimension1 is not 0:
-        direction += globalIndex1
+        if isDirection(globalIndex1):
+            resultQuadruplets.append(f'+ {direction} {globalIndex1} {indirectPointer}\n')
+            quadrupletIndex += 1
+            operandsStack.append(indirectPointer.replace('$', '*'))
+        else:
+            direction += globalIndex1
+            operandsStack.append(f'${direction}')
+    else:
+        operandsStack.append(f'${direction}')
     sType = symbols[p[-1]]['type']
-    operandsStack.append(f'${direction}')
+    #operandsStack.append(f'${direction}')
     typesStack.append(sType)
     globalIndex1 = 0
     globalIndex2 = 0
@@ -855,7 +912,8 @@ def p_action_setDim1(p):
     global globalIndex1
     operand1 = operandsStack.pop()
     type1 = typesStack.pop()
-    if (type1 is 'integer'):
+    print(f'Tipo del index {type1}')
+    if (type1 == 'integer'):
         globalIndex1 = operand1
     else:
         raise Exception("Cannot use floating point number as index")
@@ -866,7 +924,8 @@ def p_action_setDim2(p):
     global globalIndex2
     operand1 = operandsStack.pop()
     type1 = typesStack.pop()
-    if (type1 is 'integer'):
+    print(f'Tipo del index {type1}')
+    if (type1 == 'integer'):
         globalIndex2 = operand1
     else:
         raise Exception("Cannot use floating point number as index")
