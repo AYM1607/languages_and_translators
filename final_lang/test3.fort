@@ -1,8 +1,6 @@
 program test
 integer :: b
-integer [10] :: a
-real :: c
-do b = 0, 9 then
-    a(b) = b
-end do
+if (.not. 2 > 3 .or. 5 < 4) then
+    b = 2
+end if
 end program

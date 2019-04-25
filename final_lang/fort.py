@@ -276,7 +276,6 @@ def p_B(p):
       |
     '''
 
-
 def p_S(p):
     '''
     S : Dimensional action_7 equals EA action_8
@@ -707,9 +706,14 @@ def p_action_15(p):
     if (peek(typesStack) is not 'bool'):
         raise Exception("Cannot use .not. with non boolean")
     global quadrupletIndex
-    operand1 = peek(operandsStack)
+    # It is not necessary to pop the types stack since the result will also
+    # be bool.
+    operand1 = operandsStack.pop()
+    temp = avail.pop(0)
+    operandsStack.append(temp)
     resultQuadruplets.append('.not. ' + str(operand1) +
-                             '    ' + str(operand1) + '\n')
+                             '    ' + str(temp) + '\n')
+    quadrupletIndex += 1
 
 
 def p_action_16(p):
