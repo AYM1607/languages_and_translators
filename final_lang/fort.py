@@ -30,6 +30,15 @@ symbols = {}
 # Our variables start at direction 50, the temps take the first 50 directions.
 currentIndex = 50
 
+# Multi dimensional variables dimensions just for declaration.
+globalDimension1 = 0
+globalDimension2 = 0
+globalDimensionalSize = 1
+
+# Multi dimensional variables dimensions just for accessing.
+globalIndex1 = 0
+globalIndex2 = 0
+
 # ----------------------------------------------------------------------------
 # ------------------------------Util methods----------------------------------
 # ----------------------------------------------------------------------------
@@ -43,9 +52,11 @@ def addSymbol(name, symbolType):
     symbols[name] = {
         'type': symbolType,
         'value': initialValue,
-        'direction': currentIndex
+        'direction': currentIndex,
+        'dimension1': globalDimension1,
+        'dimension2': globalDimension2,
     }
-    currentIndex += 1
+    currentIndex += globalDimensionalSize
 
 # Returns the last item of a list without deleting it.
 
@@ -207,14 +218,9 @@ def p_programa(p):
 
 def p_V(p):
     '''
-    V : V Tipo Dim doubleColon Rid
+    V : V Tipo Dim doubleColon Rid action_addSymbols action_32
       |
     '''
-    # Adds all the variables for this production into the
-    # symbols table.
-    if (len(p) > 1):
-        for name in p[5]:
-            addSymbol(name, p[2])
 
 
 def p_Rid(p):
@@ -241,8 +247,8 @@ def p_Tipo(p):
 
 def p_Dim(p):
     '''
-    Dim : openBra int closedBra
-        | openBra int closedBra openBra int closedBra
+    Dim : openBra int action_30 closedBra
+        | openBra int action_30 closedBra openBra int action_31 closedBra
         |
     '''
 
@@ -271,7 +277,8 @@ def p_S(p):
       | do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
       | do then action_21 B action_22 end do
       | swap Dimensional coma Dimensional
-      | exit action_23
+      | exit action_23 
+      | id openParen closedParen
     '''
 
 # Adjust the action to support matrices
@@ -286,14 +293,14 @@ def p_Dimensional(p):
 
 def p_DimensionsOrEmpty(p):
     '''
-    DimensionsOrEmpty : openParen EA ComaEAOrEmpty closedParen
+    DimensionsOrEmpty : openParen EA action_setDim1 ComaEAOrEmpty closedParen
                       |
     '''
 
 
 def p_ComaEAOrEmpty(p):
     '''
-    ComaEAOrEmpty : coma EA
+    ComaEAOrEmpty : coma EA action_setDim2
                   |
     '''
 
@@ -422,15 +429,30 @@ def p_EQSymbols(p):
 # -----------------------------PARSER ACTIONS---------------------------------
 # ----------------------------------------------------------------------------
 
+def p_action_addSymbols(p):
+    "action_addSymbols :"
+    for name in p[-1]:
+        addSymbol(name, p[-4])
+
 
 def p_action_1(p):
     "action_1 :"
+    global globalIndex1
+    global globalIndex2
     if p[-1] not in symbols:
         raise Exception(f'The variable {p[-1]} was not declared')
     direction = symbols[p[-1]]['direction']
+    dimension1 = symbols[p[-1]]['dimension1']
+    dimension2 = symbols[p[-1]]['dimension2']
+    if dimension2 is not 0:
+        direction += globalIndex2 + (globalIndex1 * dimension1)
+    elif dimension1 is not 0:
+        direction += globalIndex1
     sType = symbols[p[-1]]['type']
     operandsStack.append(f'${direction}')
     typesStack.append(sType)
+    globalIndex1 = 0
+    globalIndex2 = 0
 
 
 def p_action_2(p):
@@ -503,12 +525,22 @@ def p_action_6(p):
 
 def p_action_7(p):
     "action_7 :"
+    global globalIndex1
+    global globalIndex2
     if p[-1] not in symbols:
         raise Exception(f'The variable {p[-1]} was not declared')
     direction = symbols[p[-1]]['direction']
+    dimension1 = symbols[p[-1]]['dimension1']
+    dimension2 = symbols[p[-1]]['dimension2']
+    if dimension2 is not 0:
+        direction += globalIndex2 + (globalIndex1 * dimension2)
+    elif dimension1 is not 0:
+        direction += globalIndex1
     sType = symbols[p[-1]]['type']
     operandsStack.append(f'${direction}')
     typesStack.append(sType)
+    globalIndex1 = 0
+    globalIndex2 = 0
 
 
 def p_action_8(p):
@@ -793,6 +825,52 @@ def p_action_29(p):
     quadrupletIndex += 1
     fillGoto(gotoFPosition, quadrupletIndex)
 
+def p_action_30(p):
+    "action_30 :"
+    global globalDimension1
+    global globalDimensionalSize
+    globalDimension1 = p[-1]
+    globalDimensionalSize *= p[-1]
+
+
+def p_action_31(p):
+    "action_31 :"
+    global globalDimension2
+    global globalDimensionalSize
+    globalDimension2 = p[-1]
+    globalDimensionalSize *= p[-1]
+
+def p_action_32(p):
+    "action_32 :"
+    global globalDimension1
+    global globalDimension2
+    global globalDimensionalSize
+    globalDimension1 = 0
+    globalDimension2 = 0
+    globalDimensionalSize = 1
+
+
+def p_action_setDim1(p):
+    "action_setDim1 :"
+    global globalIndex1
+    operand1 = operandsStack.pop()
+    type1 = typesStack.pop()
+    if (type1 is 'integer'):
+        globalIndex1 = operand1
+    else:
+        raise Exception("Cannot use floating point number as index")
+
+
+def p_action_setDim2(p):
+    "action_setDim2 :"
+    global globalIndex2
+    operand1 = operandsStack.pop()
+    type1 = typesStack.pop()
+    if (type1 is 'integer'):
+        globalIndex2 = operand1
+    else:
+        raise Exception("Cannot use floating point number as index")
+
 
 def p_error(p):
     print('XXX Invalid program')
@@ -816,7 +894,6 @@ if (len(sys.argv) > 1):
     parser.parse(program)
 
     resultFile.writelines(resultQuadruplets)
-
     # Close the files.
     programFile.close()
     resultFile.close()

@@ -4,14 +4,14 @@ Grammar
 
 Rule 0     S' -> programa
 Rule 1     programa -> program id V F B end program
-Rule 2     V -> V Tipo Dim doubleColon Rid
+Rule 2     V -> V Tipo Dim doubleColon Rid action_addSymbols action_32
 Rule 3     V -> <empty>
 Rule 4     Rid -> id
 Rule 5     Rid -> Rid coma id
 Rule 6     Tipo -> integer
 Rule 7     Tipo -> real
-Rule 8     Dim -> openBra int closedBra
-Rule 9     Dim -> openBra int closedBra openBra int closedBra
+Rule 8     Dim -> openBra int action_30 closedBra
+Rule 9     Dim -> openBra int action_30 closedBra openBra int action_31 closedBra
 Rule 10    Dim -> <empty>
 Rule 11    F -> F subroutine id B end subroutine
 Rule 12    F -> <empty>
@@ -26,163 +26,170 @@ Rule 20    S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty
 Rule 21    S -> do then action_21 B action_22 end do
 Rule 22    S -> swap Dimensional coma Dimensional
 Rule 23    S -> exit action_23
-Rule 24    Dimensional -> id DimensionsOrEmpty
-Rule 25    DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen
-Rule 26    DimensionsOrEmpty -> <empty>
-Rule 27    ComaEAOrEmpty -> coma EA
-Rule 28    ComaEAOrEmpty -> <empty>
-Rule 29    RDimensional -> Dimensional
-Rule 30    RDimensional -> RDimensional coma Dimensional
-Rule 31    RDimOrString -> DimOrString
-Rule 32    RDimOrString -> RDimOrString coma DimOrString
-Rule 33    DimOrString -> Dimensional
-Rule 34    DimOrString -> string
-Rule 35    Relif -> openParen EL closedParen action_17 then B
-Rule 36    Relif -> Relif elif action_18 openParen EL closedParen action_17 then B
-Rule 37    ElseOrEmpty -> else action_19 B
-Rule 38    ElseOrEmpty -> <empty>
-Rule 39    IntOrEmpty -> coma int action_28
-Rule 40    IntOrEmpty -> action_27
-Rule 41    EA -> MultDiv
-Rule 42    EA -> EA SumOrSub action_3 MultDiv action_4
-Rule 43    SumOrSub -> plus
-Rule 44    SumOrSub -> minus
-Rule 45    MultDiv -> EAParens
-Rule 46    MultDiv -> MultDiv MDSymbols action_5 EAParens action_6
-Rule 47    MDSymbols -> mul
-Rule 48    MDSymbols -> div
-Rule 49    EAParens -> EItem
-Rule 50    EAParens -> openParen EA closedParen
-Rule 51    EL -> AND
-Rule 52    EL -> EL or action_10 AND action_9
-Rule 53    AND -> Equality
-Rule 54    AND -> AND and action_12 Equality action_11
-Rule 55    Equality -> EItem EQSymbols action_13 EItem action_14
-Rule 56    Equality -> openParen EL closedParen
-Rule 57    Equality -> not EL action_15
-Rule 58    EItem -> Dimensional action_1
-Rule 59    EItem -> int action_2
-Rule 60    EItem -> rea action_2_rea
-Rule 61    EQSymbols -> less
-Rule 62    EQSymbols -> more
-Rule 63    EQSymbols -> doubleEquals
-Rule 64    EQSymbols -> notEquals
-Rule 65    EQSymbols -> lessEquals
-Rule 66    EQSymbols -> moreEquals
-Rule 67    action_1 -> <empty>
-Rule 68    action_2 -> <empty>
-Rule 69    action_2_rea -> <empty>
-Rule 70    action_3 -> <empty>
-Rule 71    action_4 -> <empty>
-Rule 72    action_5 -> <empty>
-Rule 73    action_6 -> <empty>
-Rule 74    action_7 -> <empty>
-Rule 75    action_8 -> <empty>
-Rule 76    action_9 -> <empty>
-Rule 77    action_10 -> <empty>
-Rule 78    action_11 -> <empty>
-Rule 79    action_12 -> <empty>
-Rule 80    action_13 -> <empty>
-Rule 81    action_14 -> <empty>
-Rule 82    action_15 -> <empty>
-Rule 83    action_16 -> <empty>
-Rule 84    action_17 -> <empty>
-Rule 85    action_18 -> <empty>
-Rule 86    action_19 -> <empty>
-Rule 87    action_20 -> <empty>
-Rule 88    action_21 -> <empty>
-Rule 89    action_22 -> <empty>
-Rule 90    action_23 -> <empty>
-Rule 91    action_24 -> <empty>
-Rule 92    action_25 -> <empty>
-Rule 93    action_26 -> <empty>
-Rule 94    action_27 -> <empty>
-Rule 95    action_28 -> <empty>
-Rule 96    action_29 -> <empty>
+Rule 24    S -> id openParen closedParen
+Rule 25    Dimensional -> id DimensionsOrEmpty
+Rule 26    DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen
+Rule 27    DimensionsOrEmpty -> <empty>
+Rule 28    ComaEAOrEmpty -> coma EA action_setDim2
+Rule 29    ComaEAOrEmpty -> <empty>
+Rule 30    RDimensional -> Dimensional
+Rule 31    RDimensional -> RDimensional coma Dimensional
+Rule 32    RDimOrString -> DimOrString
+Rule 33    RDimOrString -> RDimOrString coma DimOrString
+Rule 34    DimOrString -> Dimensional
+Rule 35    DimOrString -> string
+Rule 36    Relif -> openParen EL closedParen action_17 then B
+Rule 37    Relif -> Relif elif action_18 openParen EL closedParen action_17 then B
+Rule 38    ElseOrEmpty -> else action_19 B
+Rule 39    ElseOrEmpty -> <empty>
+Rule 40    IntOrEmpty -> coma int action_28
+Rule 41    IntOrEmpty -> action_27
+Rule 42    EA -> MultDiv
+Rule 43    EA -> EA SumOrSub action_3 MultDiv action_4
+Rule 44    SumOrSub -> plus
+Rule 45    SumOrSub -> minus
+Rule 46    MultDiv -> EAParens
+Rule 47    MultDiv -> MultDiv MDSymbols action_5 EAParens action_6
+Rule 48    MDSymbols -> mul
+Rule 49    MDSymbols -> div
+Rule 50    EAParens -> EItem
+Rule 51    EAParens -> openParen EA closedParen
+Rule 52    EL -> AND
+Rule 53    EL -> EL or action_10 AND action_9
+Rule 54    AND -> Equality
+Rule 55    AND -> AND and action_12 Equality action_11
+Rule 56    Equality -> EItem EQSymbols action_13 EItem action_14
+Rule 57    Equality -> openParen EL closedParen
+Rule 58    Equality -> not EL action_15
+Rule 59    EItem -> Dimensional action_1
+Rule 60    EItem -> int action_2
+Rule 61    EItem -> rea action_2_rea
+Rule 62    EQSymbols -> less
+Rule 63    EQSymbols -> more
+Rule 64    EQSymbols -> doubleEquals
+Rule 65    EQSymbols -> notEquals
+Rule 66    EQSymbols -> lessEquals
+Rule 67    EQSymbols -> moreEquals
+Rule 68    action_addSymbols -> <empty>
+Rule 69    action_1 -> <empty>
+Rule 70    action_2 -> <empty>
+Rule 71    action_2_rea -> <empty>
+Rule 72    action_3 -> <empty>
+Rule 73    action_4 -> <empty>
+Rule 74    action_5 -> <empty>
+Rule 75    action_6 -> <empty>
+Rule 76    action_7 -> <empty>
+Rule 77    action_8 -> <empty>
+Rule 78    action_9 -> <empty>
+Rule 79    action_10 -> <empty>
+Rule 80    action_11 -> <empty>
+Rule 81    action_12 -> <empty>
+Rule 82    action_13 -> <empty>
+Rule 83    action_14 -> <empty>
+Rule 84    action_15 -> <empty>
+Rule 85    action_16 -> <empty>
+Rule 86    action_17 -> <empty>
+Rule 87    action_18 -> <empty>
+Rule 88    action_19 -> <empty>
+Rule 89    action_20 -> <empty>
+Rule 90    action_21 -> <empty>
+Rule 91    action_22 -> <empty>
+Rule 92    action_23 -> <empty>
+Rule 93    action_24 -> <empty>
+Rule 94    action_25 -> <empty>
+Rule 95    action_26 -> <empty>
+Rule 96    action_27 -> <empty>
+Rule 97    action_28 -> <empty>
+Rule 98    action_29 -> <empty>
+Rule 99    action_30 -> <empty>
+Rule 100   action_31 -> <empty>
+Rule 101   action_32 -> <empty>
+Rule 102   action_setDim1 -> <empty>
+Rule 103   action_setDim2 -> <empty>
 
 Terminals, with rules where they appear
 
-and                  : 54
+and                  : 55
 closedBra            : 8 9 9
-closedParen          : 25 35 36 50 56
-coma                 : 5 20 22 27 30 32 39
-div                  : 48
+closedParen          : 24 26 36 37 51 57
+coma                 : 5 20 22 28 31 33 40
+div                  : 49
 do                   : 20 20 21 21
 doubleColon          : 2
-doubleEquals         : 63
-elif                 : 36
-else                 : 37
+doubleEquals         : 64
+elif                 : 37
+else                 : 38
 end                  : 1 11 19 20 21
 equals               : 15 20
 error                : 
 exit                 : 23
-id                   : 1 4 5 11 16 20 24
+id                   : 1 4 5 11 16 20 24 25
 if                   : 19 19
-int                  : 8 9 9 39 59
+int                  : 8 9 9 40 60
 integer              : 6
-less                 : 61
-lessEquals           : 65
-minus                : 44
-more                 : 62
-moreEquals           : 66
-mul                  : 47
-not                  : 57
-notEquals            : 64
+less                 : 62
+lessEquals           : 66
+minus                : 45
+more                 : 63
+moreEquals           : 67
+mul                  : 48
+not                  : 58
+notEquals            : 65
 openBra              : 8 9 9
-openParen            : 25 35 36 50 56
-or                   : 52
+openParen            : 24 26 36 37 51 57
+or                   : 53
 parens               : 16
-plus                 : 43
+plus                 : 44
 print                : 18
 program              : 1 1
-rea                  : 60
+rea                  : 61
 read                 : 17
 real                 : 7
-string               : 34
+string               : 35
 subroutine           : 11 11
 swap                 : 22
-then                 : 20 21 35 36
+then                 : 20 21 36 37
 
 Nonterminals, with rules where they appear
 
-AND                  : 51 52 54
-B                    : 1 11 13 20 21 35 36 37
-ComaEAOrEmpty        : 25
+AND                  : 52 53 55
+B                    : 1 11 13 20 21 36 37 38
+ComaEAOrEmpty        : 26
 Dim                  : 2
-DimOrString          : 31 32
-Dimensional          : 15 22 22 29 30 33 58
-DimensionsOrEmpty    : 24
-EA                   : 15 20 20 25 27 42 50
-EAParens             : 45 46
-EItem                : 49 55 55
-EL                   : 35 36 52 56 57
-EQSymbols            : 55
+DimOrString          : 32 33
+Dimensional          : 15 22 22 30 31 34 59
+DimensionsOrEmpty    : 25
+EA                   : 15 20 20 26 28 43 51
+EAParens             : 46 47
+EItem                : 50 56 56
+EL                   : 36 37 53 57 58
+EQSymbols            : 56
 ElseOrEmpty          : 19
-Equality             : 53 54
+Equality             : 54 55
 F                    : 1 11
 IntOrEmpty           : 20
-MDSymbols            : 46
-MultDiv              : 41 42 46
-RDimOrString         : 18 32
-RDimensional         : 17 30
-Relif                : 19 36
+MDSymbols            : 47
+MultDiv              : 42 43 47
+RDimOrString         : 18 33
+RDimensional         : 17 31
+Relif                : 19 37
 Rid                  : 2 5
 S                    : 13
-SumOrSub             : 42
+SumOrSub             : 43
 Tipo                 : 2
 V                    : 1 2
-action_1             : 58
-action_10            : 52
-action_11            : 54
-action_12            : 54
-action_13            : 55
-action_14            : 55
-action_15            : 57
+action_1             : 59
+action_10            : 53
+action_11            : 55
+action_12            : 55
+action_13            : 56
+action_14            : 56
+action_15            : 58
 action_16            : 19
-action_17            : 35 36
-action_18            : 36
-action_19            : 37
-action_2             : 59
+action_17            : 36 37
+action_18            : 37
+action_19            : 38
+action_2             : 60
 action_20            : 19
 action_21            : 21
 action_22            : 21
@@ -190,17 +197,23 @@ action_23            : 23
 action_24            : 20
 action_25            : 20
 action_26            : 20
-action_27            : 40
-action_28            : 39
+action_27            : 41
+action_28            : 40
 action_29            : 20
-action_2_rea         : 60
-action_3             : 42
-action_4             : 42
-action_5             : 46
-action_6             : 46
+action_2_rea         : 61
+action_3             : 43
+action_30            : 8 9
+action_31            : 9
+action_32            : 2
+action_4             : 43
+action_5             : 47
+action_6             : 47
 action_7             : 15
 action_8             : 15
-action_9             : 52
+action_9             : 53
+action_addSymbols    : 2
+action_setDim1       : 26
+action_setDim2       : 28
 programa             : 0
 
 Parsing method: LALR
@@ -230,7 +243,7 @@ state 2
 state 3
 
     (1) programa -> program id . V F B end program
-    (2) V -> . V Tipo Dim doubleColon Rid
+    (2) V -> . V Tipo Dim doubleColon Rid action_addSymbols action_32
     (3) V -> .
 
     integer         reduce using rule 3 (V -> .)
@@ -250,7 +263,7 @@ state 3
 state 4
 
     (1) programa -> program id V . F B end program
-    (2) V -> V . Tipo Dim doubleColon Rid
+    (2) V -> V . Tipo Dim doubleColon Rid action_addSymbols action_32
     (11) F -> . F subroutine id B end subroutine
     (12) F -> .
     (6) Tipo -> . integer
@@ -292,9 +305,9 @@ state 5
 
 state 6
 
-    (2) V -> V Tipo . Dim doubleColon Rid
-    (8) Dim -> . openBra int closedBra
-    (9) Dim -> . openBra int closedBra openBra int closedBra
+    (2) V -> V Tipo . Dim doubleColon Rid action_addSymbols action_32
+    (8) Dim -> . openBra int action_30 closedBra
+    (9) Dim -> . openBra int action_30 closedBra openBra int action_31 closedBra
     (10) Dim -> .
 
     openBra         shift and go to state 12
@@ -331,7 +344,8 @@ state 9
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     end             shift and go to state 14
     id              shift and go to state 13
@@ -354,15 +368,15 @@ state 10
 
 state 11
 
-    (2) V -> V Tipo Dim . doubleColon Rid
+    (2) V -> V Tipo Dim . doubleColon Rid action_addSymbols action_32
 
     doubleColon     shift and go to state 24
 
 
 state 12
 
-    (8) Dim -> openBra . int closedBra
-    (9) Dim -> openBra . int closedBra openBra int closedBra
+    (8) Dim -> openBra . int action_30 closedBra
+    (9) Dim -> openBra . int action_30 closedBra openBra int action_31 closedBra
 
     int             shift and go to state 25
 
@@ -370,15 +384,16 @@ state 12
 state 13
 
     (16) S -> id . parens
-    (24) Dimensional -> id . DimensionsOrEmpty
-    (25) DimensionsOrEmpty -> . openParen EA ComaEAOrEmpty closedParen
-    (26) DimensionsOrEmpty -> .
+    (24) S -> id . openParen closedParen
+    (25) Dimensional -> id . DimensionsOrEmpty
+    (26) DimensionsOrEmpty -> . openParen EA action_setDim1 ComaEAOrEmpty closedParen
+    (27) DimensionsOrEmpty -> .
 
     parens          shift and go to state 26
-    openParen       shift and go to state 28
-    equals          reduce using rule 26 (DimensionsOrEmpty -> .)
+    openParen       shift and go to state 27
+    equals          reduce using rule 27 (DimensionsOrEmpty -> .)
 
-    DimensionsOrEmpty              shift and go to state 27
+    DimensionsOrEmpty              shift and go to state 28
 
 state 14
 
@@ -406,18 +421,18 @@ state 15
 state 16
 
     (15) S -> Dimensional . action_7 equals EA action_8
-    (74) action_7 -> .
+    (76) action_7 -> .
 
-    equals          reduce using rule 74 (action_7 -> .)
+    equals          reduce using rule 76 (action_7 -> .)
 
     action_7                       shift and go to state 30
 
 state 17
 
     (17) S -> read . RDimensional
-    (29) RDimensional -> . Dimensional
-    (30) RDimensional -> . RDimensional coma Dimensional
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (30) RDimensional -> . Dimensional
+    (31) RDimensional -> . RDimensional coma Dimensional
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     id              shift and go to state 33
 
@@ -427,11 +442,11 @@ state 17
 state 18
 
     (18) S -> print . RDimOrString
-    (31) RDimOrString -> . DimOrString
-    (32) RDimOrString -> . RDimOrString coma DimOrString
-    (33) DimOrString -> . Dimensional
-    (34) DimOrString -> . string
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (32) RDimOrString -> . DimOrString
+    (33) RDimOrString -> . RDimOrString coma DimOrString
+    (34) DimOrString -> . Dimensional
+    (35) DimOrString -> . string
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     string          shift and go to state 37
     id              shift and go to state 33
@@ -443,9 +458,9 @@ state 18
 state 19
 
     (19) S -> if . action_16 Relif ElseOrEmpty end if action_20
-    (83) action_16 -> .
+    (85) action_16 -> .
 
-    openParen       reduce using rule 83 (action_16 -> .)
+    openParen       reduce using rule 85 (action_16 -> .)
 
     action_16                      shift and go to state 38
 
@@ -461,7 +476,7 @@ state 20
 state 21
 
     (22) S -> swap . Dimensional coma Dimensional
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     id              shift and go to state 33
 
@@ -470,18 +485,18 @@ state 21
 state 22
 
     (23) S -> exit . action_23
-    (90) action_23 -> .
+    (92) action_23 -> .
 
-    end             reduce using rule 90 (action_23 -> .)
-    id              reduce using rule 90 (action_23 -> .)
-    read            reduce using rule 90 (action_23 -> .)
-    print           reduce using rule 90 (action_23 -> .)
-    if              reduce using rule 90 (action_23 -> .)
-    do              reduce using rule 90 (action_23 -> .)
-    swap            reduce using rule 90 (action_23 -> .)
-    exit            reduce using rule 90 (action_23 -> .)
-    elif            reduce using rule 90 (action_23 -> .)
-    else            reduce using rule 90 (action_23 -> .)
+    end             reduce using rule 92 (action_23 -> .)
+    id              reduce using rule 92 (action_23 -> .)
+    read            reduce using rule 92 (action_23 -> .)
+    print           reduce using rule 92 (action_23 -> .)
+    if              reduce using rule 92 (action_23 -> .)
+    do              reduce using rule 92 (action_23 -> .)
+    swap            reduce using rule 92 (action_23 -> .)
+    exit            reduce using rule 92 (action_23 -> .)
+    elif            reduce using rule 92 (action_23 -> .)
+    else            reduce using rule 92 (action_23 -> .)
 
     action_23                      shift and go to state 42
 
@@ -504,7 +519,7 @@ state 23
 
 state 24
 
-    (2) V -> V Tipo Dim doubleColon . Rid
+    (2) V -> V Tipo Dim doubleColon . Rid action_addSymbols action_32
     (4) Rid -> . id
     (5) Rid -> . Rid coma id
 
@@ -514,11 +529,13 @@ state 24
 
 state 25
 
-    (8) Dim -> openBra int . closedBra
-    (9) Dim -> openBra int . closedBra openBra int closedBra
+    (8) Dim -> openBra int . action_30 closedBra
+    (9) Dim -> openBra int . action_30 closedBra openBra int action_31 closedBra
+    (99) action_30 -> .
 
-    closedBra       shift and go to state 46
+    closedBra       reduce using rule 99 (action_30 -> .)
 
+    action_30                      shift and go to state 46
 
 state 26
 
@@ -538,60 +555,62 @@ state 26
 
 state 27
 
-    (24) Dimensional -> id DimensionsOrEmpty .
+    (24) S -> id openParen . closedParen
+    (26) DimensionsOrEmpty -> openParen . EA action_setDim1 ComaEAOrEmpty closedParen
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    equals          reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    coma            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    end             reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    id              reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    read            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    print           reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    if              reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    do              reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    swap            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    exit            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    elif            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    else            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    mul             reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    div             reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    plus            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    minus           reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    closedParen     reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    less            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    more            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    doubleEquals    reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    notEquals       reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    lessEquals      reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    moreEquals      reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    then            reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    and             reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
-    or              reduce using rule 24 (Dimensional -> id DimensionsOrEmpty .)
+    closedParen     shift and go to state 48
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
 
+    EA                             shift and go to state 49
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
 
 state 28
 
-    (25) DimensionsOrEmpty -> openParen . EA ComaEAOrEmpty closedParen
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (25) Dimensional -> id DimensionsOrEmpty .
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    equals          reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    coma            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    end             reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    id              reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    read            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    print           reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    if              reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    do              reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    swap            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    exit            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    elif            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    else            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    mul             reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    div             reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    plus            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    minus           reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    closedParen     reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    less            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    more            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    doubleEquals    reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    notEquals       reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    lessEquals      reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    moreEquals      reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    then            reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    and             reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
+    or              reduce using rule 25 (Dimensional -> id DimensionsOrEmpty .)
 
-    EA                             shift and go to state 48
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
 
 state 29
 
@@ -604,13 +623,13 @@ state 30
 
     (15) S -> Dimensional action_7 . equals EA action_8
 
-    equals          shift and go to state 55
+    equals          shift and go to state 56
 
 
 state 31
 
     (17) S -> read RDimensional .
-    (30) RDimensional -> RDimensional . coma Dimensional
+    (31) RDimensional -> RDimensional . coma Dimensional
 
     end             reduce using rule 17 (S -> read RDimensional .)
     id              reduce using rule 17 (S -> read RDimensional .)
@@ -622,65 +641,65 @@ state 31
     exit            reduce using rule 17 (S -> read RDimensional .)
     elif            reduce using rule 17 (S -> read RDimensional .)
     else            reduce using rule 17 (S -> read RDimensional .)
-    coma            shift and go to state 56
+    coma            shift and go to state 57
 
 
 state 32
 
-    (29) RDimensional -> Dimensional .
+    (30) RDimensional -> Dimensional .
 
-    coma            reduce using rule 29 (RDimensional -> Dimensional .)
-    end             reduce using rule 29 (RDimensional -> Dimensional .)
-    id              reduce using rule 29 (RDimensional -> Dimensional .)
-    read            reduce using rule 29 (RDimensional -> Dimensional .)
-    print           reduce using rule 29 (RDimensional -> Dimensional .)
-    if              reduce using rule 29 (RDimensional -> Dimensional .)
-    do              reduce using rule 29 (RDimensional -> Dimensional .)
-    swap            reduce using rule 29 (RDimensional -> Dimensional .)
-    exit            reduce using rule 29 (RDimensional -> Dimensional .)
-    elif            reduce using rule 29 (RDimensional -> Dimensional .)
-    else            reduce using rule 29 (RDimensional -> Dimensional .)
+    coma            reduce using rule 30 (RDimensional -> Dimensional .)
+    end             reduce using rule 30 (RDimensional -> Dimensional .)
+    id              reduce using rule 30 (RDimensional -> Dimensional .)
+    read            reduce using rule 30 (RDimensional -> Dimensional .)
+    print           reduce using rule 30 (RDimensional -> Dimensional .)
+    if              reduce using rule 30 (RDimensional -> Dimensional .)
+    do              reduce using rule 30 (RDimensional -> Dimensional .)
+    swap            reduce using rule 30 (RDimensional -> Dimensional .)
+    exit            reduce using rule 30 (RDimensional -> Dimensional .)
+    elif            reduce using rule 30 (RDimensional -> Dimensional .)
+    else            reduce using rule 30 (RDimensional -> Dimensional .)
 
 
 state 33
 
-    (24) Dimensional -> id . DimensionsOrEmpty
-    (25) DimensionsOrEmpty -> . openParen EA ComaEAOrEmpty closedParen
-    (26) DimensionsOrEmpty -> .
+    (25) Dimensional -> id . DimensionsOrEmpty
+    (26) DimensionsOrEmpty -> . openParen EA action_setDim1 ComaEAOrEmpty closedParen
+    (27) DimensionsOrEmpty -> .
 
-    openParen       shift and go to state 28
-    coma            reduce using rule 26 (DimensionsOrEmpty -> .)
-    end             reduce using rule 26 (DimensionsOrEmpty -> .)
-    id              reduce using rule 26 (DimensionsOrEmpty -> .)
-    read            reduce using rule 26 (DimensionsOrEmpty -> .)
-    print           reduce using rule 26 (DimensionsOrEmpty -> .)
-    if              reduce using rule 26 (DimensionsOrEmpty -> .)
-    do              reduce using rule 26 (DimensionsOrEmpty -> .)
-    swap            reduce using rule 26 (DimensionsOrEmpty -> .)
-    exit            reduce using rule 26 (DimensionsOrEmpty -> .)
-    elif            reduce using rule 26 (DimensionsOrEmpty -> .)
-    else            reduce using rule 26 (DimensionsOrEmpty -> .)
-    mul             reduce using rule 26 (DimensionsOrEmpty -> .)
-    div             reduce using rule 26 (DimensionsOrEmpty -> .)
-    plus            reduce using rule 26 (DimensionsOrEmpty -> .)
-    minus           reduce using rule 26 (DimensionsOrEmpty -> .)
-    closedParen     reduce using rule 26 (DimensionsOrEmpty -> .)
-    less            reduce using rule 26 (DimensionsOrEmpty -> .)
-    more            reduce using rule 26 (DimensionsOrEmpty -> .)
-    doubleEquals    reduce using rule 26 (DimensionsOrEmpty -> .)
-    notEquals       reduce using rule 26 (DimensionsOrEmpty -> .)
-    lessEquals      reduce using rule 26 (DimensionsOrEmpty -> .)
-    moreEquals      reduce using rule 26 (DimensionsOrEmpty -> .)
-    then            reduce using rule 26 (DimensionsOrEmpty -> .)
-    and             reduce using rule 26 (DimensionsOrEmpty -> .)
-    or              reduce using rule 26 (DimensionsOrEmpty -> .)
+    openParen       shift and go to state 58
+    coma            reduce using rule 27 (DimensionsOrEmpty -> .)
+    end             reduce using rule 27 (DimensionsOrEmpty -> .)
+    id              reduce using rule 27 (DimensionsOrEmpty -> .)
+    read            reduce using rule 27 (DimensionsOrEmpty -> .)
+    print           reduce using rule 27 (DimensionsOrEmpty -> .)
+    if              reduce using rule 27 (DimensionsOrEmpty -> .)
+    do              reduce using rule 27 (DimensionsOrEmpty -> .)
+    swap            reduce using rule 27 (DimensionsOrEmpty -> .)
+    exit            reduce using rule 27 (DimensionsOrEmpty -> .)
+    elif            reduce using rule 27 (DimensionsOrEmpty -> .)
+    else            reduce using rule 27 (DimensionsOrEmpty -> .)
+    mul             reduce using rule 27 (DimensionsOrEmpty -> .)
+    div             reduce using rule 27 (DimensionsOrEmpty -> .)
+    plus            reduce using rule 27 (DimensionsOrEmpty -> .)
+    minus           reduce using rule 27 (DimensionsOrEmpty -> .)
+    closedParen     reduce using rule 27 (DimensionsOrEmpty -> .)
+    less            reduce using rule 27 (DimensionsOrEmpty -> .)
+    more            reduce using rule 27 (DimensionsOrEmpty -> .)
+    doubleEquals    reduce using rule 27 (DimensionsOrEmpty -> .)
+    notEquals       reduce using rule 27 (DimensionsOrEmpty -> .)
+    lessEquals      reduce using rule 27 (DimensionsOrEmpty -> .)
+    moreEquals      reduce using rule 27 (DimensionsOrEmpty -> .)
+    then            reduce using rule 27 (DimensionsOrEmpty -> .)
+    and             reduce using rule 27 (DimensionsOrEmpty -> .)
+    or              reduce using rule 27 (DimensionsOrEmpty -> .)
 
-    DimensionsOrEmpty              shift and go to state 27
+    DimensionsOrEmpty              shift and go to state 28
 
 state 34
 
     (18) S -> print RDimOrString .
-    (32) RDimOrString -> RDimOrString . coma DimOrString
+    (33) RDimOrString -> RDimOrString . coma DimOrString
 
     end             reduce using rule 18 (S -> print RDimOrString .)
     id              reduce using rule 18 (S -> print RDimOrString .)
@@ -692,100 +711,100 @@ state 34
     exit            reduce using rule 18 (S -> print RDimOrString .)
     elif            reduce using rule 18 (S -> print RDimOrString .)
     else            reduce using rule 18 (S -> print RDimOrString .)
-    coma            shift and go to state 57
+    coma            shift and go to state 59
 
 
 state 35
 
-    (31) RDimOrString -> DimOrString .
+    (32) RDimOrString -> DimOrString .
 
-    coma            reduce using rule 31 (RDimOrString -> DimOrString .)
-    end             reduce using rule 31 (RDimOrString -> DimOrString .)
-    id              reduce using rule 31 (RDimOrString -> DimOrString .)
-    read            reduce using rule 31 (RDimOrString -> DimOrString .)
-    print           reduce using rule 31 (RDimOrString -> DimOrString .)
-    if              reduce using rule 31 (RDimOrString -> DimOrString .)
-    do              reduce using rule 31 (RDimOrString -> DimOrString .)
-    swap            reduce using rule 31 (RDimOrString -> DimOrString .)
-    exit            reduce using rule 31 (RDimOrString -> DimOrString .)
-    elif            reduce using rule 31 (RDimOrString -> DimOrString .)
-    else            reduce using rule 31 (RDimOrString -> DimOrString .)
+    coma            reduce using rule 32 (RDimOrString -> DimOrString .)
+    end             reduce using rule 32 (RDimOrString -> DimOrString .)
+    id              reduce using rule 32 (RDimOrString -> DimOrString .)
+    read            reduce using rule 32 (RDimOrString -> DimOrString .)
+    print           reduce using rule 32 (RDimOrString -> DimOrString .)
+    if              reduce using rule 32 (RDimOrString -> DimOrString .)
+    do              reduce using rule 32 (RDimOrString -> DimOrString .)
+    swap            reduce using rule 32 (RDimOrString -> DimOrString .)
+    exit            reduce using rule 32 (RDimOrString -> DimOrString .)
+    elif            reduce using rule 32 (RDimOrString -> DimOrString .)
+    else            reduce using rule 32 (RDimOrString -> DimOrString .)
 
 
 state 36
 
-    (33) DimOrString -> Dimensional .
+    (34) DimOrString -> Dimensional .
 
-    coma            reduce using rule 33 (DimOrString -> Dimensional .)
-    end             reduce using rule 33 (DimOrString -> Dimensional .)
-    id              reduce using rule 33 (DimOrString -> Dimensional .)
-    read            reduce using rule 33 (DimOrString -> Dimensional .)
-    print           reduce using rule 33 (DimOrString -> Dimensional .)
-    if              reduce using rule 33 (DimOrString -> Dimensional .)
-    do              reduce using rule 33 (DimOrString -> Dimensional .)
-    swap            reduce using rule 33 (DimOrString -> Dimensional .)
-    exit            reduce using rule 33 (DimOrString -> Dimensional .)
-    elif            reduce using rule 33 (DimOrString -> Dimensional .)
-    else            reduce using rule 33 (DimOrString -> Dimensional .)
+    coma            reduce using rule 34 (DimOrString -> Dimensional .)
+    end             reduce using rule 34 (DimOrString -> Dimensional .)
+    id              reduce using rule 34 (DimOrString -> Dimensional .)
+    read            reduce using rule 34 (DimOrString -> Dimensional .)
+    print           reduce using rule 34 (DimOrString -> Dimensional .)
+    if              reduce using rule 34 (DimOrString -> Dimensional .)
+    do              reduce using rule 34 (DimOrString -> Dimensional .)
+    swap            reduce using rule 34 (DimOrString -> Dimensional .)
+    exit            reduce using rule 34 (DimOrString -> Dimensional .)
+    elif            reduce using rule 34 (DimOrString -> Dimensional .)
+    else            reduce using rule 34 (DimOrString -> Dimensional .)
 
 
 state 37
 
-    (34) DimOrString -> string .
+    (35) DimOrString -> string .
 
-    coma            reduce using rule 34 (DimOrString -> string .)
-    end             reduce using rule 34 (DimOrString -> string .)
-    id              reduce using rule 34 (DimOrString -> string .)
-    read            reduce using rule 34 (DimOrString -> string .)
-    print           reduce using rule 34 (DimOrString -> string .)
-    if              reduce using rule 34 (DimOrString -> string .)
-    do              reduce using rule 34 (DimOrString -> string .)
-    swap            reduce using rule 34 (DimOrString -> string .)
-    exit            reduce using rule 34 (DimOrString -> string .)
-    elif            reduce using rule 34 (DimOrString -> string .)
-    else            reduce using rule 34 (DimOrString -> string .)
+    coma            reduce using rule 35 (DimOrString -> string .)
+    end             reduce using rule 35 (DimOrString -> string .)
+    id              reduce using rule 35 (DimOrString -> string .)
+    read            reduce using rule 35 (DimOrString -> string .)
+    print           reduce using rule 35 (DimOrString -> string .)
+    if              reduce using rule 35 (DimOrString -> string .)
+    do              reduce using rule 35 (DimOrString -> string .)
+    swap            reduce using rule 35 (DimOrString -> string .)
+    exit            reduce using rule 35 (DimOrString -> string .)
+    elif            reduce using rule 35 (DimOrString -> string .)
+    else            reduce using rule 35 (DimOrString -> string .)
 
 
 state 38
 
     (19) S -> if action_16 . Relif ElseOrEmpty end if action_20
-    (35) Relif -> . openParen EL closedParen action_17 then B
-    (36) Relif -> . Relif elif action_18 openParen EL closedParen action_17 then B
+    (36) Relif -> . openParen EL closedParen action_17 then B
+    (37) Relif -> . Relif elif action_18 openParen EL closedParen action_17 then B
 
-    openParen       shift and go to state 59
+    openParen       shift and go to state 61
 
-    Relif                          shift and go to state 58
+    Relif                          shift and go to state 60
 
 state 39
 
     (20) S -> do id . action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
-    (91) action_24 -> .
+    (93) action_24 -> .
 
-    equals          reduce using rule 91 (action_24 -> .)
+    equals          reduce using rule 93 (action_24 -> .)
 
-    action_24                      shift and go to state 60
+    action_24                      shift and go to state 62
 
 state 40
 
     (21) S -> do then . action_21 B action_22 end do
-    (88) action_21 -> .
+    (90) action_21 -> .
 
-    id              reduce using rule 88 (action_21 -> .)
-    read            reduce using rule 88 (action_21 -> .)
-    print           reduce using rule 88 (action_21 -> .)
-    if              reduce using rule 88 (action_21 -> .)
-    do              reduce using rule 88 (action_21 -> .)
-    swap            reduce using rule 88 (action_21 -> .)
-    exit            reduce using rule 88 (action_21 -> .)
-    end             reduce using rule 88 (action_21 -> .)
+    id              reduce using rule 90 (action_21 -> .)
+    read            reduce using rule 90 (action_21 -> .)
+    print           reduce using rule 90 (action_21 -> .)
+    if              reduce using rule 90 (action_21 -> .)
+    do              reduce using rule 90 (action_21 -> .)
+    swap            reduce using rule 90 (action_21 -> .)
+    exit            reduce using rule 90 (action_21 -> .)
+    end             reduce using rule 90 (action_21 -> .)
 
-    action_21                      shift and go to state 61
+    action_21                      shift and go to state 63
 
 state 41
 
     (22) S -> swap Dimensional . coma Dimensional
 
-    coma            shift and go to state 62
+    coma            shift and go to state 64
 
 
 state 42
@@ -817,9 +836,10 @@ state 43
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    end             shift and go to state 63
+    end             shift and go to state 65
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -833,22 +853,24 @@ state 43
 
 state 44
 
-    (2) V -> V Tipo Dim doubleColon Rid .
+    (2) V -> V Tipo Dim doubleColon Rid . action_addSymbols action_32
     (5) Rid -> Rid . coma id
+    (68) action_addSymbols -> .
 
-    integer         reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    real            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    subroutine      reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    end             reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    id              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    read            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    print           reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    if              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    do              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    swap            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    exit            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid .)
-    coma            shift and go to state 64
+    coma            shift and go to state 67
+    integer         reduce using rule 68 (action_addSymbols -> .)
+    real            reduce using rule 68 (action_addSymbols -> .)
+    subroutine      reduce using rule 68 (action_addSymbols -> .)
+    end             reduce using rule 68 (action_addSymbols -> .)
+    id              reduce using rule 68 (action_addSymbols -> .)
+    read            reduce using rule 68 (action_addSymbols -> .)
+    print           reduce using rule 68 (action_addSymbols -> .)
+    if              reduce using rule 68 (action_addSymbols -> .)
+    do              reduce using rule 68 (action_addSymbols -> .)
+    swap            reduce using rule 68 (action_addSymbols -> .)
+    exit            reduce using rule 68 (action_addSymbols -> .)
 
+    action_addSymbols              shift and go to state 66
 
 state 45
 
@@ -870,322 +892,361 @@ state 45
 
 state 46
 
-    (8) Dim -> openBra int closedBra .
-    (9) Dim -> openBra int closedBra . openBra int closedBra
+    (8) Dim -> openBra int action_30 . closedBra
+    (9) Dim -> openBra int action_30 . closedBra openBra int action_31 closedBra
 
-    doubleColon     reduce using rule 8 (Dim -> openBra int closedBra .)
-    openBra         shift and go to state 65
+    closedBra       shift and go to state 68
 
 
 state 47
 
-    (50) EAParens -> openParen . EA closedParen
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (51) EAParens -> openParen . EA closedParen
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
+    int             shift and go to state 54
+    rea             shift and go to state 55
     id              shift and go to state 33
 
-    EA                             shift and go to state 66
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
+    EA                             shift and go to state 69
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
 
 state 48
 
-    (25) DimensionsOrEmpty -> openParen EA . ComaEAOrEmpty closedParen
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (27) ComaEAOrEmpty -> . coma EA
-    (28) ComaEAOrEmpty -> .
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (24) S -> id openParen closedParen .
 
-    coma            shift and go to state 69
-    closedParen     reduce using rule 28 (ComaEAOrEmpty -> .)
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    end             reduce using rule 24 (S -> id openParen closedParen .)
+    id              reduce using rule 24 (S -> id openParen closedParen .)
+    read            reduce using rule 24 (S -> id openParen closedParen .)
+    print           reduce using rule 24 (S -> id openParen closedParen .)
+    if              reduce using rule 24 (S -> id openParen closedParen .)
+    do              reduce using rule 24 (S -> id openParen closedParen .)
+    swap            reduce using rule 24 (S -> id openParen closedParen .)
+    exit            reduce using rule 24 (S -> id openParen closedParen .)
+    elif            reduce using rule 24 (S -> id openParen closedParen .)
+    else            reduce using rule 24 (S -> id openParen closedParen .)
 
-    ComaEAOrEmpty                  shift and go to state 67
-    SumOrSub                       shift and go to state 68
 
 state 49
 
-    (41) EA -> MultDiv .
-    (46) MultDiv -> MultDiv . MDSymbols action_5 EAParens action_6
-    (47) MDSymbols -> . mul
-    (48) MDSymbols -> . div
+    (26) DimensionsOrEmpty -> openParen EA . action_setDim1 ComaEAOrEmpty closedParen
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (102) action_setDim1 -> .
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
 
-    coma            reduce using rule 41 (EA -> MultDiv .)
-    plus            reduce using rule 41 (EA -> MultDiv .)
-    minus           reduce using rule 41 (EA -> MultDiv .)
-    closedParen     reduce using rule 41 (EA -> MultDiv .)
-    end             reduce using rule 41 (EA -> MultDiv .)
-    id              reduce using rule 41 (EA -> MultDiv .)
-    read            reduce using rule 41 (EA -> MultDiv .)
-    print           reduce using rule 41 (EA -> MultDiv .)
-    if              reduce using rule 41 (EA -> MultDiv .)
-    do              reduce using rule 41 (EA -> MultDiv .)
-    swap            reduce using rule 41 (EA -> MultDiv .)
-    exit            reduce using rule 41 (EA -> MultDiv .)
-    elif            reduce using rule 41 (EA -> MultDiv .)
-    else            reduce using rule 41 (EA -> MultDiv .)
-    then            reduce using rule 41 (EA -> MultDiv .)
-    mul             shift and go to state 73
-    div             shift and go to state 74
+    coma            reduce using rule 102 (action_setDim1 -> .)
+    closedParen     reduce using rule 102 (action_setDim1 -> .)
+    plus            shift and go to state 72
+    minus           shift and go to state 73
 
-    MDSymbols                      shift and go to state 72
+    action_setDim1                 shift and go to state 70
+    SumOrSub                       shift and go to state 71
 
 state 50
 
-    (45) MultDiv -> EAParens .
+    (42) EA -> MultDiv .
+    (47) MultDiv -> MultDiv . MDSymbols action_5 EAParens action_6
+    (48) MDSymbols -> . mul
+    (49) MDSymbols -> . div
 
-    mul             reduce using rule 45 (MultDiv -> EAParens .)
-    div             reduce using rule 45 (MultDiv -> EAParens .)
-    coma            reduce using rule 45 (MultDiv -> EAParens .)
-    plus            reduce using rule 45 (MultDiv -> EAParens .)
-    minus           reduce using rule 45 (MultDiv -> EAParens .)
-    closedParen     reduce using rule 45 (MultDiv -> EAParens .)
-    end             reduce using rule 45 (MultDiv -> EAParens .)
-    id              reduce using rule 45 (MultDiv -> EAParens .)
-    read            reduce using rule 45 (MultDiv -> EAParens .)
-    print           reduce using rule 45 (MultDiv -> EAParens .)
-    if              reduce using rule 45 (MultDiv -> EAParens .)
-    do              reduce using rule 45 (MultDiv -> EAParens .)
-    swap            reduce using rule 45 (MultDiv -> EAParens .)
-    exit            reduce using rule 45 (MultDiv -> EAParens .)
-    elif            reduce using rule 45 (MultDiv -> EAParens .)
-    else            reduce using rule 45 (MultDiv -> EAParens .)
-    then            reduce using rule 45 (MultDiv -> EAParens .)
+    plus            reduce using rule 42 (EA -> MultDiv .)
+    minus           reduce using rule 42 (EA -> MultDiv .)
+    coma            reduce using rule 42 (EA -> MultDiv .)
+    closedParen     reduce using rule 42 (EA -> MultDiv .)
+    end             reduce using rule 42 (EA -> MultDiv .)
+    id              reduce using rule 42 (EA -> MultDiv .)
+    read            reduce using rule 42 (EA -> MultDiv .)
+    print           reduce using rule 42 (EA -> MultDiv .)
+    if              reduce using rule 42 (EA -> MultDiv .)
+    do              reduce using rule 42 (EA -> MultDiv .)
+    swap            reduce using rule 42 (EA -> MultDiv .)
+    exit            reduce using rule 42 (EA -> MultDiv .)
+    elif            reduce using rule 42 (EA -> MultDiv .)
+    else            reduce using rule 42 (EA -> MultDiv .)
+    then            reduce using rule 42 (EA -> MultDiv .)
+    mul             shift and go to state 75
+    div             shift and go to state 76
 
+    MDSymbols                      shift and go to state 74
 
 state 51
 
-    (49) EAParens -> EItem .
+    (46) MultDiv -> EAParens .
 
-    mul             reduce using rule 49 (EAParens -> EItem .)
-    div             reduce using rule 49 (EAParens -> EItem .)
-    coma            reduce using rule 49 (EAParens -> EItem .)
-    plus            reduce using rule 49 (EAParens -> EItem .)
-    minus           reduce using rule 49 (EAParens -> EItem .)
-    closedParen     reduce using rule 49 (EAParens -> EItem .)
-    end             reduce using rule 49 (EAParens -> EItem .)
-    id              reduce using rule 49 (EAParens -> EItem .)
-    read            reduce using rule 49 (EAParens -> EItem .)
-    print           reduce using rule 49 (EAParens -> EItem .)
-    if              reduce using rule 49 (EAParens -> EItem .)
-    do              reduce using rule 49 (EAParens -> EItem .)
-    swap            reduce using rule 49 (EAParens -> EItem .)
-    exit            reduce using rule 49 (EAParens -> EItem .)
-    elif            reduce using rule 49 (EAParens -> EItem .)
-    else            reduce using rule 49 (EAParens -> EItem .)
-    then            reduce using rule 49 (EAParens -> EItem .)
+    mul             reduce using rule 46 (MultDiv -> EAParens .)
+    div             reduce using rule 46 (MultDiv -> EAParens .)
+    plus            reduce using rule 46 (MultDiv -> EAParens .)
+    minus           reduce using rule 46 (MultDiv -> EAParens .)
+    coma            reduce using rule 46 (MultDiv -> EAParens .)
+    closedParen     reduce using rule 46 (MultDiv -> EAParens .)
+    end             reduce using rule 46 (MultDiv -> EAParens .)
+    id              reduce using rule 46 (MultDiv -> EAParens .)
+    read            reduce using rule 46 (MultDiv -> EAParens .)
+    print           reduce using rule 46 (MultDiv -> EAParens .)
+    if              reduce using rule 46 (MultDiv -> EAParens .)
+    do              reduce using rule 46 (MultDiv -> EAParens .)
+    swap            reduce using rule 46 (MultDiv -> EAParens .)
+    exit            reduce using rule 46 (MultDiv -> EAParens .)
+    elif            reduce using rule 46 (MultDiv -> EAParens .)
+    else            reduce using rule 46 (MultDiv -> EAParens .)
+    then            reduce using rule 46 (MultDiv -> EAParens .)
 
 
 state 52
 
-    (58) EItem -> Dimensional . action_1
-    (67) action_1 -> .
+    (50) EAParens -> EItem .
 
-    mul             reduce using rule 67 (action_1 -> .)
-    div             reduce using rule 67 (action_1 -> .)
-    coma            reduce using rule 67 (action_1 -> .)
-    plus            reduce using rule 67 (action_1 -> .)
-    minus           reduce using rule 67 (action_1 -> .)
-    closedParen     reduce using rule 67 (action_1 -> .)
-    end             reduce using rule 67 (action_1 -> .)
-    id              reduce using rule 67 (action_1 -> .)
-    read            reduce using rule 67 (action_1 -> .)
-    print           reduce using rule 67 (action_1 -> .)
-    if              reduce using rule 67 (action_1 -> .)
-    do              reduce using rule 67 (action_1 -> .)
-    swap            reduce using rule 67 (action_1 -> .)
-    exit            reduce using rule 67 (action_1 -> .)
-    elif            reduce using rule 67 (action_1 -> .)
-    else            reduce using rule 67 (action_1 -> .)
-    less            reduce using rule 67 (action_1 -> .)
-    more            reduce using rule 67 (action_1 -> .)
-    doubleEquals    reduce using rule 67 (action_1 -> .)
-    notEquals       reduce using rule 67 (action_1 -> .)
-    lessEquals      reduce using rule 67 (action_1 -> .)
-    moreEquals      reduce using rule 67 (action_1 -> .)
-    then            reduce using rule 67 (action_1 -> .)
-    and             reduce using rule 67 (action_1 -> .)
-    or              reduce using rule 67 (action_1 -> .)
+    mul             reduce using rule 50 (EAParens -> EItem .)
+    div             reduce using rule 50 (EAParens -> EItem .)
+    plus            reduce using rule 50 (EAParens -> EItem .)
+    minus           reduce using rule 50 (EAParens -> EItem .)
+    coma            reduce using rule 50 (EAParens -> EItem .)
+    closedParen     reduce using rule 50 (EAParens -> EItem .)
+    end             reduce using rule 50 (EAParens -> EItem .)
+    id              reduce using rule 50 (EAParens -> EItem .)
+    read            reduce using rule 50 (EAParens -> EItem .)
+    print           reduce using rule 50 (EAParens -> EItem .)
+    if              reduce using rule 50 (EAParens -> EItem .)
+    do              reduce using rule 50 (EAParens -> EItem .)
+    swap            reduce using rule 50 (EAParens -> EItem .)
+    exit            reduce using rule 50 (EAParens -> EItem .)
+    elif            reduce using rule 50 (EAParens -> EItem .)
+    else            reduce using rule 50 (EAParens -> EItem .)
+    then            reduce using rule 50 (EAParens -> EItem .)
 
-    action_1                       shift and go to state 75
 
 state 53
 
-    (59) EItem -> int . action_2
-    (68) action_2 -> .
+    (59) EItem -> Dimensional . action_1
+    (69) action_1 -> .
 
-    mul             reduce using rule 68 (action_2 -> .)
-    div             reduce using rule 68 (action_2 -> .)
-    coma            reduce using rule 68 (action_2 -> .)
-    plus            reduce using rule 68 (action_2 -> .)
-    minus           reduce using rule 68 (action_2 -> .)
-    closedParen     reduce using rule 68 (action_2 -> .)
-    end             reduce using rule 68 (action_2 -> .)
-    id              reduce using rule 68 (action_2 -> .)
-    read            reduce using rule 68 (action_2 -> .)
-    print           reduce using rule 68 (action_2 -> .)
-    if              reduce using rule 68 (action_2 -> .)
-    do              reduce using rule 68 (action_2 -> .)
-    swap            reduce using rule 68 (action_2 -> .)
-    exit            reduce using rule 68 (action_2 -> .)
-    elif            reduce using rule 68 (action_2 -> .)
-    else            reduce using rule 68 (action_2 -> .)
-    less            reduce using rule 68 (action_2 -> .)
-    more            reduce using rule 68 (action_2 -> .)
-    doubleEquals    reduce using rule 68 (action_2 -> .)
-    notEquals       reduce using rule 68 (action_2 -> .)
-    lessEquals      reduce using rule 68 (action_2 -> .)
-    moreEquals      reduce using rule 68 (action_2 -> .)
-    then            reduce using rule 68 (action_2 -> .)
-    and             reduce using rule 68 (action_2 -> .)
-    or              reduce using rule 68 (action_2 -> .)
+    mul             reduce using rule 69 (action_1 -> .)
+    div             reduce using rule 69 (action_1 -> .)
+    plus            reduce using rule 69 (action_1 -> .)
+    minus           reduce using rule 69 (action_1 -> .)
+    coma            reduce using rule 69 (action_1 -> .)
+    closedParen     reduce using rule 69 (action_1 -> .)
+    end             reduce using rule 69 (action_1 -> .)
+    id              reduce using rule 69 (action_1 -> .)
+    read            reduce using rule 69 (action_1 -> .)
+    print           reduce using rule 69 (action_1 -> .)
+    if              reduce using rule 69 (action_1 -> .)
+    do              reduce using rule 69 (action_1 -> .)
+    swap            reduce using rule 69 (action_1 -> .)
+    exit            reduce using rule 69 (action_1 -> .)
+    elif            reduce using rule 69 (action_1 -> .)
+    else            reduce using rule 69 (action_1 -> .)
+    less            reduce using rule 69 (action_1 -> .)
+    more            reduce using rule 69 (action_1 -> .)
+    doubleEquals    reduce using rule 69 (action_1 -> .)
+    notEquals       reduce using rule 69 (action_1 -> .)
+    lessEquals      reduce using rule 69 (action_1 -> .)
+    moreEquals      reduce using rule 69 (action_1 -> .)
+    then            reduce using rule 69 (action_1 -> .)
+    and             reduce using rule 69 (action_1 -> .)
+    or              reduce using rule 69 (action_1 -> .)
 
-    action_2                       shift and go to state 76
+    action_1                       shift and go to state 77
 
 state 54
 
-    (60) EItem -> rea . action_2_rea
-    (69) action_2_rea -> .
+    (60) EItem -> int . action_2
+    (70) action_2 -> .
 
-    mul             reduce using rule 69 (action_2_rea -> .)
-    div             reduce using rule 69 (action_2_rea -> .)
-    coma            reduce using rule 69 (action_2_rea -> .)
-    plus            reduce using rule 69 (action_2_rea -> .)
-    minus           reduce using rule 69 (action_2_rea -> .)
-    closedParen     reduce using rule 69 (action_2_rea -> .)
-    end             reduce using rule 69 (action_2_rea -> .)
-    id              reduce using rule 69 (action_2_rea -> .)
-    read            reduce using rule 69 (action_2_rea -> .)
-    print           reduce using rule 69 (action_2_rea -> .)
-    if              reduce using rule 69 (action_2_rea -> .)
-    do              reduce using rule 69 (action_2_rea -> .)
-    swap            reduce using rule 69 (action_2_rea -> .)
-    exit            reduce using rule 69 (action_2_rea -> .)
-    elif            reduce using rule 69 (action_2_rea -> .)
-    else            reduce using rule 69 (action_2_rea -> .)
-    less            reduce using rule 69 (action_2_rea -> .)
-    more            reduce using rule 69 (action_2_rea -> .)
-    doubleEquals    reduce using rule 69 (action_2_rea -> .)
-    notEquals       reduce using rule 69 (action_2_rea -> .)
-    lessEquals      reduce using rule 69 (action_2_rea -> .)
-    moreEquals      reduce using rule 69 (action_2_rea -> .)
-    then            reduce using rule 69 (action_2_rea -> .)
-    and             reduce using rule 69 (action_2_rea -> .)
-    or              reduce using rule 69 (action_2_rea -> .)
+    mul             reduce using rule 70 (action_2 -> .)
+    div             reduce using rule 70 (action_2 -> .)
+    plus            reduce using rule 70 (action_2 -> .)
+    minus           reduce using rule 70 (action_2 -> .)
+    coma            reduce using rule 70 (action_2 -> .)
+    closedParen     reduce using rule 70 (action_2 -> .)
+    end             reduce using rule 70 (action_2 -> .)
+    id              reduce using rule 70 (action_2 -> .)
+    read            reduce using rule 70 (action_2 -> .)
+    print           reduce using rule 70 (action_2 -> .)
+    if              reduce using rule 70 (action_2 -> .)
+    do              reduce using rule 70 (action_2 -> .)
+    swap            reduce using rule 70 (action_2 -> .)
+    exit            reduce using rule 70 (action_2 -> .)
+    elif            reduce using rule 70 (action_2 -> .)
+    else            reduce using rule 70 (action_2 -> .)
+    less            reduce using rule 70 (action_2 -> .)
+    more            reduce using rule 70 (action_2 -> .)
+    doubleEquals    reduce using rule 70 (action_2 -> .)
+    notEquals       reduce using rule 70 (action_2 -> .)
+    lessEquals      reduce using rule 70 (action_2 -> .)
+    moreEquals      reduce using rule 70 (action_2 -> .)
+    then            reduce using rule 70 (action_2 -> .)
+    and             reduce using rule 70 (action_2 -> .)
+    or              reduce using rule 70 (action_2 -> .)
 
-    action_2_rea                   shift and go to state 77
+    action_2                       shift and go to state 78
 
 state 55
 
-    (15) S -> Dimensional action_7 equals . EA action_8
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (61) EItem -> rea . action_2_rea
+    (71) action_2_rea -> .
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    mul             reduce using rule 71 (action_2_rea -> .)
+    div             reduce using rule 71 (action_2_rea -> .)
+    plus            reduce using rule 71 (action_2_rea -> .)
+    minus           reduce using rule 71 (action_2_rea -> .)
+    coma            reduce using rule 71 (action_2_rea -> .)
+    closedParen     reduce using rule 71 (action_2_rea -> .)
+    end             reduce using rule 71 (action_2_rea -> .)
+    id              reduce using rule 71 (action_2_rea -> .)
+    read            reduce using rule 71 (action_2_rea -> .)
+    print           reduce using rule 71 (action_2_rea -> .)
+    if              reduce using rule 71 (action_2_rea -> .)
+    do              reduce using rule 71 (action_2_rea -> .)
+    swap            reduce using rule 71 (action_2_rea -> .)
+    exit            reduce using rule 71 (action_2_rea -> .)
+    elif            reduce using rule 71 (action_2_rea -> .)
+    else            reduce using rule 71 (action_2_rea -> .)
+    less            reduce using rule 71 (action_2_rea -> .)
+    more            reduce using rule 71 (action_2_rea -> .)
+    doubleEquals    reduce using rule 71 (action_2_rea -> .)
+    notEquals       reduce using rule 71 (action_2_rea -> .)
+    lessEquals      reduce using rule 71 (action_2_rea -> .)
+    moreEquals      reduce using rule 71 (action_2_rea -> .)
+    then            reduce using rule 71 (action_2_rea -> .)
+    and             reduce using rule 71 (action_2_rea -> .)
+    or              reduce using rule 71 (action_2_rea -> .)
 
-    Dimensional                    shift and go to state 52
-    EA                             shift and go to state 78
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
+    action_2_rea                   shift and go to state 79
 
 state 56
 
-    (30) RDimensional -> RDimensional coma . Dimensional
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (15) S -> Dimensional action_7 equals . EA action_8
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
     id              shift and go to state 33
 
-    Dimensional                    shift and go to state 79
+    Dimensional                    shift and go to state 53
+    EA                             shift and go to state 80
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
 
 state 57
 
-    (32) RDimOrString -> RDimOrString coma . DimOrString
-    (33) DimOrString -> . Dimensional
-    (34) DimOrString -> . string
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (31) RDimensional -> RDimensional coma . Dimensional
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    id              shift and go to state 33
+
+    Dimensional                    shift and go to state 81
+
+state 58
+
+    (26) DimensionsOrEmpty -> openParen . EA action_setDim1 ComaEAOrEmpty closedParen
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EA                             shift and go to state 49
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
+
+state 59
+
+    (33) RDimOrString -> RDimOrString coma . DimOrString
+    (34) DimOrString -> . Dimensional
+    (35) DimOrString -> . string
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     string          shift and go to state 37
     id              shift and go to state 33
 
-    DimOrString                    shift and go to state 80
+    DimOrString                    shift and go to state 82
     Dimensional                    shift and go to state 36
-
-state 58
-
-    (19) S -> if action_16 Relif . ElseOrEmpty end if action_20
-    (36) Relif -> Relif . elif action_18 openParen EL closedParen action_17 then B
-    (37) ElseOrEmpty -> . else action_19 B
-    (38) ElseOrEmpty -> .
-
-    elif            shift and go to state 82
-    else            shift and go to state 83
-    end             reduce using rule 38 (ElseOrEmpty -> .)
-
-    ElseOrEmpty                    shift and go to state 81
-
-state 59
-
-    (35) Relif -> openParen . EL closedParen action_17 then B
-    (51) EL -> . AND
-    (52) EL -> . EL or action_10 AND action_9
-    (53) AND -> . Equality
-    (54) AND -> . AND and action_12 Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
-
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
-
-    EL                             shift and go to state 85
-    AND                            shift and go to state 86
-    Equality                       shift and go to state 87
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
 
 state 60
 
-    (20) S -> do id action_24 . equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
+    (19) S -> if action_16 Relif . ElseOrEmpty end if action_20
+    (37) Relif -> Relif . elif action_18 openParen EL closedParen action_17 then B
+    (38) ElseOrEmpty -> . else action_19 B
+    (39) ElseOrEmpty -> .
 
-    equals          shift and go to state 90
+    elif            shift and go to state 84
+    else            shift and go to state 85
+    end             reduce using rule 39 (ElseOrEmpty -> .)
 
+    ElseOrEmpty                    shift and go to state 83
 
 state 61
+
+    (36) Relif -> openParen . EL closedParen action_17 then B
+    (52) EL -> . AND
+    (53) EL -> . EL or action_10 AND action_9
+    (54) AND -> . Equality
+    (55) AND -> . AND and action_12 Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EL                             shift and go to state 87
+    AND                            shift and go to state 88
+    Equality                       shift and go to state 89
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
+
+state 62
+
+    (20) S -> do id action_24 . equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
+
+    equals          shift and go to state 92
+
+
+state 63
 
     (21) S -> do then action_21 . B action_22 end do
     (13) B -> . B S
@@ -1200,464 +1261,464 @@ state 61
     exit            reduce using rule 14 (B -> .)
     end             reduce using rule 14 (B -> .)
 
-    B                              shift and go to state 91
-
-state 62
-
-    (22) S -> swap Dimensional coma . Dimensional
-    (24) Dimensional -> . id DimensionsOrEmpty
-
-    id              shift and go to state 33
-
-    Dimensional                    shift and go to state 92
-
-state 63
-
-    (11) F -> F subroutine id B end . subroutine
-
-    subroutine      shift and go to state 93
-
+    B                              shift and go to state 93
 
 state 64
 
-    (5) Rid -> Rid coma . id
+    (22) S -> swap Dimensional coma . Dimensional
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    id              shift and go to state 94
+    id              shift and go to state 33
 
+    Dimensional                    shift and go to state 94
 
 state 65
 
-    (9) Dim -> openBra int closedBra openBra . int closedBra
+    (11) F -> F subroutine id B end . subroutine
 
-    int             shift and go to state 95
+    subroutine      shift and go to state 95
 
 
 state 66
 
-    (50) EAParens -> openParen EA . closedParen
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (2) V -> V Tipo Dim doubleColon Rid action_addSymbols . action_32
+    (101) action_32 -> .
 
-    closedParen     shift and go to state 96
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    integer         reduce using rule 101 (action_32 -> .)
+    real            reduce using rule 101 (action_32 -> .)
+    subroutine      reduce using rule 101 (action_32 -> .)
+    end             reduce using rule 101 (action_32 -> .)
+    id              reduce using rule 101 (action_32 -> .)
+    read            reduce using rule 101 (action_32 -> .)
+    print           reduce using rule 101 (action_32 -> .)
+    if              reduce using rule 101 (action_32 -> .)
+    do              reduce using rule 101 (action_32 -> .)
+    swap            reduce using rule 101 (action_32 -> .)
+    exit            reduce using rule 101 (action_32 -> .)
 
-    SumOrSub                       shift and go to state 68
+    action_32                      shift and go to state 96
 
 state 67
 
-    (25) DimensionsOrEmpty -> openParen EA ComaEAOrEmpty . closedParen
+    (5) Rid -> Rid coma . id
 
-    closedParen     shift and go to state 97
+    id              shift and go to state 97
 
 
 state 68
 
-    (42) EA -> EA SumOrSub . action_3 MultDiv action_4
-    (70) action_3 -> .
+    (8) Dim -> openBra int action_30 closedBra .
+    (9) Dim -> openBra int action_30 closedBra . openBra int action_31 closedBra
 
-    openParen       reduce using rule 70 (action_3 -> .)
-    int             reduce using rule 70 (action_3 -> .)
-    rea             reduce using rule 70 (action_3 -> .)
-    id              reduce using rule 70 (action_3 -> .)
+    doubleColon     reduce using rule 8 (Dim -> openBra int action_30 closedBra .)
+    openBra         shift and go to state 98
 
-    action_3                       shift and go to state 98
 
 state 69
 
-    (27) ComaEAOrEmpty -> coma . EA
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (51) EAParens -> openParen EA . closedParen
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    closedParen     shift and go to state 99
+    plus            shift and go to state 72
+    minus           shift and go to state 73
 
-    EA                             shift and go to state 99
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
+    SumOrSub                       shift and go to state 71
 
 state 70
 
-    (43) SumOrSub -> plus .
+    (26) DimensionsOrEmpty -> openParen EA action_setDim1 . ComaEAOrEmpty closedParen
+    (28) ComaEAOrEmpty -> . coma EA action_setDim2
+    (29) ComaEAOrEmpty -> .
 
-    openParen       reduce using rule 43 (SumOrSub -> plus .)
-    int             reduce using rule 43 (SumOrSub -> plus .)
-    rea             reduce using rule 43 (SumOrSub -> plus .)
-    id              reduce using rule 43 (SumOrSub -> plus .)
+    coma            shift and go to state 101
+    closedParen     reduce using rule 29 (ComaEAOrEmpty -> .)
 
+    ComaEAOrEmpty                  shift and go to state 100
 
 state 71
 
-    (44) SumOrSub -> minus .
+    (43) EA -> EA SumOrSub . action_3 MultDiv action_4
+    (72) action_3 -> .
 
-    openParen       reduce using rule 44 (SumOrSub -> minus .)
-    int             reduce using rule 44 (SumOrSub -> minus .)
-    rea             reduce using rule 44 (SumOrSub -> minus .)
-    id              reduce using rule 44 (SumOrSub -> minus .)
+    openParen       reduce using rule 72 (action_3 -> .)
+    int             reduce using rule 72 (action_3 -> .)
+    rea             reduce using rule 72 (action_3 -> .)
+    id              reduce using rule 72 (action_3 -> .)
 
+    action_3                       shift and go to state 102
 
 state 72
 
-    (46) MultDiv -> MultDiv MDSymbols . action_5 EAParens action_6
-    (72) action_5 -> .
+    (44) SumOrSub -> plus .
 
-    openParen       reduce using rule 72 (action_5 -> .)
-    int             reduce using rule 72 (action_5 -> .)
-    rea             reduce using rule 72 (action_5 -> .)
-    id              reduce using rule 72 (action_5 -> .)
+    openParen       reduce using rule 44 (SumOrSub -> plus .)
+    int             reduce using rule 44 (SumOrSub -> plus .)
+    rea             reduce using rule 44 (SumOrSub -> plus .)
+    id              reduce using rule 44 (SumOrSub -> plus .)
 
-    action_5                       shift and go to state 100
 
 state 73
 
-    (47) MDSymbols -> mul .
+    (45) SumOrSub -> minus .
 
-    openParen       reduce using rule 47 (MDSymbols -> mul .)
-    int             reduce using rule 47 (MDSymbols -> mul .)
-    rea             reduce using rule 47 (MDSymbols -> mul .)
-    id              reduce using rule 47 (MDSymbols -> mul .)
+    openParen       reduce using rule 45 (SumOrSub -> minus .)
+    int             reduce using rule 45 (SumOrSub -> minus .)
+    rea             reduce using rule 45 (SumOrSub -> minus .)
+    id              reduce using rule 45 (SumOrSub -> minus .)
 
 
 state 74
 
-    (48) MDSymbols -> div .
+    (47) MultDiv -> MultDiv MDSymbols . action_5 EAParens action_6
+    (74) action_5 -> .
 
-    openParen       reduce using rule 48 (MDSymbols -> div .)
-    int             reduce using rule 48 (MDSymbols -> div .)
-    rea             reduce using rule 48 (MDSymbols -> div .)
-    id              reduce using rule 48 (MDSymbols -> div .)
+    openParen       reduce using rule 74 (action_5 -> .)
+    int             reduce using rule 74 (action_5 -> .)
+    rea             reduce using rule 74 (action_5 -> .)
+    id              reduce using rule 74 (action_5 -> .)
 
+    action_5                       shift and go to state 103
 
 state 75
 
-    (58) EItem -> Dimensional action_1 .
+    (48) MDSymbols -> mul .
 
-    mul             reduce using rule 58 (EItem -> Dimensional action_1 .)
-    div             reduce using rule 58 (EItem -> Dimensional action_1 .)
-    coma            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    plus            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    minus           reduce using rule 58 (EItem -> Dimensional action_1 .)
-    closedParen     reduce using rule 58 (EItem -> Dimensional action_1 .)
-    end             reduce using rule 58 (EItem -> Dimensional action_1 .)
-    id              reduce using rule 58 (EItem -> Dimensional action_1 .)
-    read            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    print           reduce using rule 58 (EItem -> Dimensional action_1 .)
-    if              reduce using rule 58 (EItem -> Dimensional action_1 .)
-    do              reduce using rule 58 (EItem -> Dimensional action_1 .)
-    swap            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    exit            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    elif            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    else            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    less            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    more            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    doubleEquals    reduce using rule 58 (EItem -> Dimensional action_1 .)
-    notEquals       reduce using rule 58 (EItem -> Dimensional action_1 .)
-    lessEquals      reduce using rule 58 (EItem -> Dimensional action_1 .)
-    moreEquals      reduce using rule 58 (EItem -> Dimensional action_1 .)
-    then            reduce using rule 58 (EItem -> Dimensional action_1 .)
-    and             reduce using rule 58 (EItem -> Dimensional action_1 .)
-    or              reduce using rule 58 (EItem -> Dimensional action_1 .)
+    openParen       reduce using rule 48 (MDSymbols -> mul .)
+    int             reduce using rule 48 (MDSymbols -> mul .)
+    rea             reduce using rule 48 (MDSymbols -> mul .)
+    id              reduce using rule 48 (MDSymbols -> mul .)
 
 
 state 76
 
-    (59) EItem -> int action_2 .
+    (49) MDSymbols -> div .
 
-    mul             reduce using rule 59 (EItem -> int action_2 .)
-    div             reduce using rule 59 (EItem -> int action_2 .)
-    coma            reduce using rule 59 (EItem -> int action_2 .)
-    plus            reduce using rule 59 (EItem -> int action_2 .)
-    minus           reduce using rule 59 (EItem -> int action_2 .)
-    closedParen     reduce using rule 59 (EItem -> int action_2 .)
-    end             reduce using rule 59 (EItem -> int action_2 .)
-    id              reduce using rule 59 (EItem -> int action_2 .)
-    read            reduce using rule 59 (EItem -> int action_2 .)
-    print           reduce using rule 59 (EItem -> int action_2 .)
-    if              reduce using rule 59 (EItem -> int action_2 .)
-    do              reduce using rule 59 (EItem -> int action_2 .)
-    swap            reduce using rule 59 (EItem -> int action_2 .)
-    exit            reduce using rule 59 (EItem -> int action_2 .)
-    elif            reduce using rule 59 (EItem -> int action_2 .)
-    else            reduce using rule 59 (EItem -> int action_2 .)
-    less            reduce using rule 59 (EItem -> int action_2 .)
-    more            reduce using rule 59 (EItem -> int action_2 .)
-    doubleEquals    reduce using rule 59 (EItem -> int action_2 .)
-    notEquals       reduce using rule 59 (EItem -> int action_2 .)
-    lessEquals      reduce using rule 59 (EItem -> int action_2 .)
-    moreEquals      reduce using rule 59 (EItem -> int action_2 .)
-    then            reduce using rule 59 (EItem -> int action_2 .)
-    and             reduce using rule 59 (EItem -> int action_2 .)
-    or              reduce using rule 59 (EItem -> int action_2 .)
+    openParen       reduce using rule 49 (MDSymbols -> div .)
+    int             reduce using rule 49 (MDSymbols -> div .)
+    rea             reduce using rule 49 (MDSymbols -> div .)
+    id              reduce using rule 49 (MDSymbols -> div .)
 
 
 state 77
 
-    (60) EItem -> rea action_2_rea .
+    (59) EItem -> Dimensional action_1 .
 
-    mul             reduce using rule 60 (EItem -> rea action_2_rea .)
-    div             reduce using rule 60 (EItem -> rea action_2_rea .)
-    coma            reduce using rule 60 (EItem -> rea action_2_rea .)
-    plus            reduce using rule 60 (EItem -> rea action_2_rea .)
-    minus           reduce using rule 60 (EItem -> rea action_2_rea .)
-    closedParen     reduce using rule 60 (EItem -> rea action_2_rea .)
-    end             reduce using rule 60 (EItem -> rea action_2_rea .)
-    id              reduce using rule 60 (EItem -> rea action_2_rea .)
-    read            reduce using rule 60 (EItem -> rea action_2_rea .)
-    print           reduce using rule 60 (EItem -> rea action_2_rea .)
-    if              reduce using rule 60 (EItem -> rea action_2_rea .)
-    do              reduce using rule 60 (EItem -> rea action_2_rea .)
-    swap            reduce using rule 60 (EItem -> rea action_2_rea .)
-    exit            reduce using rule 60 (EItem -> rea action_2_rea .)
-    elif            reduce using rule 60 (EItem -> rea action_2_rea .)
-    else            reduce using rule 60 (EItem -> rea action_2_rea .)
-    less            reduce using rule 60 (EItem -> rea action_2_rea .)
-    more            reduce using rule 60 (EItem -> rea action_2_rea .)
-    doubleEquals    reduce using rule 60 (EItem -> rea action_2_rea .)
-    notEquals       reduce using rule 60 (EItem -> rea action_2_rea .)
-    lessEquals      reduce using rule 60 (EItem -> rea action_2_rea .)
-    moreEquals      reduce using rule 60 (EItem -> rea action_2_rea .)
-    then            reduce using rule 60 (EItem -> rea action_2_rea .)
-    and             reduce using rule 60 (EItem -> rea action_2_rea .)
-    or              reduce using rule 60 (EItem -> rea action_2_rea .)
+    mul             reduce using rule 59 (EItem -> Dimensional action_1 .)
+    div             reduce using rule 59 (EItem -> Dimensional action_1 .)
+    plus            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    minus           reduce using rule 59 (EItem -> Dimensional action_1 .)
+    coma            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    closedParen     reduce using rule 59 (EItem -> Dimensional action_1 .)
+    end             reduce using rule 59 (EItem -> Dimensional action_1 .)
+    id              reduce using rule 59 (EItem -> Dimensional action_1 .)
+    read            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    print           reduce using rule 59 (EItem -> Dimensional action_1 .)
+    if              reduce using rule 59 (EItem -> Dimensional action_1 .)
+    do              reduce using rule 59 (EItem -> Dimensional action_1 .)
+    swap            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    exit            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    elif            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    else            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    less            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    more            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    doubleEquals    reduce using rule 59 (EItem -> Dimensional action_1 .)
+    notEquals       reduce using rule 59 (EItem -> Dimensional action_1 .)
+    lessEquals      reduce using rule 59 (EItem -> Dimensional action_1 .)
+    moreEquals      reduce using rule 59 (EItem -> Dimensional action_1 .)
+    then            reduce using rule 59 (EItem -> Dimensional action_1 .)
+    and             reduce using rule 59 (EItem -> Dimensional action_1 .)
+    or              reduce using rule 59 (EItem -> Dimensional action_1 .)
 
 
 state 78
 
-    (15) S -> Dimensional action_7 equals EA . action_8
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (75) action_8 -> .
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (60) EItem -> int action_2 .
 
-    end             reduce using rule 75 (action_8 -> .)
-    id              reduce using rule 75 (action_8 -> .)
-    read            reduce using rule 75 (action_8 -> .)
-    print           reduce using rule 75 (action_8 -> .)
-    if              reduce using rule 75 (action_8 -> .)
-    do              reduce using rule 75 (action_8 -> .)
-    swap            reduce using rule 75 (action_8 -> .)
-    exit            reduce using rule 75 (action_8 -> .)
-    elif            reduce using rule 75 (action_8 -> .)
-    else            reduce using rule 75 (action_8 -> .)
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    mul             reduce using rule 60 (EItem -> int action_2 .)
+    div             reduce using rule 60 (EItem -> int action_2 .)
+    plus            reduce using rule 60 (EItem -> int action_2 .)
+    minus           reduce using rule 60 (EItem -> int action_2 .)
+    coma            reduce using rule 60 (EItem -> int action_2 .)
+    closedParen     reduce using rule 60 (EItem -> int action_2 .)
+    end             reduce using rule 60 (EItem -> int action_2 .)
+    id              reduce using rule 60 (EItem -> int action_2 .)
+    read            reduce using rule 60 (EItem -> int action_2 .)
+    print           reduce using rule 60 (EItem -> int action_2 .)
+    if              reduce using rule 60 (EItem -> int action_2 .)
+    do              reduce using rule 60 (EItem -> int action_2 .)
+    swap            reduce using rule 60 (EItem -> int action_2 .)
+    exit            reduce using rule 60 (EItem -> int action_2 .)
+    elif            reduce using rule 60 (EItem -> int action_2 .)
+    else            reduce using rule 60 (EItem -> int action_2 .)
+    less            reduce using rule 60 (EItem -> int action_2 .)
+    more            reduce using rule 60 (EItem -> int action_2 .)
+    doubleEquals    reduce using rule 60 (EItem -> int action_2 .)
+    notEquals       reduce using rule 60 (EItem -> int action_2 .)
+    lessEquals      reduce using rule 60 (EItem -> int action_2 .)
+    moreEquals      reduce using rule 60 (EItem -> int action_2 .)
+    then            reduce using rule 60 (EItem -> int action_2 .)
+    and             reduce using rule 60 (EItem -> int action_2 .)
+    or              reduce using rule 60 (EItem -> int action_2 .)
 
-    action_8                       shift and go to state 101
-    SumOrSub                       shift and go to state 68
 
 state 79
 
-    (30) RDimensional -> RDimensional coma Dimensional .
+    (61) EItem -> rea action_2_rea .
 
-    coma            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    end             reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    id              reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    read            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    print           reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    if              reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    do              reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    swap            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    exit            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    elif            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
-    else            reduce using rule 30 (RDimensional -> RDimensional coma Dimensional .)
+    mul             reduce using rule 61 (EItem -> rea action_2_rea .)
+    div             reduce using rule 61 (EItem -> rea action_2_rea .)
+    plus            reduce using rule 61 (EItem -> rea action_2_rea .)
+    minus           reduce using rule 61 (EItem -> rea action_2_rea .)
+    coma            reduce using rule 61 (EItem -> rea action_2_rea .)
+    closedParen     reduce using rule 61 (EItem -> rea action_2_rea .)
+    end             reduce using rule 61 (EItem -> rea action_2_rea .)
+    id              reduce using rule 61 (EItem -> rea action_2_rea .)
+    read            reduce using rule 61 (EItem -> rea action_2_rea .)
+    print           reduce using rule 61 (EItem -> rea action_2_rea .)
+    if              reduce using rule 61 (EItem -> rea action_2_rea .)
+    do              reduce using rule 61 (EItem -> rea action_2_rea .)
+    swap            reduce using rule 61 (EItem -> rea action_2_rea .)
+    exit            reduce using rule 61 (EItem -> rea action_2_rea .)
+    elif            reduce using rule 61 (EItem -> rea action_2_rea .)
+    else            reduce using rule 61 (EItem -> rea action_2_rea .)
+    less            reduce using rule 61 (EItem -> rea action_2_rea .)
+    more            reduce using rule 61 (EItem -> rea action_2_rea .)
+    doubleEquals    reduce using rule 61 (EItem -> rea action_2_rea .)
+    notEquals       reduce using rule 61 (EItem -> rea action_2_rea .)
+    lessEquals      reduce using rule 61 (EItem -> rea action_2_rea .)
+    moreEquals      reduce using rule 61 (EItem -> rea action_2_rea .)
+    then            reduce using rule 61 (EItem -> rea action_2_rea .)
+    and             reduce using rule 61 (EItem -> rea action_2_rea .)
+    or              reduce using rule 61 (EItem -> rea action_2_rea .)
 
 
 state 80
 
-    (32) RDimOrString -> RDimOrString coma DimOrString .
+    (15) S -> Dimensional action_7 equals EA . action_8
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (77) action_8 -> .
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
 
-    coma            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    end             reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    id              reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    read            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    print           reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    if              reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    do              reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    swap            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    exit            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    elif            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
-    else            reduce using rule 32 (RDimOrString -> RDimOrString coma DimOrString .)
+    end             reduce using rule 77 (action_8 -> .)
+    id              reduce using rule 77 (action_8 -> .)
+    read            reduce using rule 77 (action_8 -> .)
+    print           reduce using rule 77 (action_8 -> .)
+    if              reduce using rule 77 (action_8 -> .)
+    do              reduce using rule 77 (action_8 -> .)
+    swap            reduce using rule 77 (action_8 -> .)
+    exit            reduce using rule 77 (action_8 -> .)
+    elif            reduce using rule 77 (action_8 -> .)
+    else            reduce using rule 77 (action_8 -> .)
+    plus            shift and go to state 72
+    minus           shift and go to state 73
 
+    action_8                       shift and go to state 104
+    SumOrSub                       shift and go to state 71
 
 state 81
 
-    (19) S -> if action_16 Relif ElseOrEmpty . end if action_20
+    (31) RDimensional -> RDimensional coma Dimensional .
 
-    end             shift and go to state 102
+    coma            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    end             reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    id              reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    read            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    print           reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    if              reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    do              reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    swap            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    exit            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    elif            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
+    else            reduce using rule 31 (RDimensional -> RDimensional coma Dimensional .)
 
 
 state 82
 
-    (36) Relif -> Relif elif . action_18 openParen EL closedParen action_17 then B
-    (85) action_18 -> .
+    (33) RDimOrString -> RDimOrString coma DimOrString .
 
-    openParen       reduce using rule 85 (action_18 -> .)
+    coma            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    end             reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    id              reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    read            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    print           reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    if              reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    do              reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    swap            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    exit            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    elif            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
+    else            reduce using rule 33 (RDimOrString -> RDimOrString coma DimOrString .)
 
-    action_18                      shift and go to state 103
 
 state 83
 
-    (37) ElseOrEmpty -> else . action_19 B
-    (86) action_19 -> .
+    (19) S -> if action_16 Relif ElseOrEmpty . end if action_20
 
-    id              reduce using rule 86 (action_19 -> .)
-    read            reduce using rule 86 (action_19 -> .)
-    print           reduce using rule 86 (action_19 -> .)
-    if              reduce using rule 86 (action_19 -> .)
-    do              reduce using rule 86 (action_19 -> .)
-    swap            reduce using rule 86 (action_19 -> .)
-    exit            reduce using rule 86 (action_19 -> .)
-    end             reduce using rule 86 (action_19 -> .)
+    end             shift and go to state 105
 
-    action_19                      shift and go to state 104
 
 state 84
 
-    (56) Equality -> openParen . EL closedParen
-    (51) EL -> . AND
-    (52) EL -> . EL or action_10 AND action_9
-    (53) AND -> . Equality
-    (54) AND -> . AND and action_12 Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (37) Relif -> Relif elif . action_18 openParen EL closedParen action_17 then B
+    (87) action_18 -> .
 
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    openParen       reduce using rule 87 (action_18 -> .)
 
-    EL                             shift and go to state 105
-    AND                            shift and go to state 86
-    Equality                       shift and go to state 87
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
+    action_18                      shift and go to state 106
 
 state 85
 
-    (35) Relif -> openParen EL . closedParen action_17 then B
-    (52) EL -> EL . or action_10 AND action_9
+    (38) ElseOrEmpty -> else . action_19 B
+    (88) action_19 -> .
 
-    closedParen     shift and go to state 106
-    or              shift and go to state 107
+    id              reduce using rule 88 (action_19 -> .)
+    read            reduce using rule 88 (action_19 -> .)
+    print           reduce using rule 88 (action_19 -> .)
+    if              reduce using rule 88 (action_19 -> .)
+    do              reduce using rule 88 (action_19 -> .)
+    swap            reduce using rule 88 (action_19 -> .)
+    exit            reduce using rule 88 (action_19 -> .)
+    end             reduce using rule 88 (action_19 -> .)
 
+    action_19                      shift and go to state 107
 
 state 86
 
-    (51) EL -> AND .
-    (54) AND -> AND . and action_12 Equality action_11
+    (57) Equality -> openParen . EL closedParen
+    (52) EL -> . AND
+    (53) EL -> . EL or action_10 AND action_9
+    (54) AND -> . Equality
+    (55) AND -> . AND and action_12 Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-  ! shift/reduce conflict for and resolved as shift
-    closedParen     reduce using rule 51 (EL -> AND .)
-    or              reduce using rule 51 (EL -> AND .)
-    and             shift and go to state 108
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
 
-  ! and             [ reduce using rule 51 (EL -> AND .) ]
-
+    EL                             shift and go to state 108
+    AND                            shift and go to state 88
+    Equality                       shift and go to state 89
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
 
 state 87
 
-    (53) AND -> Equality .
+    (36) Relif -> openParen EL . closedParen action_17 then B
+    (53) EL -> EL . or action_10 AND action_9
 
-    and             reduce using rule 53 (AND -> Equality .)
-    closedParen     reduce using rule 53 (AND -> Equality .)
-    or              reduce using rule 53 (AND -> Equality .)
+    closedParen     shift and go to state 109
+    or              shift and go to state 110
 
 
 state 88
 
-    (55) Equality -> EItem . EQSymbols action_13 EItem action_14
-    (61) EQSymbols -> . less
-    (62) EQSymbols -> . more
-    (63) EQSymbols -> . doubleEquals
-    (64) EQSymbols -> . notEquals
-    (65) EQSymbols -> . lessEquals
-    (66) EQSymbols -> . moreEquals
+    (52) EL -> AND .
+    (55) AND -> AND . and action_12 Equality action_11
 
-    less            shift and go to state 110
-    more            shift and go to state 111
-    doubleEquals    shift and go to state 112
-    notEquals       shift and go to state 113
-    lessEquals      shift and go to state 114
-    moreEquals      shift and go to state 115
+  ! shift/reduce conflict for and resolved as shift
+    closedParen     reduce using rule 52 (EL -> AND .)
+    or              reduce using rule 52 (EL -> AND .)
+    and             shift and go to state 111
 
-    EQSymbols                      shift and go to state 109
+  ! and             [ reduce using rule 52 (EL -> AND .) ]
+
 
 state 89
 
-    (57) Equality -> not . EL action_15
-    (51) EL -> . AND
-    (52) EL -> . EL or action_10 AND action_9
-    (53) AND -> . Equality
-    (54) AND -> . AND and action_12 Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (54) AND -> Equality .
 
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    and             reduce using rule 54 (AND -> Equality .)
+    closedParen     reduce using rule 54 (AND -> Equality .)
+    or              reduce using rule 54 (AND -> Equality .)
 
-    EL                             shift and go to state 116
-    AND                            shift and go to state 86
-    Equality                       shift and go to state 87
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
 
 state 90
 
-    (20) S -> do id action_24 equals . EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (56) Equality -> EItem . EQSymbols action_13 EItem action_14
+    (62) EQSymbols -> . less
+    (63) EQSymbols -> . more
+    (64) EQSymbols -> . doubleEquals
+    (65) EQSymbols -> . notEquals
+    (66) EQSymbols -> . lessEquals
+    (67) EQSymbols -> . moreEquals
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    less            shift and go to state 113
+    more            shift and go to state 114
+    doubleEquals    shift and go to state 115
+    notEquals       shift and go to state 116
+    lessEquals      shift and go to state 117
+    moreEquals      shift and go to state 118
 
-    EA                             shift and go to state 117
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
+    EQSymbols                      shift and go to state 112
 
 state 91
 
+    (58) Equality -> not . EL action_15
+    (52) EL -> . AND
+    (53) EL -> . EL or action_10 AND action_9
+    (54) AND -> . Equality
+    (55) AND -> . AND and action_12 Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EL                             shift and go to state 119
+    AND                            shift and go to state 88
+    Equality                       shift and go to state 89
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
+
+state 92
+
+    (20) S -> do id action_24 equals . EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EA                             shift and go to state 120
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
+
+state 93
+
     (21) S -> do then action_21 B . action_22 end do
     (13) B -> B . S
-    (89) action_22 -> .
+    (91) action_22 -> .
     (15) S -> . Dimensional action_7 equals EA action_8
     (16) S -> . id parens
     (17) S -> . read RDimensional
@@ -1667,9 +1728,10 @@ state 91
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    end             reduce using rule 89 (action_22 -> .)
+    end             reduce using rule 91 (action_22 -> .)
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -1678,11 +1740,11 @@ state 91
     swap            shift and go to state 21
     exit            shift and go to state 22
 
-    action_22                      shift and go to state 118
+    action_22                      shift and go to state 121
     S                              shift and go to state 15
     Dimensional                    shift and go to state 16
 
-state 92
+state 94
 
     (22) S -> swap Dimensional coma Dimensional .
 
@@ -1698,7 +1760,7 @@ state 92
     else            reduce using rule 22 (S -> swap Dimensional coma Dimensional .)
 
 
-state 93
+state 95
 
     (11) F -> F subroutine id B end subroutine .
 
@@ -1713,7 +1775,24 @@ state 93
     exit            reduce using rule 11 (F -> F subroutine id B end subroutine .)
 
 
-state 94
+state 96
+
+    (2) V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .
+
+    integer         reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    real            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    subroutine      reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    end             reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    id              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    read            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    print           reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    if              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    do              reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    swap            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+    exit            reduce using rule 2 (V -> V Tipo Dim doubleColon Rid action_addSymbols action_32 .)
+
+
+state 97
 
     (5) Rid -> Rid coma id .
 
@@ -1731,123 +1810,110 @@ state 94
     exit            reduce using rule 5 (Rid -> Rid coma id .)
 
 
-state 95
-
-    (9) Dim -> openBra int closedBra openBra int . closedBra
-
-    closedBra       shift and go to state 119
-
-
-state 96
-
-    (50) EAParens -> openParen EA closedParen .
-
-    mul             reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    div             reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    coma            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    plus            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    minus           reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    closedParen     reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    end             reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    id              reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    read            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    print           reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    if              reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    do              reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    swap            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    exit            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    elif            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    else            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-    then            reduce using rule 50 (EAParens -> openParen EA closedParen .)
-
-
-state 97
-
-    (25) DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .
-
-    equals          reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    coma            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    end             reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    id              reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    read            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    print           reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    if              reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    do              reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    swap            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    exit            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    elif            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    else            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    mul             reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    div             reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    plus            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    minus           reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    closedParen     reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    less            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    more            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    doubleEquals    reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    notEquals       reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    lessEquals      reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    moreEquals      reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    then            reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    and             reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-    or              reduce using rule 25 (DimensionsOrEmpty -> openParen EA ComaEAOrEmpty closedParen .)
-
-
 state 98
 
-    (42) EA -> EA SumOrSub action_3 . MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (9) Dim -> openBra int action_30 closedBra openBra . int action_31 closedBra
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    int             shift and go to state 122
 
-    MultDiv                        shift and go to state 120
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
 
 state 99
 
-    (27) ComaEAOrEmpty -> coma EA .
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (51) EAParens -> openParen EA closedParen .
 
-    closedParen     reduce using rule 27 (ComaEAOrEmpty -> coma EA .)
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    mul             reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    div             reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    plus            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    minus           reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    coma            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    closedParen     reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    end             reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    id              reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    read            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    print           reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    if              reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    do              reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    swap            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    exit            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    elif            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    else            reduce using rule 51 (EAParens -> openParen EA closedParen .)
+    then            reduce using rule 51 (EAParens -> openParen EA closedParen .)
 
-    SumOrSub                       shift and go to state 68
 
 state 100
 
-    (46) MultDiv -> MultDiv MDSymbols action_5 . EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (26) DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty . closedParen
 
-    openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    closedParen     shift and go to state 123
 
-    EAParens                       shift and go to state 121
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
 
 state 101
+
+    (28) ComaEAOrEmpty -> coma . EA action_setDim2
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EA                             shift and go to state 124
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
+
+state 102
+
+    (43) EA -> EA SumOrSub action_3 . MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    MultDiv                        shift and go to state 125
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
+
+state 103
+
+    (47) MultDiv -> MultDiv MDSymbols action_5 . EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 47
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EAParens                       shift and go to state 126
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
+
+state 104
 
     (15) S -> Dimensional action_7 equals EA action_8 .
 
@@ -1863,23 +1929,23 @@ state 101
     else            reduce using rule 15 (S -> Dimensional action_7 equals EA action_8 .)
 
 
-state 102
+state 105
 
     (19) S -> if action_16 Relif ElseOrEmpty end . if action_20
 
-    if              shift and go to state 122
+    if              shift and go to state 127
 
 
-state 103
+state 106
 
-    (36) Relif -> Relif elif action_18 . openParen EL closedParen action_17 then B
+    (37) Relif -> Relif elif action_18 . openParen EL closedParen action_17 then B
 
-    openParen       shift and go to state 123
+    openParen       shift and go to state 128
 
 
-state 104
+state 107
 
-    (37) ElseOrEmpty -> else action_19 . B
+    (38) ElseOrEmpty -> else action_19 . B
     (13) B -> . B S
     (14) B -> .
 
@@ -1892,263 +1958,312 @@ state 104
     exit            reduce using rule 14 (B -> .)
     end             reduce using rule 14 (B -> .)
 
-    B                              shift and go to state 124
-
-state 105
-
-    (56) Equality -> openParen EL . closedParen
-    (52) EL -> EL . or action_10 AND action_9
-
-    closedParen     shift and go to state 125
-    or              shift and go to state 107
-
-
-state 106
-
-    (35) Relif -> openParen EL closedParen . action_17 then B
-    (84) action_17 -> .
-
-    then            reduce using rule 84 (action_17 -> .)
-
-    action_17                      shift and go to state 126
-
-state 107
-
-    (52) EL -> EL or . action_10 AND action_9
-    (77) action_10 -> .
-
-    openParen       reduce using rule 77 (action_10 -> .)
-    not             reduce using rule 77 (action_10 -> .)
-    int             reduce using rule 77 (action_10 -> .)
-    rea             reduce using rule 77 (action_10 -> .)
-    id              reduce using rule 77 (action_10 -> .)
-
-    action_10                      shift and go to state 127
+    B                              shift and go to state 129
 
 state 108
 
-    (54) AND -> AND and . action_12 Equality action_11
-    (79) action_12 -> .
+    (57) Equality -> openParen EL . closedParen
+    (53) EL -> EL . or action_10 AND action_9
 
-    openParen       reduce using rule 79 (action_12 -> .)
-    not             reduce using rule 79 (action_12 -> .)
-    int             reduce using rule 79 (action_12 -> .)
-    rea             reduce using rule 79 (action_12 -> .)
-    id              reduce using rule 79 (action_12 -> .)
+    closedParen     shift and go to state 130
+    or              shift and go to state 110
 
-    action_12                      shift and go to state 128
 
 state 109
 
-    (55) Equality -> EItem EQSymbols . action_13 EItem action_14
-    (80) action_13 -> .
+    (36) Relif -> openParen EL closedParen . action_17 then B
+    (86) action_17 -> .
 
-    int             reduce using rule 80 (action_13 -> .)
-    rea             reduce using rule 80 (action_13 -> .)
-    id              reduce using rule 80 (action_13 -> .)
+    then            reduce using rule 86 (action_17 -> .)
 
-    action_13                      shift and go to state 129
+    action_17                      shift and go to state 131
 
 state 110
 
-    (61) EQSymbols -> less .
+    (53) EL -> EL or . action_10 AND action_9
+    (79) action_10 -> .
 
-    int             reduce using rule 61 (EQSymbols -> less .)
-    rea             reduce using rule 61 (EQSymbols -> less .)
-    id              reduce using rule 61 (EQSymbols -> less .)
+    openParen       reduce using rule 79 (action_10 -> .)
+    not             reduce using rule 79 (action_10 -> .)
+    int             reduce using rule 79 (action_10 -> .)
+    rea             reduce using rule 79 (action_10 -> .)
+    id              reduce using rule 79 (action_10 -> .)
 
+    action_10                      shift and go to state 132
 
 state 111
 
-    (62) EQSymbols -> more .
+    (55) AND -> AND and . action_12 Equality action_11
+    (81) action_12 -> .
 
-    int             reduce using rule 62 (EQSymbols -> more .)
-    rea             reduce using rule 62 (EQSymbols -> more .)
-    id              reduce using rule 62 (EQSymbols -> more .)
+    openParen       reduce using rule 81 (action_12 -> .)
+    not             reduce using rule 81 (action_12 -> .)
+    int             reduce using rule 81 (action_12 -> .)
+    rea             reduce using rule 81 (action_12 -> .)
+    id              reduce using rule 81 (action_12 -> .)
 
+    action_12                      shift and go to state 133
 
 state 112
 
-    (63) EQSymbols -> doubleEquals .
+    (56) Equality -> EItem EQSymbols . action_13 EItem action_14
+    (82) action_13 -> .
 
-    int             reduce using rule 63 (EQSymbols -> doubleEquals .)
-    rea             reduce using rule 63 (EQSymbols -> doubleEquals .)
-    id              reduce using rule 63 (EQSymbols -> doubleEquals .)
+    int             reduce using rule 82 (action_13 -> .)
+    rea             reduce using rule 82 (action_13 -> .)
+    id              reduce using rule 82 (action_13 -> .)
 
+    action_13                      shift and go to state 134
 
 state 113
 
-    (64) EQSymbols -> notEquals .
+    (62) EQSymbols -> less .
 
-    int             reduce using rule 64 (EQSymbols -> notEquals .)
-    rea             reduce using rule 64 (EQSymbols -> notEquals .)
-    id              reduce using rule 64 (EQSymbols -> notEquals .)
+    int             reduce using rule 62 (EQSymbols -> less .)
+    rea             reduce using rule 62 (EQSymbols -> less .)
+    id              reduce using rule 62 (EQSymbols -> less .)
 
 
 state 114
 
-    (65) EQSymbols -> lessEquals .
+    (63) EQSymbols -> more .
 
-    int             reduce using rule 65 (EQSymbols -> lessEquals .)
-    rea             reduce using rule 65 (EQSymbols -> lessEquals .)
-    id              reduce using rule 65 (EQSymbols -> lessEquals .)
+    int             reduce using rule 63 (EQSymbols -> more .)
+    rea             reduce using rule 63 (EQSymbols -> more .)
+    id              reduce using rule 63 (EQSymbols -> more .)
 
 
 state 115
 
-    (66) EQSymbols -> moreEquals .
+    (64) EQSymbols -> doubleEquals .
 
-    int             reduce using rule 66 (EQSymbols -> moreEquals .)
-    rea             reduce using rule 66 (EQSymbols -> moreEquals .)
-    id              reduce using rule 66 (EQSymbols -> moreEquals .)
+    int             reduce using rule 64 (EQSymbols -> doubleEquals .)
+    rea             reduce using rule 64 (EQSymbols -> doubleEquals .)
+    id              reduce using rule 64 (EQSymbols -> doubleEquals .)
 
 
 state 116
 
-    (57) Equality -> not EL . action_15
-    (52) EL -> EL . or action_10 AND action_9
-    (82) action_15 -> .
+    (65) EQSymbols -> notEquals .
 
-  ! shift/reduce conflict for or resolved as shift
-    or              shift and go to state 107
-    and             reduce using rule 82 (action_15 -> .)
-    closedParen     reduce using rule 82 (action_15 -> .)
+    int             reduce using rule 65 (EQSymbols -> notEquals .)
+    rea             reduce using rule 65 (EQSymbols -> notEquals .)
+    id              reduce using rule 65 (EQSymbols -> notEquals .)
 
-  ! or              [ reduce using rule 82 (action_15 -> .) ]
-
-    action_15                      shift and go to state 130
 
 state 117
 
-    (20) S -> do id action_24 equals EA . action_25 coma EA action_26 IntOrEmpty then B action_29 end do
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (92) action_25 -> .
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (66) EQSymbols -> lessEquals .
 
-    coma            reduce using rule 92 (action_25 -> .)
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    int             reduce using rule 66 (EQSymbols -> lessEquals .)
+    rea             reduce using rule 66 (EQSymbols -> lessEquals .)
+    id              reduce using rule 66 (EQSymbols -> lessEquals .)
 
-    action_25                      shift and go to state 131
-    SumOrSub                       shift and go to state 68
 
 state 118
 
-    (21) S -> do then action_21 B action_22 . end do
+    (67) EQSymbols -> moreEquals .
 
-    end             shift and go to state 132
+    int             reduce using rule 67 (EQSymbols -> moreEquals .)
+    rea             reduce using rule 67 (EQSymbols -> moreEquals .)
+    id              reduce using rule 67 (EQSymbols -> moreEquals .)
 
 
 state 119
 
-    (9) Dim -> openBra int closedBra openBra int closedBra .
+    (58) Equality -> not EL . action_15
+    (53) EL -> EL . or action_10 AND action_9
+    (84) action_15 -> .
 
-    doubleColon     reduce using rule 9 (Dim -> openBra int closedBra openBra int closedBra .)
+  ! shift/reduce conflict for or resolved as shift
+    or              shift and go to state 110
+    and             reduce using rule 84 (action_15 -> .)
+    closedParen     reduce using rule 84 (action_15 -> .)
 
+  ! or              [ reduce using rule 84 (action_15 -> .) ]
+
+    action_15                      shift and go to state 135
 
 state 120
 
-    (42) EA -> EA SumOrSub action_3 MultDiv . action_4
-    (46) MultDiv -> MultDiv . MDSymbols action_5 EAParens action_6
-    (71) action_4 -> .
-    (47) MDSymbols -> . mul
-    (48) MDSymbols -> . div
+    (20) S -> do id action_24 equals EA . action_25 coma EA action_26 IntOrEmpty then B action_29 end do
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (94) action_25 -> .
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
 
-    coma            reduce using rule 71 (action_4 -> .)
-    plus            reduce using rule 71 (action_4 -> .)
-    minus           reduce using rule 71 (action_4 -> .)
-    closedParen     reduce using rule 71 (action_4 -> .)
-    end             reduce using rule 71 (action_4 -> .)
-    id              reduce using rule 71 (action_4 -> .)
-    read            reduce using rule 71 (action_4 -> .)
-    print           reduce using rule 71 (action_4 -> .)
-    if              reduce using rule 71 (action_4 -> .)
-    do              reduce using rule 71 (action_4 -> .)
-    swap            reduce using rule 71 (action_4 -> .)
-    exit            reduce using rule 71 (action_4 -> .)
-    elif            reduce using rule 71 (action_4 -> .)
-    else            reduce using rule 71 (action_4 -> .)
-    then            reduce using rule 71 (action_4 -> .)
-    mul             shift and go to state 73
-    div             shift and go to state 74
+    coma            reduce using rule 94 (action_25 -> .)
+    plus            shift and go to state 72
+    minus           shift and go to state 73
 
-    action_4                       shift and go to state 133
-    MDSymbols                      shift and go to state 72
+    action_25                      shift and go to state 136
+    SumOrSub                       shift and go to state 71
 
 state 121
 
-    (46) MultDiv -> MultDiv MDSymbols action_5 EAParens . action_6
-    (73) action_6 -> .
+    (21) S -> do then action_21 B action_22 . end do
 
-    mul             reduce using rule 73 (action_6 -> .)
-    div             reduce using rule 73 (action_6 -> .)
-    coma            reduce using rule 73 (action_6 -> .)
-    plus            reduce using rule 73 (action_6 -> .)
-    minus           reduce using rule 73 (action_6 -> .)
-    closedParen     reduce using rule 73 (action_6 -> .)
-    end             reduce using rule 73 (action_6 -> .)
-    id              reduce using rule 73 (action_6 -> .)
-    read            reduce using rule 73 (action_6 -> .)
-    print           reduce using rule 73 (action_6 -> .)
-    if              reduce using rule 73 (action_6 -> .)
-    do              reduce using rule 73 (action_6 -> .)
-    swap            reduce using rule 73 (action_6 -> .)
-    exit            reduce using rule 73 (action_6 -> .)
-    elif            reduce using rule 73 (action_6 -> .)
-    else            reduce using rule 73 (action_6 -> .)
-    then            reduce using rule 73 (action_6 -> .)
+    end             shift and go to state 137
 
-    action_6                       shift and go to state 134
 
 state 122
 
-    (19) S -> if action_16 Relif ElseOrEmpty end if . action_20
-    (87) action_20 -> .
+    (9) Dim -> openBra int action_30 closedBra openBra int . action_31 closedBra
+    (100) action_31 -> .
 
-    end             reduce using rule 87 (action_20 -> .)
-    id              reduce using rule 87 (action_20 -> .)
-    read            reduce using rule 87 (action_20 -> .)
-    print           reduce using rule 87 (action_20 -> .)
-    if              reduce using rule 87 (action_20 -> .)
-    do              reduce using rule 87 (action_20 -> .)
-    swap            reduce using rule 87 (action_20 -> .)
-    exit            reduce using rule 87 (action_20 -> .)
-    elif            reduce using rule 87 (action_20 -> .)
-    else            reduce using rule 87 (action_20 -> .)
+    closedBra       reduce using rule 100 (action_31 -> .)
 
-    action_20                      shift and go to state 135
+    action_31                      shift and go to state 138
 
 state 123
 
-    (36) Relif -> Relif elif action_18 openParen . EL closedParen action_17 then B
-    (51) EL -> . AND
-    (52) EL -> . EL or action_10 AND action_9
-    (53) AND -> . Equality
-    (54) AND -> . AND and action_12 Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (26) DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .
 
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
+    equals          reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    coma            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    end             reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    id              reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    read            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    print           reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    if              reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    do              reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    swap            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    exit            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    elif            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    else            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    mul             reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    div             reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    plus            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    minus           reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    closedParen     reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    less            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    more            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    doubleEquals    reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    notEquals       reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    lessEquals      reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    moreEquals      reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    then            reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    and             reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
+    or              reduce using rule 26 (DimensionsOrEmpty -> openParen EA action_setDim1 ComaEAOrEmpty closedParen .)
 
-    EL                             shift and go to state 136
-    AND                            shift and go to state 86
-    Equality                       shift and go to state 87
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
 
 state 124
 
-    (37) ElseOrEmpty -> else action_19 B .
+    (28) ComaEAOrEmpty -> coma EA . action_setDim2
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (103) action_setDim2 -> .
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
+
+    closedParen     reduce using rule 103 (action_setDim2 -> .)
+    plus            shift and go to state 72
+    minus           shift and go to state 73
+
+    action_setDim2                 shift and go to state 139
+    SumOrSub                       shift and go to state 71
+
+state 125
+
+    (43) EA -> EA SumOrSub action_3 MultDiv . action_4
+    (47) MultDiv -> MultDiv . MDSymbols action_5 EAParens action_6
+    (73) action_4 -> .
+    (48) MDSymbols -> . mul
+    (49) MDSymbols -> . div
+
+    plus            reduce using rule 73 (action_4 -> .)
+    minus           reduce using rule 73 (action_4 -> .)
+    coma            reduce using rule 73 (action_4 -> .)
+    closedParen     reduce using rule 73 (action_4 -> .)
+    end             reduce using rule 73 (action_4 -> .)
+    id              reduce using rule 73 (action_4 -> .)
+    read            reduce using rule 73 (action_4 -> .)
+    print           reduce using rule 73 (action_4 -> .)
+    if              reduce using rule 73 (action_4 -> .)
+    do              reduce using rule 73 (action_4 -> .)
+    swap            reduce using rule 73 (action_4 -> .)
+    exit            reduce using rule 73 (action_4 -> .)
+    elif            reduce using rule 73 (action_4 -> .)
+    else            reduce using rule 73 (action_4 -> .)
+    then            reduce using rule 73 (action_4 -> .)
+    mul             shift and go to state 75
+    div             shift and go to state 76
+
+    action_4                       shift and go to state 140
+    MDSymbols                      shift and go to state 74
+
+state 126
+
+    (47) MultDiv -> MultDiv MDSymbols action_5 EAParens . action_6
+    (75) action_6 -> .
+
+    mul             reduce using rule 75 (action_6 -> .)
+    div             reduce using rule 75 (action_6 -> .)
+    plus            reduce using rule 75 (action_6 -> .)
+    minus           reduce using rule 75 (action_6 -> .)
+    coma            reduce using rule 75 (action_6 -> .)
+    closedParen     reduce using rule 75 (action_6 -> .)
+    end             reduce using rule 75 (action_6 -> .)
+    id              reduce using rule 75 (action_6 -> .)
+    read            reduce using rule 75 (action_6 -> .)
+    print           reduce using rule 75 (action_6 -> .)
+    if              reduce using rule 75 (action_6 -> .)
+    do              reduce using rule 75 (action_6 -> .)
+    swap            reduce using rule 75 (action_6 -> .)
+    exit            reduce using rule 75 (action_6 -> .)
+    elif            reduce using rule 75 (action_6 -> .)
+    else            reduce using rule 75 (action_6 -> .)
+    then            reduce using rule 75 (action_6 -> .)
+
+    action_6                       shift and go to state 141
+
+state 127
+
+    (19) S -> if action_16 Relif ElseOrEmpty end if . action_20
+    (89) action_20 -> .
+
+    end             reduce using rule 89 (action_20 -> .)
+    id              reduce using rule 89 (action_20 -> .)
+    read            reduce using rule 89 (action_20 -> .)
+    print           reduce using rule 89 (action_20 -> .)
+    if              reduce using rule 89 (action_20 -> .)
+    do              reduce using rule 89 (action_20 -> .)
+    swap            reduce using rule 89 (action_20 -> .)
+    exit            reduce using rule 89 (action_20 -> .)
+    elif            reduce using rule 89 (action_20 -> .)
+    else            reduce using rule 89 (action_20 -> .)
+
+    action_20                      shift and go to state 142
+
+state 128
+
+    (37) Relif -> Relif elif action_18 openParen . EL closedParen action_17 then B
+    (52) EL -> . AND
+    (53) EL -> . EL or action_10 AND action_9
+    (54) AND -> . Equality
+    (55) AND -> . AND and action_12 Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
+
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
+
+    EL                             shift and go to state 143
+    AND                            shift and go to state 88
+    Equality                       shift and go to state 89
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
+
+state 129
+
+    (38) ElseOrEmpty -> else action_19 B .
     (13) B -> B . S
     (15) S -> . Dimensional action_7 equals EA action_8
     (16) S -> . id parens
@@ -2159,9 +2274,10 @@ state 124
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    end             reduce using rule 37 (ElseOrEmpty -> else action_19 B .)
+    end             reduce using rule 38 (ElseOrEmpty -> else action_19 B .)
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -2173,150 +2289,164 @@ state 124
     S                              shift and go to state 15
     Dimensional                    shift and go to state 16
 
-state 125
-
-    (56) Equality -> openParen EL closedParen .
-
-    and             reduce using rule 56 (Equality -> openParen EL closedParen .)
-    closedParen     reduce using rule 56 (Equality -> openParen EL closedParen .)
-    or              reduce using rule 56 (Equality -> openParen EL closedParen .)
-
-
-state 126
-
-    (35) Relif -> openParen EL closedParen action_17 . then B
-
-    then            shift and go to state 137
-
-
-state 127
-
-    (52) EL -> EL or action_10 . AND action_9
-    (53) AND -> . Equality
-    (54) AND -> . AND and action_12 Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
-
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
-
-    AND                            shift and go to state 138
-    Equality                       shift and go to state 87
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
-
-state 128
-
-    (54) AND -> AND and action_12 . Equality action_11
-    (55) Equality -> . EItem EQSymbols action_13 EItem action_14
-    (56) Equality -> . openParen EL closedParen
-    (57) Equality -> . not EL action_15
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
-
-    openParen       shift and go to state 84
-    not             shift and go to state 89
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
-
-    Equality                       shift and go to state 139
-    EItem                          shift and go to state 88
-    Dimensional                    shift and go to state 52
-
-state 129
-
-    (55) Equality -> EItem EQSymbols action_13 . EItem action_14
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
-
-    int             shift and go to state 53
-    rea             shift and go to state 54
-    id              shift and go to state 33
-
-    EItem                          shift and go to state 140
-    Dimensional                    shift and go to state 52
-
 state 130
 
-    (57) Equality -> not EL action_15 .
+    (57) Equality -> openParen EL closedParen .
 
-    and             reduce using rule 57 (Equality -> not EL action_15 .)
-    closedParen     reduce using rule 57 (Equality -> not EL action_15 .)
-    or              reduce using rule 57 (Equality -> not EL action_15 .)
+    and             reduce using rule 57 (Equality -> openParen EL closedParen .)
+    closedParen     reduce using rule 57 (Equality -> openParen EL closedParen .)
+    or              reduce using rule 57 (Equality -> openParen EL closedParen .)
 
 
 state 131
 
-    (20) S -> do id action_24 equals EA action_25 . coma EA action_26 IntOrEmpty then B action_29 end do
+    (36) Relif -> openParen EL closedParen action_17 . then B
 
-    coma            shift and go to state 141
+    then            shift and go to state 144
 
 
 state 132
 
-    (21) S -> do then action_21 B action_22 end . do
+    (53) EL -> EL or action_10 . AND action_9
+    (54) AND -> . Equality
+    (55) AND -> . AND and action_12 Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    do              shift and go to state 142
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
 
+    AND                            shift and go to state 145
+    Equality                       shift and go to state 89
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
 
 state 133
 
-    (42) EA -> EA SumOrSub action_3 MultDiv action_4 .
+    (55) AND -> AND and action_12 . Equality action_11
+    (56) Equality -> . EItem EQSymbols action_13 EItem action_14
+    (57) Equality -> . openParen EL closedParen
+    (58) Equality -> . not EL action_15
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    coma            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    plus            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    minus           reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    closedParen     reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    end             reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    id              reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    read            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    print           reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    if              reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    do              reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    swap            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    exit            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    elif            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    else            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
-    then            reduce using rule 42 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    openParen       shift and go to state 86
+    not             shift and go to state 91
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
 
+    Equality                       shift and go to state 146
+    EItem                          shift and go to state 90
+    Dimensional                    shift and go to state 53
 
 state 134
 
-    (46) MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .
+    (56) Equality -> EItem EQSymbols action_13 . EItem action_14
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    mul             reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    div             reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    coma            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    plus            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    minus           reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    closedParen     reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    end             reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    id              reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    read            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    print           reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    if              reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    do              reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    swap            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    exit            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    elif            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    else            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
-    then            reduce using rule 46 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    int             shift and go to state 54
+    rea             shift and go to state 55
+    id              shift and go to state 33
 
+    EItem                          shift and go to state 147
+    Dimensional                    shift and go to state 53
 
 state 135
+
+    (58) Equality -> not EL action_15 .
+
+    and             reduce using rule 58 (Equality -> not EL action_15 .)
+    closedParen     reduce using rule 58 (Equality -> not EL action_15 .)
+    or              reduce using rule 58 (Equality -> not EL action_15 .)
+
+
+state 136
+
+    (20) S -> do id action_24 equals EA action_25 . coma EA action_26 IntOrEmpty then B action_29 end do
+
+    coma            shift and go to state 148
+
+
+state 137
+
+    (21) S -> do then action_21 B action_22 end . do
+
+    do              shift and go to state 149
+
+
+state 138
+
+    (9) Dim -> openBra int action_30 closedBra openBra int action_31 . closedBra
+
+    closedBra       shift and go to state 150
+
+
+state 139
+
+    (28) ComaEAOrEmpty -> coma EA action_setDim2 .
+
+    closedParen     reduce using rule 28 (ComaEAOrEmpty -> coma EA action_setDim2 .)
+
+
+state 140
+
+    (43) EA -> EA SumOrSub action_3 MultDiv action_4 .
+
+    plus            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    minus           reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    coma            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    closedParen     reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    end             reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    id              reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    read            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    print           reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    if              reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    do              reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    swap            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    exit            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    elif            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    else            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+    then            reduce using rule 43 (EA -> EA SumOrSub action_3 MultDiv action_4 .)
+
+
+state 141
+
+    (47) MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .
+
+    mul             reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    div             reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    plus            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    minus           reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    coma            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    closedParen     reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    end             reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    id              reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    read            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    print           reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    if              reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    do              reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    swap            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    exit            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    elif            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    else            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+    then            reduce using rule 47 (MultDiv -> MultDiv MDSymbols action_5 EAParens action_6 .)
+
+
+state 142
 
     (19) S -> if action_16 Relif ElseOrEmpty end if action_20 .
 
@@ -2332,18 +2462,18 @@ state 135
     else            reduce using rule 19 (S -> if action_16 Relif ElseOrEmpty end if action_20 .)
 
 
-state 136
+state 143
 
-    (36) Relif -> Relif elif action_18 openParen EL . closedParen action_17 then B
-    (52) EL -> EL . or action_10 AND action_9
+    (37) Relif -> Relif elif action_18 openParen EL . closedParen action_17 then B
+    (53) EL -> EL . or action_10 AND action_9
 
-    closedParen     shift and go to state 143
-    or              shift and go to state 107
+    closedParen     shift and go to state 151
+    or              shift and go to state 110
 
 
-state 137
+state 144
 
-    (35) Relif -> openParen EL closedParen action_17 then . B
+    (36) Relif -> openParen EL closedParen action_17 then . B
     (13) B -> . B S
     (14) B -> .
 
@@ -2358,71 +2488,71 @@ state 137
     else            reduce using rule 14 (B -> .)
     end             reduce using rule 14 (B -> .)
 
-    B                              shift and go to state 144
+    B                              shift and go to state 152
 
-state 138
+state 145
 
-    (52) EL -> EL or action_10 AND . action_9
-    (54) AND -> AND . and action_12 Equality action_11
-    (76) action_9 -> .
+    (53) EL -> EL or action_10 AND . action_9
+    (55) AND -> AND . and action_12 Equality action_11
+    (78) action_9 -> .
 
   ! shift/reduce conflict for and resolved as shift
-    and             shift and go to state 108
-    closedParen     reduce using rule 76 (action_9 -> .)
-    or              reduce using rule 76 (action_9 -> .)
+    and             shift and go to state 111
+    closedParen     reduce using rule 78 (action_9 -> .)
+    or              reduce using rule 78 (action_9 -> .)
 
-  ! and             [ reduce using rule 76 (action_9 -> .) ]
+  ! and             [ reduce using rule 78 (action_9 -> .) ]
 
-    action_9                       shift and go to state 145
+    action_9                       shift and go to state 153
 
-state 139
+state 146
 
-    (54) AND -> AND and action_12 Equality . action_11
-    (78) action_11 -> .
+    (55) AND -> AND and action_12 Equality . action_11
+    (80) action_11 -> .
 
-    and             reduce using rule 78 (action_11 -> .)
-    closedParen     reduce using rule 78 (action_11 -> .)
-    or              reduce using rule 78 (action_11 -> .)
+    and             reduce using rule 80 (action_11 -> .)
+    closedParen     reduce using rule 80 (action_11 -> .)
+    or              reduce using rule 80 (action_11 -> .)
 
-    action_11                      shift and go to state 146
+    action_11                      shift and go to state 154
 
-state 140
+state 147
 
-    (55) Equality -> EItem EQSymbols action_13 EItem . action_14
-    (81) action_14 -> .
+    (56) Equality -> EItem EQSymbols action_13 EItem . action_14
+    (83) action_14 -> .
 
-    and             reduce using rule 81 (action_14 -> .)
-    closedParen     reduce using rule 81 (action_14 -> .)
-    or              reduce using rule 81 (action_14 -> .)
+    and             reduce using rule 83 (action_14 -> .)
+    closedParen     reduce using rule 83 (action_14 -> .)
+    or              reduce using rule 83 (action_14 -> .)
 
-    action_14                      shift and go to state 147
+    action_14                      shift and go to state 155
 
-state 141
+state 148
 
     (20) S -> do id action_24 equals EA action_25 coma . EA action_26 IntOrEmpty then B action_29 end do
-    (41) EA -> . MultDiv
-    (42) EA -> . EA SumOrSub action_3 MultDiv action_4
-    (45) MultDiv -> . EAParens
-    (46) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
-    (49) EAParens -> . EItem
-    (50) EAParens -> . openParen EA closedParen
-    (58) EItem -> . Dimensional action_1
-    (59) EItem -> . int action_2
-    (60) EItem -> . rea action_2_rea
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (42) EA -> . MultDiv
+    (43) EA -> . EA SumOrSub action_3 MultDiv action_4
+    (46) MultDiv -> . EAParens
+    (47) MultDiv -> . MultDiv MDSymbols action_5 EAParens action_6
+    (50) EAParens -> . EItem
+    (51) EAParens -> . openParen EA closedParen
+    (59) EItem -> . Dimensional action_1
+    (60) EItem -> . int action_2
+    (61) EItem -> . rea action_2_rea
+    (25) Dimensional -> . id DimensionsOrEmpty
 
     openParen       shift and go to state 47
-    int             shift and go to state 53
-    rea             shift and go to state 54
+    int             shift and go to state 54
+    rea             shift and go to state 55
     id              shift and go to state 33
 
-    EA                             shift and go to state 148
-    MultDiv                        shift and go to state 49
-    EAParens                       shift and go to state 50
-    EItem                          shift and go to state 51
-    Dimensional                    shift and go to state 52
+    EA                             shift and go to state 156
+    MultDiv                        shift and go to state 50
+    EAParens                       shift and go to state 51
+    EItem                          shift and go to state 52
+    Dimensional                    shift and go to state 53
 
-state 142
+state 149
 
     (21) S -> do then action_21 B action_22 end do .
 
@@ -2438,18 +2568,25 @@ state 142
     else            reduce using rule 21 (S -> do then action_21 B action_22 end do .)
 
 
-state 143
+state 150
 
-    (36) Relif -> Relif elif action_18 openParen EL closedParen . action_17 then B
-    (84) action_17 -> .
+    (9) Dim -> openBra int action_30 closedBra openBra int action_31 closedBra .
 
-    then            reduce using rule 84 (action_17 -> .)
+    doubleColon     reduce using rule 9 (Dim -> openBra int action_30 closedBra openBra int action_31 closedBra .)
 
-    action_17                      shift and go to state 149
 
-state 144
+state 151
 
-    (35) Relif -> openParen EL closedParen action_17 then B .
+    (37) Relif -> Relif elif action_18 openParen EL closedParen . action_17 then B
+    (86) action_17 -> .
+
+    then            reduce using rule 86 (action_17 -> .)
+
+    action_17                      shift and go to state 157
+
+state 152
+
+    (36) Relif -> openParen EL closedParen action_17 then B .
     (13) B -> B . S
     (15) S -> . Dimensional action_7 equals EA action_8
     (16) S -> . id parens
@@ -2460,11 +2597,12 @@ state 144
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    elif            reduce using rule 35 (Relif -> openParen EL closedParen action_17 then B .)
-    else            reduce using rule 35 (Relif -> openParen EL closedParen action_17 then B .)
-    end             reduce using rule 35 (Relif -> openParen EL closedParen action_17 then B .)
+    elif            reduce using rule 36 (Relif -> openParen EL closedParen action_17 then B .)
+    else            reduce using rule 36 (Relif -> openParen EL closedParen action_17 then B .)
+    end             reduce using rule 36 (Relif -> openParen EL closedParen action_17 then B .)
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -2476,72 +2614,72 @@ state 144
     S                              shift and go to state 15
     Dimensional                    shift and go to state 16
 
-state 145
+state 153
 
-    (52) EL -> EL or action_10 AND action_9 .
+    (53) EL -> EL or action_10 AND action_9 .
 
-    closedParen     reduce using rule 52 (EL -> EL or action_10 AND action_9 .)
-    or              reduce using rule 52 (EL -> EL or action_10 AND action_9 .)
-    and             reduce using rule 52 (EL -> EL or action_10 AND action_9 .)
-
-
-state 146
-
-    (54) AND -> AND and action_12 Equality action_11 .
-
-    and             reduce using rule 54 (AND -> AND and action_12 Equality action_11 .)
-    closedParen     reduce using rule 54 (AND -> AND and action_12 Equality action_11 .)
-    or              reduce using rule 54 (AND -> AND and action_12 Equality action_11 .)
+    closedParen     reduce using rule 53 (EL -> EL or action_10 AND action_9 .)
+    or              reduce using rule 53 (EL -> EL or action_10 AND action_9 .)
+    and             reduce using rule 53 (EL -> EL or action_10 AND action_9 .)
 
 
-state 147
+state 154
 
-    (55) Equality -> EItem EQSymbols action_13 EItem action_14 .
+    (55) AND -> AND and action_12 Equality action_11 .
 
-    and             reduce using rule 55 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
-    closedParen     reduce using rule 55 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
-    or              reduce using rule 55 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
+    and             reduce using rule 55 (AND -> AND and action_12 Equality action_11 .)
+    closedParen     reduce using rule 55 (AND -> AND and action_12 Equality action_11 .)
+    or              reduce using rule 55 (AND -> AND and action_12 Equality action_11 .)
 
 
-state 148
+state 155
+
+    (56) Equality -> EItem EQSymbols action_13 EItem action_14 .
+
+    and             reduce using rule 56 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
+    closedParen     reduce using rule 56 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
+    or              reduce using rule 56 (Equality -> EItem EQSymbols action_13 EItem action_14 .)
+
+
+state 156
 
     (20) S -> do id action_24 equals EA action_25 coma EA . action_26 IntOrEmpty then B action_29 end do
-    (42) EA -> EA . SumOrSub action_3 MultDiv action_4
-    (93) action_26 -> .
-    (43) SumOrSub -> . plus
-    (44) SumOrSub -> . minus
+    (43) EA -> EA . SumOrSub action_3 MultDiv action_4
+    (95) action_26 -> .
+    (44) SumOrSub -> . plus
+    (45) SumOrSub -> . minus
 
-    coma            reduce using rule 93 (action_26 -> .)
-    then            reduce using rule 93 (action_26 -> .)
-    plus            shift and go to state 70
-    minus           shift and go to state 71
+    coma            reduce using rule 95 (action_26 -> .)
+    then            reduce using rule 95 (action_26 -> .)
+    plus            shift and go to state 72
+    minus           shift and go to state 73
 
-    action_26                      shift and go to state 150
-    SumOrSub                       shift and go to state 68
+    action_26                      shift and go to state 158
+    SumOrSub                       shift and go to state 71
 
-state 149
+state 157
 
-    (36) Relif -> Relif elif action_18 openParen EL closedParen action_17 . then B
+    (37) Relif -> Relif elif action_18 openParen EL closedParen action_17 . then B
 
-    then            shift and go to state 151
+    then            shift and go to state 159
 
 
-state 150
+state 158
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 . IntOrEmpty then B action_29 end do
-    (39) IntOrEmpty -> . coma int action_28
-    (40) IntOrEmpty -> . action_27
-    (94) action_27 -> .
+    (40) IntOrEmpty -> . coma int action_28
+    (41) IntOrEmpty -> . action_27
+    (96) action_27 -> .
 
-    coma            shift and go to state 152
-    then            reduce using rule 94 (action_27 -> .)
+    coma            shift and go to state 160
+    then            reduce using rule 96 (action_27 -> .)
 
-    IntOrEmpty                     shift and go to state 153
-    action_27                      shift and go to state 154
+    IntOrEmpty                     shift and go to state 161
+    action_27                      shift and go to state 162
 
-state 151
+state 159
 
-    (36) Relif -> Relif elif action_18 openParen EL closedParen action_17 then . B
+    (37) Relif -> Relif elif action_18 openParen EL closedParen action_17 then . B
     (13) B -> . B S
     (14) B -> .
 
@@ -2556,32 +2694,32 @@ state 151
     else            reduce using rule 14 (B -> .)
     end             reduce using rule 14 (B -> .)
 
-    B                              shift and go to state 155
+    B                              shift and go to state 163
 
-state 152
+state 160
 
-    (39) IntOrEmpty -> coma . int action_28
+    (40) IntOrEmpty -> coma . int action_28
 
-    int             shift and go to state 156
+    int             shift and go to state 164
 
 
-state 153
+state 161
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty . then B action_29 end do
 
-    then            shift and go to state 157
+    then            shift and go to state 165
 
 
-state 154
+state 162
 
-    (40) IntOrEmpty -> action_27 .
+    (41) IntOrEmpty -> action_27 .
 
-    then            reduce using rule 40 (IntOrEmpty -> action_27 .)
+    then            reduce using rule 41 (IntOrEmpty -> action_27 .)
 
 
-state 155
+state 163
 
-    (36) Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .
+    (37) Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .
     (13) B -> B . S
     (15) S -> . Dimensional action_7 equals EA action_8
     (16) S -> . id parens
@@ -2592,11 +2730,12 @@ state 155
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    elif            reduce using rule 36 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
-    else            reduce using rule 36 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
-    end             reduce using rule 36 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
+    elif            reduce using rule 37 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
+    else            reduce using rule 37 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
+    end             reduce using rule 37 (Relif -> Relif elif action_18 openParen EL closedParen action_17 then B .)
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -2608,16 +2747,16 @@ state 155
     S                              shift and go to state 15
     Dimensional                    shift and go to state 16
 
-state 156
+state 164
 
-    (39) IntOrEmpty -> coma int . action_28
-    (95) action_28 -> .
+    (40) IntOrEmpty -> coma int . action_28
+    (97) action_28 -> .
 
-    then            reduce using rule 95 (action_28 -> .)
+    then            reduce using rule 97 (action_28 -> .)
 
-    action_28                      shift and go to state 158
+    action_28                      shift and go to state 166
 
-state 157
+state 165
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then . B action_29 end do
     (13) B -> . B S
@@ -2632,20 +2771,20 @@ state 157
     exit            reduce using rule 14 (B -> .)
     end             reduce using rule 14 (B -> .)
 
-    B                              shift and go to state 159
+    B                              shift and go to state 167
 
-state 158
+state 166
 
-    (39) IntOrEmpty -> coma int action_28 .
+    (40) IntOrEmpty -> coma int action_28 .
 
-    then            reduce using rule 39 (IntOrEmpty -> coma int action_28 .)
+    then            reduce using rule 40 (IntOrEmpty -> coma int action_28 .)
 
 
-state 159
+state 167
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B . action_29 end do
     (13) B -> B . S
-    (96) action_29 -> .
+    (98) action_29 -> .
     (15) S -> . Dimensional action_7 equals EA action_8
     (16) S -> . id parens
     (17) S -> . read RDimensional
@@ -2655,9 +2794,10 @@ state 159
     (21) S -> . do then action_21 B action_22 end do
     (22) S -> . swap Dimensional coma Dimensional
     (23) S -> . exit action_23
-    (24) Dimensional -> . id DimensionsOrEmpty
+    (24) S -> . id openParen closedParen
+    (25) Dimensional -> . id DimensionsOrEmpty
 
-    end             reduce using rule 96 (action_29 -> .)
+    end             reduce using rule 98 (action_29 -> .)
     id              shift and go to state 13
     read            shift and go to state 17
     print           shift and go to state 18
@@ -2666,25 +2806,25 @@ state 159
     swap            shift and go to state 21
     exit            shift and go to state 22
 
-    action_29                      shift and go to state 160
+    action_29                      shift and go to state 168
     S                              shift and go to state 15
     Dimensional                    shift and go to state 16
 
-state 160
+state 168
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 . end do
 
-    end             shift and go to state 161
+    end             shift and go to state 169
 
 
-state 161
+state 169
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end . do
 
-    do              shift and go to state 162
+    do              shift and go to state 170
 
 
-state 162
+state 170
 
     (20) S -> do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do .
 
@@ -2702,6 +2842,6 @@ state 162
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for and in state 86 resolved as shift
-WARNING: shift/reduce conflict for or in state 116 resolved as shift
-WARNING: shift/reduce conflict for and in state 138 resolved as shift
+WARNING: shift/reduce conflict for and in state 88 resolved as shift
+WARNING: shift/reduce conflict for or in state 119 resolved as shift
+WARNING: shift/reduce conflict for and in state 145 resolved as shift
