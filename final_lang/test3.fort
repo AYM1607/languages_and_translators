@@ -1,6 +1,6 @@
 program test
-integer :: b
-if (.not. 2 > 3 .or. 5 < 4) then
-    b = 2
-end if
+integer [10] :: a, b
+integer :: c
+print a(3), ' ', b(0), ' ', c, ' hello'
+c = 2
 end program

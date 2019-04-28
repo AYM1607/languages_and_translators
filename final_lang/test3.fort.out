@@ -1,6 +1,8 @@
-> 2 3 $0
-< 5 4 $1
-.or. $0 $1 $2
-.not. $2    $0
-gotoF $0   7
-= 2    $50
+print $53
+print ' '
+print $61
+print ' '
+print $72
+print ' hello'
+print "\n"
+= 2    $72
