@@ -127,6 +127,7 @@ tokens = [
     'moreEquals',
     'id',
     'program',
+    'endline',
     'end',
     'read',
     'print',
@@ -144,6 +145,7 @@ tokens = [
 
 reserved = {
     'program': 'program',
+    'endline': 'endline',
     'end': 'end',
     'read': 'read',
     'print': 'print',
@@ -169,7 +171,7 @@ t_closedParen = r'\)'
 t_plus = r'\+'
 t_minus = r'-'
 t_mul = r'\*'
-t_string = r'\'[a-zA-Z0-9 \t\r\n\f()\[\]\&\!\@\#\$\%\^\-\=\+\/\,]*\''
+t_string = r'\'[a-zA-Z0-9 \?\:\t\r\n\f()\[\]\&\!\@\#\$\%\^\-\=\+\/\,]*\''
 t_or = r'\.or\.'
 t_and = r'\.and\.'
 t_not = r'\.not\.'
@@ -276,12 +278,13 @@ def p_B(p):
       |
     '''
 
+
 def p_S(p):
     '''
     S : Dimensional action_7 equals EA action_8
       | id parens
       | read RDimensional
-      | print RDimOrString action_35
+      | print RDimOrString
       | if action_16 Relif ElseOrEmpty end if action_20
       | do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
       | do then action_21 B action_22 end do
@@ -316,8 +319,8 @@ def p_ComaEAOrEmpty(p):
 
 def p_RDimensional(p):
     '''
-    RDimensional : Dimensional
-                 | RDimensional coma Dimensional
+    RDimensional : Dimensional action_1 action_36
+                 | RDimensional coma Dimensional action_1 action_36
     '''
 
 
@@ -332,6 +335,7 @@ def p_DimOrString(p):
     '''
     DimOrString : Dimensional action_1 action_33
                 | string action_34
+                | endline action_34
     '''
 
 
@@ -438,16 +442,12 @@ def p_EQSymbols(p):
 # -----------------------------PARSER ACTIONS---------------------------------
 # ----------------------------------------------------------------------------
 
+
 def p_action_addSymbols(p):
     "action_addSymbols :"
     for name in p[-1]:
         addSymbol(name, p[-4])
 
-###############################################################################
-###############################################################################
-#WARNING DON'T USE MULTIDIM VARIABLES ELEMENTS ON AE TO CALCULATE ANOTHER INDEX
-###############################################################################
-###############################################################################
 
 def p_action_1(p):
     "action_1 :"
@@ -464,11 +464,14 @@ def p_action_1(p):
     if dimension2 is not 0:
         indirectPointer = symbols[p[-1]]['indirectPointer']
         if isDirection(globalIndex1) or isDirection(globalIndex2):
-            resultQuadruplets.append(f'* {globalIndex1} {dimension1} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'* {globalIndex1} {dimension1} {indirectPointer}\n')
             quadrupletIndex += 1
-            resultQuadruplets.append(f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
             quadrupletIndex += 1
-            resultQuadruplets.append(f'+ {direction} {indirectPointer} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {direction} {indirectPointer} {indirectPointer}\n')
             quadrupletIndex += 1
             operandsStack.append(indirectPointer.replace('$', '*'))
         else:
@@ -477,7 +480,8 @@ def p_action_1(p):
     elif dimension1 is not 0:
         indirectPointer = symbols[p[-1]]['indirectPointer']
         if isDirection(globalIndex1):
-            resultQuadruplets.append(f'+ {direction} {globalIndex1} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {direction} {globalIndex1} {indirectPointer}\n')
             quadrupletIndex += 1
             operandsStack.append(indirectPointer.replace('$', '*'))
         else:
@@ -486,7 +490,7 @@ def p_action_1(p):
     else:
         operandsStack.append(f'${direction}')
     sType = symbols[p[-1]]['type']
-    #operandsStack.append(f'${direction}')
+    # operandsStack.append(f'${direction}')
     typesStack.append(sType)
     globalIndex1 = 0
     globalIndex2 = 0
@@ -575,11 +579,14 @@ def p_action_7(p):
     if dimension2 is not 0:
         indirectPointer = symbols[p[-1]]['indirectPointer']
         if isDirection(globalIndex1) or isDirection(globalIndex2):
-            resultQuadruplets.append(f'* {globalIndex1} {dimension1} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'* {globalIndex1} {dimension1} {indirectPointer}\n')
             quadrupletIndex += 1
-            resultQuadruplets.append(f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
             quadrupletIndex += 1
-            resultQuadruplets.append(f'+ {direction} {indirectPointer} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {direction} {indirectPointer} {indirectPointer}\n')
             quadrupletIndex += 1
             operandsStack.append(indirectPointer.replace('$', '*'))
         else:
@@ -588,7 +595,8 @@ def p_action_7(p):
     elif dimension1 is not 0:
         indirectPointer = symbols[p[-1]]['indirectPointer']
         if isDirection(globalIndex1):
-            resultQuadruplets.append(f'+ {direction} {globalIndex1} {indirectPointer}\n')
+            resultQuadruplets.append(
+                f'+ {direction} {globalIndex1} {indirectPointer}\n')
             quadrupletIndex += 1
             operandsStack.append(indirectPointer.replace('$', '*'))
         else:
@@ -597,7 +605,7 @@ def p_action_7(p):
     else:
         operandsStack.append(f'${direction}')
     sType = symbols[p[-1]]['type']
-    #operandsStack.append(f'${direction}')
+    # operandsStack.append(f'${direction}')
     typesStack.append(sType)
     globalIndex1 = 0
     globalIndex2 = 0
@@ -890,6 +898,7 @@ def p_action_29(p):
     quadrupletIndex += 1
     fillGoto(gotoFPosition, quadrupletIndex)
 
+
 def p_action_30(p):
     "action_30 :"
     global globalDimension1
@@ -905,6 +914,7 @@ def p_action_31(p):
     globalDimension2 = p[-1]
     globalDimensionalSize *= p[-1]
 
+
 def p_action_32(p):
     "action_32 :"
     global globalDimension1
@@ -913,6 +923,7 @@ def p_action_32(p):
     globalDimension1 = 0
     globalDimension2 = 0
     globalDimensionalSize = 1
+
 
 def p_action_33(p):
     "action_33 :"
@@ -930,10 +941,19 @@ def p_action_34(p):
     quadrupletIndex += 1
 
 
-def p_action_35(p):
-    "action_35 :"
+# def p_action_35(p):
+#     "action_35 :"
+#     global quadrupletIndex
+#     resultQuadruplets.append('print endline\n')
+#     quadrupletIndex += 1
+
+
+def p_action_36(p):
+    "action_36 :"
     global quadrupletIndex
-    resultQuadruplets.append('print "\\n"\n')
+    operand1 = operandsStack.pop()
+    type1 = typesStack.pop()
+    resultQuadruplets.append(f'read {operand1}\n')
     quadrupletIndex += 1
 
 

@@ -1,8 +1,0 @@
-print $53
-print ' '
-print $61
-print ' '
-print $72
-print ' hello'
-print "\n"
-= 2    $72

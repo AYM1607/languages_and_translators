@@ -1,6 +1,0 @@
-program test
-integer [10] :: a, b
-integer :: c
-print a(3), ' ', b(0), ' ', c, ' hello'
-c = 2
-end program

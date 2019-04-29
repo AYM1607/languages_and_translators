@@ -1,0 +1,53 @@
+program test
+integer :: option, result, x, y, counter, counter2,factorial, exponential
+
+do then
+    print 'Choose and option'
+    print '1 - Calculate the factorial of a number'
+    print '2 - Calculate a number to the power of another number'
+    print '3 - Calculate e to the power of a number'
+    read option
+    if (option == 1) then
+        print 'Enter the number'
+        read x
+        result = 1
+        do counter = 1, x then
+            result = result * counter
+        end do
+        print 'The result is : ', result
+    elif (option == 2) then
+        print 'Enter the base'
+        read x
+        print 'Enter the exponent'
+        read y
+        result = 1
+        do counter = 1, y then
+            result = result * x
+        end do
+        print 'The result is : ', result
+    elif (option == 3) then
+        print 'Enter the exponent'
+        read x
+        result = 0
+        do counter = 0, 10 then
+            factorial = 1
+            do counter2 = 1, counter then
+                factorial = factorial * counter2 
+            end do
+            exponential = 1
+            do counter2 = 1, counter then
+                exponential = exponential * x
+            end do
+            result = result + exponential / factorial
+        end do
+        print 'The result is : ', result
+    else
+        print 'Not a valid option'
+    end if
+    print 'Would you like to make another calculation? (type 1 for yes or 0 for no)'
+    read option
+    if (option == 0) then
+        exit
+    end if
+end do
+end program

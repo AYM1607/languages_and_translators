@@ -1,4 +1,107 @@
-+ $58 $51 $0
-= $0    $57
-= 2    $52
-== $53 $55 $0
+= 1    $30057
+<= $30057 $30053 $0
+gotoF $0 25
+= 1    $30058
+<= $30058 $30054 $1
+gotoF $1 22
+* 0 100 $30052
++ $30058 $30052 $30052
++ 20052 $30052 $30052
+* 0 100 $10050
++ $30058 $10050 $10050
++ 50 $10050 $10050
+* 0 100 $20051
++ $30058 $20051 $20051
++ 10051 $20051 $20051
++ *10050 *20051 $2
+= $2    *30052
+= 2    $20153
++ $30058 1 $2
+= $2    $30058
+goto 5
++ $30057 1 $2
+= $2    $30057
+goto 2
+= 1    $30057
+<= $30057 $30053 $2
+gotoF $2 45
+= 1    $30058
+<= $30058 $30054 $3
+gotoF $3 40
+* 0 100 $30052
++ $30058 $30052 $30052
++ 20052 $30052 $30052
+print *30052
+print ' '
+print endline
++ $30058 1 $4
+= $4    $30058
+goto 29
+print '
+'
+print endline
++ $30057 1 $4
+= $4    $30057
+goto 26
+= 1    $30057
+<= $30057 $30053 $4
+gotoF $4 67
+= 1    $30058
+<= $30058 $30054 $5
+gotoF $5 64
+print 'Enter value ('
+print $30057
+print ','
+print $30058
+print ') For matrix1
+'
+print endline
+* 0 100 $10050
++ $30058 $10050 $10050
++ 50 $10050 $10050
+read *10050
++ $30058 1 $6
+= $6    $30058
+goto 49
++ $30057 1 $6
+= $6    $30057
+goto 46
+= 1    $30057
+<= $30057 $30053 $6
+gotoF $6 89
+= 1    $30058
+<= $30058 $30054 $7
+gotoF $7 86
+print 'Enter value ('
+print $30057
+print ','
+print $30058
+print ') For matrix2
+'
+print endline
+* 0 100 $20051
++ $30058 $20051 $20051
++ 10051 $20051 $20051
+read *20051
++ $30058 1 $8
+= $8    $30058
+goto 71
++ $30057 1 $8
+= $8    $30057
+goto 68
+print 'Enter the rows of the first matrix'
+print endline
+read $30053
+print 'Enter the columns for the first matrix'
+print endline
+read $30054
+print 'Enter the rows of the second matrix'
+print endline
+read $30055
+print 'Enter the columns for the second matrix'
+print endline
+read $30056
+== $30053 $30055 $8
+gotoF $8   104
+goto   105
+goto   101
