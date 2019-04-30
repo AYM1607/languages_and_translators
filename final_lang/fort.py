@@ -46,12 +46,11 @@ globalIndex2 = 0
 # Adds a symbol to the symbols table.
 
 
-def addSymbol(name, symbolType):
+def addSymbol(name, symbolType, value = 0):
     global currentIndex
-    initialValue = 0 if symbolType == 'integer' else 0.0
     symbols[name] = {
         'type': symbolType,
-        'value': initialValue,
+        'value': value,
         'direction': currentIndex,
         'dimension1': globalDimension1,
         'dimension2': globalDimension2,
@@ -223,7 +222,7 @@ lexer = lex.lex()
 
 def p_programa(p):
     '''
-    programa : program id V F B end program
+    programa : program action_37 id V F action_38 B end program
     '''
     print('+++ Valid program')
 
@@ -267,7 +266,7 @@ def p_Dim(p):
 
 def p_F(p):
     '''
-    F : F subroutine id B end subroutine
+    F : F subroutine id action_39 B end subroutine action_40
       |
     '''
 
@@ -281,8 +280,8 @@ def p_B(p):
 
 def p_S(p):
     '''
-    S : Dimensional action_7 equals EA action_8
-      | id parens
+    S : Dimensional equals EA action_8
+      | id parens action_41
       | read RDimensional
       | print RDimOrString
       | if action_16 Relif ElseOrEmpty end if action_20
@@ -290,7 +289,6 @@ def p_S(p):
       | do then action_21 B action_22 end do
       | swap Dimensional coma Dimensional
       | exit action_23 
-      | id openParen closedParen
     '''
 
 # Adjust the action to support matrices
@@ -298,7 +296,7 @@ def p_S(p):
 
 def p_Dimensional(p):
     '''
-    Dimensional : id DimensionsOrEmpty
+    Dimensional : id DimensionsOrEmpty action_1
     '''
     p[0] = p[1]
 
@@ -319,8 +317,8 @@ def p_ComaEAOrEmpty(p):
 
 def p_RDimensional(p):
     '''
-    RDimensional : Dimensional action_1 action_36
-                 | RDimensional coma Dimensional action_1 action_36
+    RDimensional : Dimensional action_36
+                 | RDimensional coma Dimensional action_36
     '''
 
 
@@ -333,7 +331,7 @@ def p_RDimOrString(p):
 
 def p_DimOrString(p):
     '''
-    DimOrString : Dimensional action_1 action_33
+    DimOrString : Dimensional action_33
                 | string action_34
                 | endline action_34
     '''
@@ -421,7 +419,7 @@ def p_Equality(p):
 
 def p_EItem(p):
     '''
-    EItem : Dimensional action_1
+    EItem : Dimensional
           | int action_2
           | rea action_2_rea
     '''
@@ -456,13 +454,13 @@ def p_action_1(p):
     global quadrupletIndex
     global resultQuadruplets
     global avail
-    if p[-1] not in symbols:
-        raise Exception(f'The variable {p[-1]} was not declared')
-    direction = symbols[p[-1]]['direction']
-    dimension1 = symbols[p[-1]]['dimension1']
-    dimension2 = symbols[p[-1]]['dimension2']
+    if p[-2] not in symbols:
+        raise Exception(f'The variable {p[-2]} was not declared')
+    direction = symbols[p[-2]]['direction']
+    dimension1 = symbols[p[-2]]['dimension1']
+    dimension2 = symbols[p[-2]]['dimension2']
     if dimension2 is not 0:
-        indirectPointer = symbols[p[-1]]['indirectPointer']
+        indirectPointer = symbols[p[-2]]['indirectPointer']
         if isDirection(globalIndex1) or isDirection(globalIndex2):
             resultQuadruplets.append(
                 f'* {globalIndex1} {dimension1} {indirectPointer}\n')
@@ -477,8 +475,10 @@ def p_action_1(p):
         else:
             direction += globalIndex2 + (globalIndex1 * dimension1)
             operandsStack.append(f'${direction}')
+        globalIndex1 = 0
+        globalIndex2 = 0
     elif dimension1 is not 0:
-        indirectPointer = symbols[p[-1]]['indirectPointer']
+        indirectPointer = symbols[p[-2]]['indirectPointer']
         if isDirection(globalIndex1):
             resultQuadruplets.append(
                 f'+ {direction} {globalIndex1} {indirectPointer}\n')
@@ -487,13 +487,12 @@ def p_action_1(p):
         else:
             direction += globalIndex1
             operandsStack.append(f'${direction}')
+        globalIndex1 = 0
     else:
         operandsStack.append(f'${direction}')
-    sType = symbols[p[-1]]['type']
+    sType = symbols[p[-2]]['type']
     # operandsStack.append(f'${direction}')
     typesStack.append(sType)
-    globalIndex1 = 0
-    globalIndex2 = 0
 
 
 def p_action_2(p):
@@ -562,53 +561,6 @@ def p_action_6(p):
             avail = [operand2] + avail
         if (isTemp(operand1)):
             avail = [operand1] + avail
-
-
-def p_action_7(p):
-    "action_7 :"
-    global globalIndex1
-    global globalIndex2
-    global quadrupletIndex
-    global resultQuadruplets
-    global avail
-    if p[-1] not in symbols:
-        raise Exception(f'The variable {p[-1]} was not declared')
-    direction = symbols[p[-1]]['direction']
-    dimension1 = symbols[p[-1]]['dimension1']
-    dimension2 = symbols[p[-1]]['dimension2']
-    if dimension2 is not 0:
-        indirectPointer = symbols[p[-1]]['indirectPointer']
-        if isDirection(globalIndex1) or isDirection(globalIndex2):
-            resultQuadruplets.append(
-                f'* {globalIndex1} {dimension1} {indirectPointer}\n')
-            quadrupletIndex += 1
-            resultQuadruplets.append(
-                f'+ {globalIndex2} {indirectPointer} {indirectPointer}\n')
-            quadrupletIndex += 1
-            resultQuadruplets.append(
-                f'+ {direction} {indirectPointer} {indirectPointer}\n')
-            quadrupletIndex += 1
-            operandsStack.append(indirectPointer.replace('$', '*'))
-        else:
-            direction += globalIndex2 + (globalIndex1 * dimension1)
-            operandsStack.append(f'${direction}')
-    elif dimension1 is not 0:
-        indirectPointer = symbols[p[-1]]['indirectPointer']
-        if isDirection(globalIndex1):
-            resultQuadruplets.append(
-                f'+ {direction} {globalIndex1} {indirectPointer}\n')
-            quadrupletIndex += 1
-            operandsStack.append(indirectPointer.replace('$', '*'))
-        else:
-            direction += globalIndex1
-            operandsStack.append(f'${direction}')
-    else:
-        operandsStack.append(f'${direction}')
-    sType = symbols[p[-1]]['type']
-    # operandsStack.append(f'${direction}')
-    typesStack.append(sType)
-    globalIndex1 = 0
-    globalIndex2 = 0
 
 
 def p_action_8(p):
@@ -941,20 +893,54 @@ def p_action_34(p):
     quadrupletIndex += 1
 
 
-# def p_action_35(p):
-#     "action_35 :"
-#     global quadrupletIndex
-#     resultQuadruplets.append('print endline\n')
-#     quadrupletIndex += 1
-
-
 def p_action_36(p):
     "action_36 :"
     global quadrupletIndex
     operand1 = operandsStack.pop()
-    type1 = typesStack.pop()
+    typesStack.pop()
     resultQuadruplets.append(f'read {operand1}\n')
     quadrupletIndex += 1
+
+
+def p_action_37(p):
+    "action_37 :"
+    global quadrupletIndex
+    resultQuadruplets.append('goto _\n')
+    quadrupletIndex += 1
+
+
+def p_action_38(p):
+    "action_38 :"
+    global quadrupletIndex
+    fillGoto(1, quadrupletIndex)
+
+
+def p_action_39(p):
+    "action_39 :"
+    global quadrupletIndex
+    subroutineId = p[-1]
+    addSymbol(subroutineId, 'method', quadrupletIndex)
+
+
+def p_action_40(p):
+    "action_40 :"
+    global quadrupletIndex
+    resultQuadruplets.append('goback\n')
+    quadrupletIndex += 1
+
+
+def p_action_41(p):
+    "action_41 :"
+    global quadrupletIndex
+    if p[-2] not in symbols:
+        raise Exception(f'The variable {p[-2]} was not declared')
+    if symbols[p[-2]]['type'] is not 'method':
+        raise Exception(f'{p[-2]} is not a function')
+    value = symbols[p[-2]]['value']
+    resultQuadruplets.append(f'call {value}\n')
+    quadrupletIndex += 1
+
+    
 
 
 def p_action_setDim1(p):
@@ -962,7 +948,6 @@ def p_action_setDim1(p):
     global globalIndex1
     operand1 = operandsStack.pop()
     type1 = typesStack.pop()
-    print(f'Tipo del index {type1}')
     if (type1 == 'integer'):
         globalIndex1 = operand1
     else:
@@ -974,7 +959,6 @@ def p_action_setDim2(p):
     global globalIndex2
     operand1 = operandsStack.pop()
     type1 = typesStack.pop()
-    print(f'Tipo del index {type1}')
     if (type1 == 'integer'):
         globalIndex2 = operand1
     else:

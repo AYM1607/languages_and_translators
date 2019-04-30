@@ -4,6 +4,7 @@ import sys
 normalOperators = ['+', '-', '*', '/', '>', '<',
                    '<=', '>=', '==', '/=', '.and.', '.or.']
 
+programStack = []
 
 class VarTable:
     def __init__(self):
@@ -62,6 +63,9 @@ def splitQuad(string):
     skip = False
     tokens = string.split()
     for token in tokens:
+        if skip:
+            skip = False
+            continue
         if isStringOpen:
             buffer += ' '
             buffer += token
@@ -70,6 +74,10 @@ def splitQuad(string):
                 isStringOpen = False
         else:
             if token[0] == '\'':
+                if token == "'":
+                    result.append("' '")
+                    skip = True
+                    continue
                 if token[len(token) - 1] == '\'':
                     result.append(token)
                 else:
@@ -164,6 +172,14 @@ def execute(quads):
         # ---------- gotoF operation
         elif tokens[0] == 'goto':
             currentQuad = int(tokens[1])
+            continue
+        elif tokens[0] == 'call':
+            programStack.append(currentQuad + 1)
+            currentQuad = int(tokens[1])
+            continue
+        elif tokens[0] == 'goback':
+            newQuad = programStack.pop()
+            currentQuad = newQuad
             continue
         currentQuad += 1
 

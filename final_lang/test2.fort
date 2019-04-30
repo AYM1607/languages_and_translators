@@ -1,8 +1,23 @@
 program test
-integer [2][2] :: a
-integer :: i, j
-a(0,0) = 1
-i = 0
-j = 1
-print a(j,i)
+integer [10][10] :: a
+integer :: i, j, counter
+subroutine fillMatrix
+    counter = 1
+    do i = 0, 9 then
+        do j = 0, 9 then
+            a(i,j) = counter
+            counter = counter + 1
+        end do
+    end do
+end subroutine
+subroutine printMatrix
+    do i = 0, 9 then
+        do j = 0, 9 then
+            print a(i,j), ' '
+        end do
+        print endline
+    end do
+end subroutine
+fillMatrix()
+printMatrix()
 end program

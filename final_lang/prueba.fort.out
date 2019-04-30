@@ -1,3 +1,4 @@
+goto 2
 print 'Choose and option'
 print endline
 print '1 - Calculate the factorial of a number'
@@ -8,25 +9,25 @@ print '3 - Calculate e to the power of a number'
 print endline
 read $50
 == $50 1 $0
-gotoF $0   28
+gotoF $0   29
 print 'Enter the number'
 print endline
 read $52
 = 1    $51
 = 1    $54
 <= $54 $52 $0
-gotoF $0 24
+gotoF $0 25
 * $51 $54 $1
 = $1    $51
 + $54 1 $1
 = $1    $54
-goto 17
+goto 18
 print 'The result is : '
 print $51
 print endline
-goto  88
+goto  89
 == $50 2 $1
-gotoF $1   49
+gotoF $1   50
 print 'Enter the base'
 print endline
 read $52
@@ -36,59 +37,59 @@ read $53
 = 1    $51
 = 1    $54
 <= $54 $53 $1
-gotoF $1 45
+gotoF $1 46
 * $51 $52 $2
 = $2    $51
 + $54 1 $2
 = $2    $54
-goto 38
+goto 39
 print 'The result is : '
 print $51
 print endline
-goto  88
+goto  89
 == $50 3 $2
-gotoF $2   86
+gotoF $2   87
 print 'Enter the exponent'
 print endline
 read $52
 = 0    $51
 = 0    $54
 <= $54 10 $2
-gotoF $2 82
+gotoF $2 83
 = 1    $56
 = 1    $55
 <= $55 $54 $3
-gotoF $3 67
+gotoF $3 68
 * $56 $55 $4
 = $4    $56
 + $55 1 $4
 = $4    $55
-goto 60
+goto 61
 = 1    $57
 = 1    $55
 <= $55 $54 $4
-gotoF $4 76
+gotoF $4 77
 * $57 $52 $5
 = $5    $57
 + $55 1 $5
 = $5    $55
-goto 69
+goto 70
 / $57 $56 $5
 + $51 $5 $6
 = $6    $51
 + $54 1 $6
 = $6    $54
-goto 56
+goto 57
 print 'The result is : '
 print $51
 print endline
-goto  88
+goto  89
 print 'Not a valid option'
 print endline
 print 'Would you like to make another calculation? (type 1 for yes or 0 for no)'
 print endline
 read $50
 == $50 0 $6
-gotoF $6   94
-goto   95
-goto   1
+gotoF $6   95
+goto   96
+goto   2
