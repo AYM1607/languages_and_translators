@@ -46,7 +46,7 @@ globalIndex2 = 0
 # Adds a symbol to the symbols table.
 
 
-def addSymbol(name, symbolType, value = 0):
+def addSymbol(name, symbolType, value=0):
     global currentIndex
     symbols[name] = {
         'type': symbolType,
@@ -55,9 +55,7 @@ def addSymbol(name, symbolType, value = 0):
         'dimension1': globalDimension1,
         'dimension2': globalDimension2,
     }
-    if globalDimensionalSize != 1:
-        symbols[name]['indirectPointer'] = f'${currentIndex + globalDimensionalSize}'
-    currentIndex += 1 if globalDimensionalSize == 1 else globalDimensionalSize + 1
+    currentIndex += globalDimensionalSize
 
 # Returns the last item of a list without deleting it.
 
@@ -460,7 +458,7 @@ def p_action_1(p):
     dimension1 = symbols[p[-2]]['dimension1']
     dimension2 = symbols[p[-2]]['dimension2']
     if dimension2 is not 0:
-        indirectPointer = symbols[p[-2]]['indirectPointer']
+        indirectPointer = avail.pop(0)
         if isDirection(globalIndex1) or isDirection(globalIndex2):
             resultQuadruplets.append(
                 f'* {globalIndex1} {dimension1} {indirectPointer}\n')
@@ -478,7 +476,7 @@ def p_action_1(p):
         globalIndex1 = 0
         globalIndex2 = 0
     elif dimension1 is not 0:
-        indirectPointer = symbols[p[-2]]['indirectPointer']
+        indirectPointer = avail.pop(0)
         if isDirection(globalIndex1):
             resultQuadruplets.append(
                 f'+ {direction} {globalIndex1} {indirectPointer}\n')
@@ -530,9 +528,9 @@ def p_action_4(p):
             operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
         if (isTemp(operand2)):
-            avail = [operand2] + avail
+            avail = [operand2.replace('*', '$')] + avail
         if (isTemp(operand1)):
-            avail = [operand1] + avail
+            avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_5(p):
@@ -558,9 +556,9 @@ def p_action_6(p):
             operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
         if (isTemp(operand2)):
-            avail = [operand2] + avail
+            avail = [operand2.replace('*', '$')] + avail
         if (isTemp(operand1)):
-            avail = [operand1] + avail
+            avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_8(p):
@@ -578,7 +576,9 @@ def p_action_8(p):
     quadrupletIndex += 1
     # Return the operand to the availbale if it is a temporal.
     if (isTemp(operand2)):
-        avail = [operand2] + avail
+        avail = [operand2.replace('*', '$')] + avail
+    if (isTemp(operand1)):
+        avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_9(p):
@@ -599,9 +599,9 @@ def p_action_9(p):
             operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
         if (isTemp(operand2)):
-            avail = [operand2] + avail
+            avail = [operand2.replace('*', '$')] + avail
         if (isTemp(operand1)):
-            avail = [operand1] + avail
+            avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_10(p):
@@ -627,9 +627,9 @@ def p_action_11(p):
             operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
         if (isTemp(operand2)):
-            avail = [operand2] + avail
+            avail = [operand2.replace('*', '$')] + avail
         if (isTemp(operand1)):
-            avail = [operand1] + avail
+            avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_12(p):
@@ -660,9 +660,9 @@ def p_action_14(p):
             operator) + ' ' + str(operand1) + ' ' + str(operand2) + ' ' + str(temp) + '\n')
         quadrupletIndex += 1
         if (isTemp(operand2)):
-            avail = [operand2] + avail
+            avail = [operand2.replace('*', '$')] + avail
         if (isTemp(operand1)):
-            avail = [operand1] + avail
+            avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_15(p):
@@ -698,7 +698,7 @@ def p_action_17(p):
     resultQuadruplets.append('gotoF ' + str(operand1) + '   _\n')
     quadrupletIndex += 1
     if (isTemp(operand1)):
-        avail = [operand1] + avail
+        avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_18(p):
@@ -786,7 +786,7 @@ def p_action_25(p):
     quadrupletIndex += 1
     # Return the operand to the availbale if it is a temporal.
     if (isTemp(operand2)):
-        avail = [operand2] + avail
+        avail = [operand2.replace('*', '$')] + avail
 
 
 def p_action_26(p):
@@ -810,9 +810,9 @@ def p_action_26(p):
     resultQuadruplets.append(f'gotoF {str(temp)} _\n')
     quadrupletIndex += 1
     if (isTemp(operand2)):
-        avail = [operand2] + avail
+        avail = [operand2.replace('*', '$')] + avail
     if (isTemp(operand1)):
-        avail = [operand1] + avail
+        avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_27(p):
@@ -880,10 +880,13 @@ def p_action_32(p):
 def p_action_33(p):
     "action_33 :"
     global quadrupletIndex
+    global avail
     operand1 = operandsStack.pop()
     typesStack.pop()
     resultQuadruplets.append(f'print {operand1}\n')
     quadrupletIndex += 1
+    if (isTemp(operand1)):
+        avail = [operand1.replace('*', '$')] + avail
 
 
 def p_action_34(p):
@@ -939,8 +942,6 @@ def p_action_41(p):
     value = symbols[p[-2]]['value']
     resultQuadruplets.append(f'call {value}\n')
     quadrupletIndex += 1
-
-    
 
 
 def p_action_setDim1(p):
