@@ -40,3 +40,5 @@ print *0
 print endline
 + $151 2 $0
 = $0    $150
+print $150
+print endline

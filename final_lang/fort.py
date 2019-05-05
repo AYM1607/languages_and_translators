@@ -22,13 +22,13 @@ typesStack = []
 jumpsStack = []
 exitsStack = []
 avail = []
-for i in range(50):
+for i in range(200):
     avail.append('$' + str(i))
 
 # Operations related to the table of symbols
 symbols = {}
 # Our variables start at direction 50, the temps take the first 49 directions.
-currentIndex = 50
+currentIndex = 200
 
 # Multi dimensional variables dimensions just for declaration.
 globalDimension1 = 0
@@ -809,8 +809,6 @@ def p_action_26(p):
     jumpsStack.append(quadrupletIndex)
     resultQuadruplets.append(f'gotoF {str(temp)} _\n')
     quadrupletIndex += 1
-    if (isTemp(operand2)):
-        avail = [operand2.replace('*', '$')] + avail
     if (isTemp(operand1)):
         avail = [operand1.replace('*', '$')] + avail
 

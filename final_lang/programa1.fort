@@ -1,0 +1,105 @@
+program p1
+integer [5][5] :: m1, m2, m3
+integer :: i, j, k, cTemp, rTemp, temp, option
+integer [3] :: columns, rows
+subroutine readDim
+    do then
+        print 'Enter number of rows: '
+        read rTemp
+        if (rTemp <= 5 .and. rTemp > 0) then
+            exit
+        end if
+        print 'number of rows must be greater than 0 and less than 6', endline
+    end do
+    do then
+        print 'Enter number of columns: '
+        read cTemp
+        if (cTemp <= 5 .and. cTemp > 0) then
+            exit
+        end if
+        print 'number of columns must be greater than 0 and less than 6', endline
+    end do
+end subroutine
+subroutine readM1
+    do i = 0, rows(0) - 1 then
+        do j = 0, columns(0) - 1 then
+            print 'Enter value (', i, ',', j, ') for matrix 1', endline
+            read m1(i,j)
+        end do
+    end do
+end subroutine
+subroutine readM2
+    do i = 0, rows(1) - 1 then
+        do j = 0, columns(1) - 1 then
+            print 'Enter value (', i, ',', j, ') for matrix 2', endline
+            read m2(i,j)
+        end do
+    end do
+end subroutine
+subroutine sumMats
+    do i = 0, rows(0) - 1 then
+        do j = 0, columns(0) - 1 then
+            m3(i,j) = m1(i,j) + m2(i,j)
+        end do
+    end do
+end subroutine
+subroutine multMats
+    do i = 0, rows(2) - 1 then
+        do j = 0, columns(2) - 1 then
+            temp = 0
+            do k = 0, columns(0) - 1 then
+                temp = temp + m1(i,k) * m2(k,j)
+            end do
+            m3(i,j) = temp
+        end do
+    end do
+end subroutine
+subroutine printResult
+    do i = 0, rows(2) - 1 then
+        do j = 0, columns(2) - 1 then
+            print m3(i,j), ' '
+        end do
+        print endline
+    end do
+end subroutine
+do temp = 1, 2 then
+    print 'Enter dimensions for matrix ', temp, endline
+    readDim()
+    rows(temp - 1) = rTemp
+    columns(temp - 1) = cTemp
+end do
+readM1()
+readM2()
+do then
+    print 'Choose and option', endline
+    print '1 - Multiply the matrices', endline
+    print '2 - Sum the matrices', endline
+    read option
+    if (option == 1) then
+        if (columns(0) == rows(1)) then
+            rows(2) = rows(0)
+            columns(2) = columns(1)
+            multMats()
+            printResult()
+        else
+            print 'Sorry cannnot multiply matrices with theses dimensions', endline
+        end if
+    elif (option == 2) then
+        if (rows(0) == rows(1) .and. columns(0) == columns(1)) then
+            rows(2) = rows(0)
+            columns(2) = columns(0)
+            sumMats()
+            printResult()
+        else
+            print 'Sorry cannnot sum matrices with theses dimensions', endline
+        end if
+    else
+        print 'Not a valid option', endline
+    end if
+    print 'Would you like to make another calculation? (type 1 for yes or 0 for no)', endline
+    read option
+    if (option == 0) then
+        exit
+    end if
+end do
+end program

@@ -1,0 +1,6 @@
+program test
+integer :: a
+do a = 0, 2+1 then
+    print a, endline
+end do
+end program
