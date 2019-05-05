@@ -108,6 +108,7 @@ tokens = [
     'openParen',
     'closedParen',
     'string',
+    'comment',
     'plus',
     'minus',
     'mul',
@@ -169,6 +170,7 @@ t_plus = r'\+'
 t_minus = r'-'
 t_mul = r'\*'
 t_string = r'\'[a-zA-Z0-9 \?\:\t\r\n\f()\[\]\&\!\@\#\$\%\^\-\=\+\/\,]*\''
+t_comment = r'![a-zA-Z0-9 \?\:\t\r\n\f()\[\]\&\!\@\#\$\%\^\-\=\+\/\,]*!'
 t_or = r'\.or\.'
 t_and = r'\.and\.'
 t_not = r'\.not\.'
@@ -286,7 +288,8 @@ def p_S(p):
       | do id action_24 equals EA action_25 coma EA action_26 IntOrEmpty then B action_29 end do
       | do then action_21 B action_22 end do
       | swap Dimensional coma Dimensional
-      | exit action_23 
+      | exit action_23
+      | comment
     '''
 
 # Adjust the action to support matrices

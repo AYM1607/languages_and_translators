@@ -1,0 +1,74 @@
+goto 70
+= 0    $210
+- $212 1 $0
+<= $210 $0 $1
+gotoF $1 15
+print 'Enter element '
+print $210
+print ' of the vector'
+print endline
++ 200 $210 $2
+read *2
++ $210 1 $3
+= $3    $210
+goto 4
+goback
+= 0    $210
+- $212 1 $3
+<= $210 $3 $4
+gotoF $4 26
++ 200 $210 $5
+print *5
+print ' '
++ $210 1 $5
+= $5    $210
+goto 18
+print endline
+goback
+print 'Enter the size of the vector to sort'
+print endline
+read $212
+<= $212 10 $5
+> $212 0 $6
+.and. $5 $6 $7
+gotoF $7   36
+goto   39
+print 'The size of the vector must be greater than 0 and less than or equal to 10'
+print endline
+goto   28
+goback
+= 0    $210
+- $212 2 $7
+<= $210 $7 $5
+gotoF $5 69
+= 0    $211
+- $212 $210 $6
+- $6 2 $8
+<= $211 $8 $6
+gotoF $6 66
++ 200 $211 $9
++ $211 1 $10
++ 200 $10 $11
+> *9 *11 $12
+gotoF $12   63
++ 200 $211 $12
+= *12    $213
++ 200 $211 $12
++ $211 1 $9
++ 200 $9 $11
+= *11    *12
++ $211 1 $12
++ 200 $12 $11
+= $213    *11
++ $211 1 $11
+= $11    $211
+goto 47
++ $210 1 $11
+= $11    $210
+goto 42
+goback
+call 28
+call 2
+call 40
+print 'Sorted vector: '
+call 16

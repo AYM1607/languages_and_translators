@@ -1,0 +1,42 @@
+program p2
+integer [10] :: vec
+integer :: i, j, size, temp
+subroutine readVec
+    do i = 0, size - 1 then
+        print 'Enter element ', i, ' of the vector', endline
+        read vec(i)
+    end do
+end subroutine
+subroutine printVec
+    do i = 0, size - 1 then
+        print vec(i), ' '
+    end do
+    print endline
+end subroutine
+subroutine readDim
+    do then
+        print 'Enter the size of the vector to sort', endline
+        read size
+        if (size <= 10 .and. size > 0) then
+            exit
+        end if
+        print 'The size of the vector must be greater than 0 and less than or equal to 10', endline
+    end do
+end subroutine
+subroutine sort
+    do i = 0, size - 2 then
+        do j = 0, size - i - 2 then
+            if (vec(j) > vec(j + 1)) then
+                temp = vec(j)
+                vec(j) = vec(j+1)
+                vec(j+1) = temp
+            end if
+        end do
+    end do
+end subroutine
+readDim()
+readVec()
+sort()
+print 'Sorted vector: '
+printVec()
+end program
