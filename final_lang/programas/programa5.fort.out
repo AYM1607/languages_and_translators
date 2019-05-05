@@ -1,0 +1,14 @@
+goto 10
+<= $200 $201 $0
+gotoF $0   9
+print $200
+print ' '
++ $200 1 $0
+= $0    $200
+call 2
+goback
+print 'Enter the limit number: '
+read $201
+= 0    $200
+call 2
+print endline

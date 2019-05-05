@@ -1,0 +1,15 @@
+program p5
+integer :: counter, limit
+subroutine printUntilLimit
+    if (counter <= limit) then
+        print counter, ' '
+        counter = counter + 1
+        printUntilLimit()
+    end if
+end subroutine
+print 'Enter the limit number: '
+read limit
+counter = 0
+printUntilLimit()
+print endline
+end program
