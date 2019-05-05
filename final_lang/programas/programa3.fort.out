@@ -1,4 +1,4 @@
-goto 2
+goto 81
 print 'Choose and option'
 print endline
 print '1 - Calculate the factorial of a number'
@@ -7,27 +7,23 @@ print '2 - Calculate a number to the power of another number'
 print endline
 print '3 - Calculate e to the power of a number'
 print endline
-read $200
-== $200 1 $0
-gotoF $0   29
+goback
 print 'Enter the number'
 print endline
 read $202
 = 1    $201
 = 1    $204
 <= $204 $202 $0
-gotoF $0 25
+gotoF $0 23
 * $201 $204 $1
 = $1    $201
 + $204 1 $1
 = $1    $204
-goto 18
+goto 16
 print 'The result is : '
 print $201
 print endline
-goto  89
-== $200 2 $1
-gotoF $1   50
+goback
 print 'Enter the base'
 print endline
 read $202
@@ -37,59 +33,71 @@ read $203
 = 1    $201
 = 1    $204
 <= $204 $203 $1
-gotoF $1 46
+gotoF $1 42
 * $201 $202 $2
 = $2    $201
 + $204 1 $2
 = $2    $204
-goto 39
+goto 35
 print 'The result is : '
 print $201
 print endline
-goto  89
-== $200 3 $2
-gotoF $2   87
+goback
 print 'Enter the exponent'
 print endline
 read $202
 = 0    $201
 = 0    $204
 <= $204 10 $2
-gotoF $2 83
+gotoF $2 77
 = 1    $206
 = 1    $205
 <= $205 $204 $3
-gotoF $3 68
+gotoF $3 62
 * $206 $205 $4
 = $4    $206
 + $205 1 $4
 = $4    $205
-goto 61
+goto 55
 = 1    $207
 = 1    $205
 <= $205 $204 $4
-gotoF $4 77
+gotoF $4 71
 * $207 $202 $5
 = $5    $207
 + $205 1 $5
 = $5    $205
-goto 70
+goto 64
 / $207 $206 $5
 + $201 $5 $6
 = $6    $201
 + $204 1 $6
 = $6    $204
-goto 57
+goto 51
 print 'The result is : '
 print $201
 print endline
-goto  89
+goback
+call 2
+read $200
+== $200 1 $6
+gotoF $6   87
+call 11
+goto  97
+== $200 2 $6
+gotoF $6   91
+call 27
+goto  97
+== $200 3 $6
+gotoF $6   95
+call 46
+goto  97
 print 'Not a valid option'
 print endline
 print 'Would you like to make another calculation? (type 1 for yes or 0 for no)'
 print endline
 read $200
 == $200 0 $6
-gotoF $6   95
-goto   96
-goto   2
+gotoF $6   103
+goto   104
+goto   81

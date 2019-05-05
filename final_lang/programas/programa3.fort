@@ -1,46 +1,57 @@
 program test
 integer :: option, result, x, y, counter, counter2,factorial, exponential
-
-do then
+subroutine printMenu
     print 'Choose and option', endline
     print '1 - Calculate the factorial of a number', endline
     print '2 - Calculate a number to the power of another number', endline
     print '3 - Calculate e to the power of a number', endline
+end subroutine
+subroutine calculateFactorial
+    print 'Enter the number', endline
+    read x
+    result = 1
+    do counter = 1, x then
+        result = result * counter
+    end do
+    print 'The result is : ', result, endline
+end subroutine
+subroutine calculatePower
+    print 'Enter the base', endline
+    read x
+    print 'Enter the exponent', endline
+    read y
+    result = 1
+    do counter = 1, y then
+        result = result * x
+    end do
+    print 'The result is : ', result, endline
+end subroutine
+subroutine claculateEToPower
+    print 'Enter the exponent', endline
+    read x
+    result = 0
+    do counter = 0, 10 then
+        factorial = 1
+        do counter2 = 1, counter then
+            factorial = factorial * counter2 
+        end do
+        exponential = 1
+        do counter2 = 1, counter then
+            exponential = exponential * x
+        end do
+        result = result + exponential / factorial
+    end do
+    print 'The result is : ', result, endline
+end subroutine
+do then
+    printMenu()
     read option
     if (option == 1) then
-        print 'Enter the number', endline
-        read x
-        result = 1
-        do counter = 1, x then
-            result = result * counter
-        end do
-        print 'The result is : ', result, endline
+        calculateFactorial()
     elif (option == 2) then
-        print 'Enter the base', endline
-        read x
-        print 'Enter the exponent', endline
-        read y
-        result = 1
-        do counter = 1, y then
-            result = result * x
-        end do
-        print 'The result is : ', result, endline
+        calculatePower()
     elif (option == 3) then
-        print 'Enter the exponent', endline
-        read x
-        result = 0
-        do counter = 0, 10 then
-            factorial = 1
-            do counter2 = 1, counter then
-                factorial = factorial * counter2 
-            end do
-            exponential = 1
-            do counter2 = 1, counter then
-                exponential = exponential * x
-            end do
-            result = result + exponential / factorial
-        end do
-        print 'The result is : ', result, endline
+        claculateEToPower()
     else
         print 'Not a valid option', endline
     end if
