@@ -1,0 +1,38 @@
+program p4
+integer :: number
+subroutine readNumber
+    do then
+        !Asking the user for the number
+        print 'Enter your number: ', endline
+        read number
+        !Verifying that the number is withing the desired range
+        if (number >= 0 .and. number <= 7) then
+            exit
+        end if
+        print 'Number must be between 0 and 7', endline
+    end do
+end subroutine
+readNumber()
+!Printing the adequate string for every number
+print 'Your number is: '
+if (number == 0) then
+    print 'zero'
+elif (number == 1) then
+    print 'one'
+elif (number == 2) then
+    print 'two'
+elif (number == 3) then
+    print 'three'
+elif (number == 4) then
+    print 'four'
+elif (number == 5) then
+    print 'five'
+elif (number == 6) then
+    print 'six'
+elif (number == 7) then
+    print 'seven'
+else
+    print 'unknown'
+end if
+print endline
+end program
