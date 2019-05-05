@@ -72,3 +72,10 @@ call 2
 call 40
 print 'Sorted vector: '
 call 16
+print 'Do you want to sort another vector? enter 1 for yes and 0 for no'
+print endline
+read $213
+== $213 0 $11
+gotoF $11   81
+goto   82
+goto   70

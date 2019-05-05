@@ -34,9 +34,16 @@ subroutine sort
         end do
     end do
 end subroutine
-readDim()
-readVec()
-sort()
-print 'Sorted vector: '
-printVec()
+do then
+    readDim()
+    readVec()
+    sort()
+    print 'Sorted vector: '
+    printVec()
+    print 'Do you want to sort another vector? enter 1 for yes and 0 for no', endline
+    read temp
+    if (temp == 0) then
+        exit
+    end if
+end do
 end program
